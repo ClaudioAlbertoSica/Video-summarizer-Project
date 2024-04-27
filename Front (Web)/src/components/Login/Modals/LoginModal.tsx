@@ -1,7 +1,12 @@
 import { TextField, Box, Button, Container, Link, Typography } from "@mui/material";
 import "./Modals.css";
+import { ModalNames } from "../LoginLayout.tsx";
 
-function LoginModal() {
+interface LoginModalSelector {
+  selectorCallback: (modalName: ModalNames["modalName"]) => void;
+}
+
+function LoginModal({ selectorCallback }: LoginModalSelector) {
   return (
     <Container className="ExternalLoginContainer">
       <Box className="FormBox" component="form">
@@ -36,11 +41,11 @@ function LoginModal() {
       <Container className="bottomOptionsContainer">
         <Typography variant="caption" display="block" gutterBottom>
           ¿No tiene cuenta? &nbsp;
-          <Link>Crear Una</Link>
+          <Link onClick={() => selectorCallback("CreateAccountModal")}>Crear Una</Link>
         </Typography>
         <Typography variant="caption" display="block" gutterBottom>
           ¿Olvidó su contraseña? &nbsp;
-          <Link>Recuperarla</Link>
+          <Link onClick={() => selectorCallback("PasswordResetModal")}>Recuperarla</Link>
         </Typography>
       </Container>
     </Container>

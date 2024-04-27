@@ -5,16 +5,22 @@ import LoginModal from "./Modals/LoginModal.tsx";
 import CreateAccountModal from "./Modals/CreateAccountModal.tsx";
 import PasswordResetModal from "./Modals/PasswordResetModal.tsx";
 
-interface LoginScreenTypes {
-  screenType?: "Login" | "Sign Up" | "Forgot Password";
+export interface ModalNames {
+  modalName: "LoginModal" | "CreateAccountModal" | "PasswordResetModal";
 }
 
-function LoginLayout({ screenType = "Login" }: LoginScreenTypes) {
-  const [modal, setModal] = useState(screenType);
+function LoginLayout({ modalName = "LoginModal" }: ModalNames) {
+  const [selectedModalName, setmodalName] = useState<ModalNames["modalName"]>(modalName);
+
+  const handleModalChange = (modalName: ModalNames["modalName"]) => {
+    setmodalName(modalName);
+  };
 
   return (
     <Container className="ExternalLoginLayoutContainer">
-      <PasswordResetModal />
+      {selectedModalName === "LoginModal" && <LoginModal selectorCallback={handleModalChange} />}
+      {selectedModalName === "CreateAccountModal" && <CreateAccountModal selectorCallback={handleModalChange} />}
+      {selectedModalName === "PasswordResetModal" && <PasswordResetModal selectorCallback={handleModalChange} />}
     </Container>
   );
 }

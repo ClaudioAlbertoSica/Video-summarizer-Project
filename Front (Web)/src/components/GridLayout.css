@@ -1,0 +1,37 @@
+.MuiContainer-root.ExternalContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 0px;
+    height: 99.9vh;
+    max-width: none;
+}
+
+.MuiContainer-root.SidePanelContainer{
+    background-color: lightgray;
+    width: 24%;
+    height: 100%
+}
+
+.ContainerGrid{
+    background-color: gray;
+    width: 67%;
+    height: 100vh
+}
+
+.HeaderGrid{
+    background-color: lightseagreen;
+    height: 8%
+}
+
+
+.CentralPanel{
+    background-color: lightblue;
+    height: 86%; 
+}
+
+.FooterGrid{
+    background-color: lightseagreen;
+    height: 6%;
+}

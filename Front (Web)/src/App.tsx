@@ -1,5 +1,7 @@
+import GridLayout from "./components/GridLayout";
+
 function App() {
-  return <></>;
+  return <GridLayout />;
 }
 
 export default App;

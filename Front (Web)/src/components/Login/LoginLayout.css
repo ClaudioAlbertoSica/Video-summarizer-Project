@@ -1,0 +1,10 @@
+.MuiContainer-root.ExternalLoginLayoutContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 0px;
+    height: 99.9vh;
+    max-width: none;
+    justify-content: center;
+}

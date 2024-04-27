@@ -1,7 +1,8 @@
-import GridLayout from "./components/GridLayout";
+//import GridLayout from "./components/GridLayout";
+import LoginLayout from "./components/Login/LoginLayout";
 
 function App() {
-  return <GridLayout />;
+  return <LoginLayout />;
 }
 
 export default App;

@@ -8,7 +8,9 @@ function GridLayout() {
   and a <Grid> for the Header, Central, and Footer Panels*/
   return (
     <Container className="ExternalContainer">
-      <Container className="SidePanelContainer">Hello</Container>
+      <Container className="SidePanelContainer">
+        <h1>Side Panel</h1>
+      </Container>
 
       <Grid className="ContainerGrid" container spacing={0}>
         <Grid className="HeaderGrid" item xs={12}>

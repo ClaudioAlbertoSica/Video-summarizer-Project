@@ -1,21 +1,21 @@
 import { TextField, Box, Button, Container, Link, Typography } from "@mui/material";
-import "./LoginModal.css";
+import "./Modals.css";
 
-function LoginModal() {
+function CreateAccountModal() {
   return (
     <Container className="ExternalLoginContainer">
       <Box className="FormBox" component="form">
-        <Typography variant="h3" display="block" gutterBottom>
-          Login
+        <Typography variant="h3" textAlign="center" gutterBottom>
+          Crear Cuenta
         </Typography>
-        <Typography variant="subtitle1" display="block" gutterBottom>
-          Ingrese su email y su contraseña
+        <Typography variant="subtitle1" textAlign="center" gutterBottom>
+          Ingrese su email, su contraseña, vuelva a ingresar esta última para verificarla, y luego haga click en "Crear".
         </Typography>
         <TextField
           className="FormInputs"
           id="outlined-search"
           name="yourEmail"
-          label="Your e-mail"
+          label="Ingrese su e-mail"
           type="input"
           variant="outlined"
         />
@@ -23,20 +23,28 @@ function LoginModal() {
           className="FormInputs"
           id="outlined-search"
           name="yourPassword"
-          label="Your Password"
+          label="Ingrese su Password"
+          type="input"
+          variant="outlined"
+        />
+        <TextField
+          className="FormInputs"
+          id="outlined-search"
+          name="yourRepeatedPassword"
+          label="Ingrese nuevamente su Password"
           type="input"
           variant="outlined"
         />
         <Container className="FormButtonContainer">
           <Button variant="contained" type="submit">
-            Login
+            Crear
           </Button>
         </Container>
       </Box>
       <Container className="bottomOptionsContainer">
         <Typography variant="caption" display="block" gutterBottom>
-          ¿No tiene cuenta? &nbsp;
-          <Link>Crear Una</Link>
+          ¿Ya posee una cuenta? &nbsp;
+          <Link>Ingresar</Link>
         </Typography>
         <Typography variant="caption" display="block" gutterBottom>
           ¿Olvidó su contraseña? &nbsp;
@@ -47,4 +55,4 @@ function LoginModal() {
   );
 }
 
-export default LoginModal;
+export default CreateAccountModal;

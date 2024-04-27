@@ -1,7 +1,9 @@
 import { Container } from "@mui/material";
 import { useState } from "react";
 import "./LoginLayout.css";
-import LoginModal from "./LoginModal.tsx";
+import LoginModal from "./Modals/LoginModal.tsx";
+import CreateAccountModal from "./Modals/CreateAccountModal.tsx";
+import PasswordResetModal from "./Modals/PasswordResetModal.tsx";
 
 interface LoginScreenTypes {
   screenType?: "Login" | "Sign Up" | "Forgot Password";
@@ -12,7 +14,7 @@ function LoginLayout({ screenType = "Login" }: LoginScreenTypes) {
 
   return (
     <Container className="ExternalLoginLayoutContainer">
-      <LoginModal />
+      <PasswordResetModal />
     </Container>
   );
 }

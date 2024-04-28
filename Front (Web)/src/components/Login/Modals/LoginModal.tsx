@@ -1,6 +1,7 @@
 import { TextField, Box, Button, Container, Typography, Link } from "@mui/material";
 import "./Modals.css";
 import { ModalNames } from "../LoginLayout.tsx";
+import server from "../../Services/serverCall.ts";
 
 // Link as RouterLink,
 interface LoginModalInterface {
@@ -9,8 +10,17 @@ interface LoginModalInterface {
 }
 
 function LoginModal({ selectorCallback, setLoginBoolean }: LoginModalInterface) {
-  const handleLoginClick = () => {
-    setLoginBoolean(true);
+  const handleLoginClick = async () => {
+    await server
+      .post("/login", { userName: "xaxaxax", passwd: "p3p3" })
+      .then((res) => {
+        console.log("Estoy aquí!!");
+        console.log(res);
+        setLoginBoolean(true);
+      })
+      .catch(() => {
+        console.log("ERRROOOOOOOOOR!!");
+      });
   };
 
   return (

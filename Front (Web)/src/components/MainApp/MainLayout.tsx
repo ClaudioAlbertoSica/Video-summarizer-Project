@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import "./GridLayout.css";
+import "./MainLayout.css";
 import { Container } from "@mui/material";
 
 function GridLayout() {

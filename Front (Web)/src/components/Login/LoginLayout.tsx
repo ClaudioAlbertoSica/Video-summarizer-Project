@@ -6,7 +6,7 @@ import CreateAccountModal from "./Modals/CreateAccountModal.tsx";
 import PasswordResetModal from "./Modals/PasswordResetModal.tsx";
 
 export interface ModalNames {
-  modalName: "LoginModal" | "CreateAccountModal" | "PasswordResetModal";
+  modalName?: "LoginModal" | "CreateAccountModal" | "PasswordResetModal";
 }
 
 function LoginLayout({ modalName = "LoginModal" }: ModalNames) {

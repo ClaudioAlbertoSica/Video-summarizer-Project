@@ -1,12 +1,15 @@
-import { TextField, Box, Button, Container, Link, Typography } from "@mui/material";
+import { TextField, Box, Button, Container, Typography, Link } from "@mui/material";
 import "./Modals.css";
 import { ModalNames } from "../LoginLayout.tsx";
-
+import { useNavigate } from "react-router-dom";
+// Link as RouterLink,
 interface LoginModalSelector {
   selectorCallback: (modalName: ModalNames["modalName"]) => void;
 }
 
 function LoginModal({ selectorCallback }: LoginModalSelector) {
+  const navigate = useNavigate();
+
   return (
     <Container className="ExternalLoginContainer">
       <Box className="FormBox" component="form">
@@ -33,7 +36,7 @@ function LoginModal({ selectorCallback }: LoginModalSelector) {
           variant="outlined"
         />
         <Container className="FormButtonContainer">
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" onClick={() => navigate("/main")}>
             Login
           </Button>
         </Container>

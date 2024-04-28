@@ -28,56 +28,11 @@ class LoginScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               //aca va el usuario
-                TextField(
-                  obscureText: false,
-                  controller: _inputUsernameController,
-                  style: GoogleFonts.zillaSlab(
-                    textStyle: Theme.of(context).textTheme.displayLarge,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.black87
-                  ),
-                  cursorColor: Colors.black54,
-                  decoration: InputDecoration(
-                    labelText: "username",
-                    labelStyle: GoogleFonts.zillaSlab(
-                      fontStyle: FontStyle.normal,
-                      color: Colors.black45
-                    ),
-                    border: const OutlineInputBorder(),
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black, width: 2),
-                    ),
-                  ),
-                ),
-              
+              InputKindle(label:'email', obscureText: false, inputController: _inputUsernameController),
               //espacio entre inputs
               const SizedBox(height: 10),
               //aca va el password
-              TextField(
-                  obscureText: true,
-                  controller: _inputPassController,
-                  style: GoogleFonts.zillaSlab(
-                    textStyle: Theme.of(context).textTheme.displayLarge,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.black87
-                  ),
-                  cursorColor: Colors.black54,
-                  decoration: InputDecoration(
-                    labelText: "password",
-                    labelStyle: GoogleFonts.zillaSlab(
-                      fontStyle: FontStyle.normal,
-                      color: Colors.black45
-                    ),
-                    border: const OutlineInputBorder(),
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black, width: 2),
-                    ),
-                  ),
-                ),
+              InputKindle(label:'password', obscureText: true, inputController: _inputPassController),
               //aca va el login button
               ElevatedButton(onPressed: (){
                 print(_inputUsernameController.text);
@@ -93,20 +48,22 @@ class LoginScreen extends StatelessWidget {
 }
 
 class InputKindle extends StatelessWidget {
-  final String text;
-  final bool offuscate;
-  
+  final TextEditingController inputController;
+  final String label;
+  final bool obscureText;
+
   const InputKindle({
     super.key,
-    required this.text,
-    required this.offuscate,
-    });
-
+    required this.obscureText,
+    required this.label,
+    required this.inputController
+  })
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      obscureText: offuscate,
+      obscureText: obscureText,
+      controller: inputController,
       style: GoogleFonts.zillaSlab(
         textStyle: Theme.of(context).textTheme.displayLarge,
         fontSize: 16,
@@ -116,7 +73,7 @@ class InputKindle extends StatelessWidget {
       ),
       cursorColor: Colors.black54,
       decoration: InputDecoration(
-        labelText: text,
+        labelText: label,
         labelStyle: GoogleFonts.zillaSlab(
           fontStyle: FontStyle.normal,
           color: Colors.black45

@@ -1,6 +1,7 @@
-import { TextField, Box, Button, Container, Link, Typography } from "@mui/material";
+import { TextField, Box, Button, Container, Typography, Link } from "@mui/material";
 import "./Modals.css";
 import { ModalNames } from "../LoginLayout.tsx";
+import { Link as RouterLink } from "react-router-dom";
 
 interface LoginModalSelector {
   selectorCallback: (modalName: ModalNames["modalName"]) => void;
@@ -33,9 +34,11 @@ function LoginModal({ selectorCallback }: LoginModalSelector) {
           variant="outlined"
         />
         <Container className="FormButtonContainer">
-          <Button variant="contained" type="submit">
-            Login
-          </Button>
+          <RouterLink to={"/main"}>
+            <Button variant="contained" type="submit">
+              Login
+            </Button>
+          </RouterLink>
         </Container>
       </Box>
       <Container className="bottomOptionsContainer">

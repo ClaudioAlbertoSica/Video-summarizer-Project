@@ -1,5 +1,4 @@
 import { TextField, Box, Button, Container, Typography, Link } from "@mui/material";
-import { TextField, Box, Button, Container, Typography, Link } from "@mui/material";
 import "./Modals.css";
 import { ModalNames } from "../LoginLayout.tsx";
 
@@ -12,7 +11,6 @@ interface LoginModalInterface {
 function LoginModal({ selectorCallback, setLoginBoolean }: LoginModalInterface) {
   const handleLoginClick = () => {
     setLoginBoolean(true);
-    console.log("hola!!!");
   };
 
   return (

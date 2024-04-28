@@ -1,7 +1,8 @@
-import { TextField, Box, Button, Container, Typography, Link } from "@mui/material";
+import { TextField, Box, Button, Container, Typography, Link, Alert } from "@mui/material";
 import "./Modals.css";
 import { ModalNames } from "../LoginLayout.tsx";
 import server from "../../Services/serverCall.ts";
+import { FormEvent, useRef, useState } from "react";
 
 // Link as RouterLink,
 interface LoginModalInterface {
@@ -10,46 +11,55 @@ interface LoginModalInterface {
 }
 
 function LoginModal({ selectorCallback, setLoginBoolean }: LoginModalInterface) {
-  const handleLoginClick = async () => {
+  const formRef = useRef<HTMLFormElement>();
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const alertMessage: string = "Acceso denegado: por favor revise su usario y contraseña";
+
+  const handleSumbit = async (event: FormEvent) => {
+    event.preventDefault();
+    const formData = new FormData(formRef?.current);
+    const submittedEmail = formData?.get("yourEmail");
+    const submittedPassword = formData?.get("yourPassword");
     await server
-      .post("/login", { userName: "xaxaxax", passwd: "p3p3" })
-      .then((res) => {
-        console.log("Estoy aquí!!");
-        console.log(res);
+      .post("/login", { userName: submittedEmail, passwd: submittedPassword })
+      .then(() => {
         setLoginBoolean(true);
       })
       .catch(() => {
-        console.log("ERRROOOOOOOOOR!!");
+        setShowAlert(true);
       });
   };
 
   return (
     <Container className="ExternalLoginContainer">
-      <Box className="FormBox" component="form">
+      <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>
         <Typography variant="h3" textAlign="center" gutterBottom>
           Ingresar
         </Typography>
         <Typography variant="subtitle1" textAlign="center" gutterBottom>
           Por favor, ingrese su email y su contraseña
         </Typography>
+        {showAlert && <Alert severity="warning"> {alertMessage} </Alert>}
         <TextField
           className="FormInputs"
-          id="outlined-search"
+          id="mail"
           name="yourEmail"
           label="Ingrese su e-mail"
-          type="input"
+          type="email"
           variant="outlined"
+          required
         />
         <TextField
           className="FormInputs"
-          id="outlined-search"
+          id="pass"
           name="yourPassword"
           label="Ingrese su Password"
-          type="input"
+          type="password"
           variant="outlined"
+          required
         />
         <Container className="FormButtonContainer">
-          <Button variant="contained" type="submit" onClick={handleLoginClick}>
+          <Button variant="contained" type="submit">
             Login
           </Button>
         </Container>
@@ -57,11 +67,15 @@ function LoginModal({ selectorCallback, setLoginBoolean }: LoginModalInterface) 
       <Container className="bottomOptionsContainer">
         <Typography variant="caption" display="block" gutterBottom>
           ¿No tiene cuenta? &nbsp;
-          <Link onClick={() => selectorCallback("CreateAccountModal")}>Crear Una</Link>
+          <Link onClick={() => selectorCallback("CreateAccountModal")} underline="hover">
+            Crear Una
+          </Link>
         </Typography>
         <Typography variant="caption" display="block" gutterBottom>
           ¿Olvidó su contraseña? &nbsp;
-          <Link onClick={() => selectorCallback("PasswordResetModal")}>Recuperarla</Link>
+          <Link onClick={() => selectorCallback("PasswordResetModal")} underline="hover">
+            Recuperarla
+          </Link>
         </Typography>
       </Container>
     </Container>

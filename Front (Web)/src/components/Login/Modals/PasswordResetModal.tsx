@@ -21,8 +21,9 @@ function PasswordResetModal({ selectorCallback }: LoginModalSelector) {
           id="outlined-search"
           name="yourEmail"
           label="Ingrese su e-mail"
-          type="input"
+          type="password"
           variant="outlined"
+          required
         />
         <Container className="FormButtonContainer">
           <Button variant="contained" type="submit">
@@ -33,11 +34,15 @@ function PasswordResetModal({ selectorCallback }: LoginModalSelector) {
       <Container className="bottomOptionsContainer">
         <Typography variant="caption" display="block" gutterBottom>
           ¿Ya posee una cuenta? &nbsp;
-          <Link onClick={() => selectorCallback("LoginModal")}>Ingresar</Link>
+          <Link onClick={() => selectorCallback("LoginModal")} underline="hover">
+            Ingresar
+          </Link>
         </Typography>
         <Typography variant="caption" display="block" gutterBottom>
           ¿No tiene cuenta? &nbsp;
-          <Link onClick={() => selectorCallback("CreateAccountModal")}>Crear Una</Link>
+          <Link onClick={() => selectorCallback("CreateAccountModal")} underline="hover">
+            Crear Una
+          </Link>
         </Typography>
       </Container>
     </Container>

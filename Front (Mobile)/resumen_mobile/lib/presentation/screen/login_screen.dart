@@ -1,6 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import '../uicoreStyles/uicore_input_style.dart';
 import '../uicoreStyles/uicore_title_style.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatelessWidget {
   static const String name = 'LoginScreen';
@@ -16,6 +21,13 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
+      extendBodyBehindAppBar: true,
+      appBar:
+      AppBar(
+        title: const TitleStyle(text:'Kindle'),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+      ),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -28,11 +40,6 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              //Texto introductorio
-              const Padding(
-                padding: EdgeInsets.all(50.0),
-                child: TitleStyle(text:'Kindle'),
-              ),
               //input para usuario
               InputKindle(label:'email', obscureText: false, inputController: _inputUsernameController),
               //espacio entre inputs
@@ -46,12 +53,13 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () {
                   print(_inputUsernameController.text);
                   print(_inputPassController.text);
+                  context.pushNamed(HomeScreen.name);
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
                   elevation: MaterialStateProperty.all<double>(20), // Ajusta la elevación para la sombra exterior
-                  overlayColor: MaterialStateProperty.all<Color>(Color.fromARGB(0, 3, 3, 3)), // Elimina el color de superposición para un efecto más suave
-                  shadowColor: MaterialStateProperty.all<Color>(Color.fromARGB(177, 3, 3, 3).withOpacity(0.4)), // Color de la sombra
+                  overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(0, 3, 3, 3)), // Elimina el color de superposición para un efecto más suave
+                  shadowColor: MaterialStateProperty.all<Color>(const Color.fromARGB(177, 3, 3, 3).withOpacity(0.4)), // Color de la sombra
                   
                 ),
                 child: const TitleStyle(
@@ -64,4 +72,35 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
+Future<bool> sendLoginData(String username, String password) async {
+  bool loginOk = false;
+  final url = Uri.parse('http://localhost:8080/api/login'); // Reemplaza con la URL de tu servidor Node.js
+  final response = await http.post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'username': username,
+      'password': password,
+    }),
+  );
+  //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
+  if (response.statusCode == 200) {
+    // Si la solicitud es exitosa, imprime la respuesta del servidor
+    print('Respuesta del servidor: ${response.body}');
+
+    loginOk = true;
+    
+    // Aquí puedes manejar la respuesta del servidor como desees
+    // Por ejemplo, puedes convertir la respuesta JSON en un objeto Dart
+    //final Map<String, dynamic> userData = jsonDecode(response.body);
+    // Y usar los datos del usuario en tu aplicación
+  } //else {
+    // Si la solicitud no es exitosa, imprime el mensaje de error
+    //print('Error al enviar los datos de inicio de sesión: ${response.statusCode}');
+    //}
+    return loginOk; 
+}
 }

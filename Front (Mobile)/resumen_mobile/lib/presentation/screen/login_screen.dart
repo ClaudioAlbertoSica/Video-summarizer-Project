@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../uicoreStyles/uicore_input_style.dart';
+import '../uicoreStyles/uicore_title_style.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String name = 'LoginScreen';
@@ -18,7 +19,7 @@ class LoginScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-          image: AssetImage("assets/images/backgroundLogin.jpg"),
+          image: AssetImage("assets/images/5.jpeg"),
           fit: BoxFit.cover,
           ),
         ),
@@ -27,60 +28,38 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              //aca va el usuario
+              //Texto introductorio
+              const Padding(
+                padding: EdgeInsets.all(50.0),
+                child: TitleStyle(text:'Kindle'),
+              ),
+              //input para usuario
               InputKindle(label:'email', obscureText: false, inputController: _inputUsernameController),
               //espacio entre inputs
               const SizedBox(height: 10),
-              //aca va el password
+              //input para password
               InputKindle(label:'password', obscureText: true, inputController: _inputPassController),
+               //Agrego espacio al boton
+              const SizedBox(height: 10),
               //aca va el login button
-              ElevatedButton(onPressed: (){
-                print(_inputUsernameController.text);
-                print(_inputPassController.text);
-              }, child: const Text('Login')
+              ElevatedButton(
+                onPressed: () {
+                  print(_inputUsernameController.text);
+                  print(_inputPassController.text);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
+                  elevation: MaterialStateProperty.all<double>(20), // Ajusta la elevación para la sombra exterior
+                  overlayColor: MaterialStateProperty.all<Color>(Color.fromARGB(0, 3, 3, 3)), // Elimina el color de superposición para un efecto más suave
+                  shadowColor: MaterialStateProperty.all<Color>(Color.fromARGB(177, 3, 3, 3).withOpacity(0.4)), // Color de la sombra
+                  
+                ),
+                child: const TitleStyle(
+                  text: 'Login',
+                ),
               )
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class InputKindle extends StatelessWidget {
-  final TextEditingController inputController;
-  final String label;
-  final bool obscureText;
-
-  const InputKindle({
-    super.key,
-    required this.obscureText,
-    required this.label,
-    required this.inputController
-  })
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      obscureText: obscureText,
-      controller: inputController,
-      style: GoogleFonts.zillaSlab(
-        textStyle: Theme.of(context).textTheme.displayLarge,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        fontStyle: FontStyle.normal,
-        color: Colors.black87
-      ),
-      cursorColor: Colors.black54,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: GoogleFonts.zillaSlab(
-          fontStyle: FontStyle.normal,
-          color: Colors.black45
-        ),
-        border: const OutlineInputBorder(),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black, width: 2),
         ),
       ),
     );

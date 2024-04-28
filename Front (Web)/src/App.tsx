@@ -1,14 +1,10 @@
 import GridLayout from "./components/GridLayout";
-import { Route, Routes } from "react-router-dom";
 import LoginLayout from "./components/Login/LoginLayout";
+import { useState } from "react";
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<LoginLayout />} />
-      <Route path="/main" element={<GridLayout />} />
-    </Routes>
-  );
+  const [isLogedIn, setIsLogedIn] = useState(false);
+  return <>{isLogedIn ? <GridLayout /> : <LoginLayout setStatus={setIsLogedIn} />};</>;
 }
 
 export default App;

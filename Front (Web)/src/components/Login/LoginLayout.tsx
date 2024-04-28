@@ -9,8 +9,12 @@ export interface ModalNames {
   modalName?: "LoginModal" | "CreateAccountModal" | "PasswordResetModal";
 }
 
-function LoginLayout({ modalName = "LoginModal" }: ModalNames) {
-  const [selectedModalName, setmodalName] = useState<ModalNames["modalName"]>(modalName);
+export interface SetLoginStatus {
+  setStatus: (loginStatus: boolean) => void;
+}
+
+function LoginLayout({ setStatus }: SetLoginStatus) {
+  const [selectedModalName, setmodalName] = useState<ModalNames["modalName"]>("LoginModal");
 
   const handleModalChange = (modalName: ModalNames["modalName"]) => {
     setmodalName(modalName);
@@ -18,7 +22,7 @@ function LoginLayout({ modalName = "LoginModal" }: ModalNames) {
 
   return (
     <Container className="ExternalLoginLayoutContainer">
-      {selectedModalName === "LoginModal" && <LoginModal selectorCallback={handleModalChange} />}
+      {selectedModalName === "LoginModal" && <LoginModal selectorCallback={handleModalChange} setLoginBoolean={setStatus} />}
       {selectedModalName === "CreateAccountModal" && <CreateAccountModal selectorCallback={handleModalChange} />}
       {selectedModalName === "PasswordResetModal" && <PasswordResetModal selectorCallback={handleModalChange} />}
     </Container>

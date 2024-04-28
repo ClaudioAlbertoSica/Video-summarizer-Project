@@ -143,6 +143,40 @@ class ModelMongoDB {
         }
     }
 
+    actualizarResumen = async (id, idres, nuevoResumen) => {
+        try {
+            if (id) {
+                const usuarioEncontrado = await CnxMongoDB.db.collection('usuarios').findOne({id: id});
+                if (usuarioEncontrado && idres) {
+                    const resumenesAux = usuarioEncontrado.inventario;
+                    const index = resumenesAux.findIndex(resumen => resumen.idres === idres);
+                    if (index !== -1) {
+                        const resumenActualizado = {...resumenesAux[index], ...nuevoResumen};
+                        await CnxMongoDB.db.collection('usuarios').updateOne(
+                            { id: id, "inventario.idres": idres },
+                            { $set: { "inventario.$": resumenActualizado } }
+                        );
+                        return nuevoResumen; 
+                    } else {
+                        console.log('No existe resumen con ese ID');
+                        return null; 
+                    }
+                } else {
+                    console.log('No hay ID de usuario especificado o ID de resumen');
+                    return null; 
+                }
+            } else {
+                console.log('No hay ID de usuario especificado');
+                return null; 
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            throw new Error('Conexión con la BD no establecida o error al actualizar el resumen');
+        }
+    }
+
+
+
 }
 
 

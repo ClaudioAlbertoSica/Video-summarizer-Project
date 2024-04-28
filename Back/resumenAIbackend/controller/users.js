@@ -85,6 +85,29 @@ class Controlador {
         }
     }
 
+    actualizarResumen = async (req, res) => {
+        try {
+            const { id, idres } = req.params
+            const resumenNuevo = req.body
+            const resumenActualizado = await this.servicio.actualizarResumen(id, idres, resumenNuevo)
+            res.json(resumenActualizado)
+        }
+        catch(error) {
+            res.status(500).json({error:error.message})   
+        }
+    }
+
+    crearResumenVideo = async (req, res) => {
+        try {
+            const { id } = req.params
+            const url = req.body
+            const resumenCreado = this.model.crearResumenVideo(id, url)
+            res.json(resumenCreado)
+        } catch (error) {
+            res.status(500).json({error:error.message})  
+        }
+    }
+
 }
 
 export default Controlador

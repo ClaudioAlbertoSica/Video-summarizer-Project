@@ -1,4 +1,6 @@
 import Factory from '../models/DAO/modelFactory.js'
+import { exec } from 'child_process'
+
 
 class Servicio {
     constructor (persistencia) {
@@ -7,6 +9,10 @@ class Servicio {
 
     obtenerUsuarios = async (id) => {
         try {
+
+            await this.runPython()
+
+
             const usuarios = await this.model.obtenerUsuarios(id)
             return usuarios
         }
@@ -92,6 +98,74 @@ class Servicio {
             return resumenEliminado
         }
         catch(error) {
+            console.log(error.message)   
+        }
+    }
+
+    actualizarResumen = async (id, idres, resumenNuevo) => {
+        try {
+            if (id && idres) {
+                if (resumenNuevo) {
+                    const resumenActualizado = await this.model.actualizarResumen(id, idres, resumenNuevo)
+                    return resumenActualizado
+                } else {
+                    console.log('resumen nuevo incorrecto')    
+                }
+            } else {
+                console.log('faltan datos para actualizar su resumen')
+            }
+        } catch (error) {
+            console.log(error.message)   
+        }
+    }
+
+    runPython = async () => {
+        const pythonScriptPath = './serviciosPython/scriptTEST1.py'; 
+        const command = `python ${pythonScriptPath}`;
+        
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error executing Python script: ${error}`);
+                return;
+            }
+            // Output from Python script
+            console.log(`Output: ${stdout}`);
+            console.error(`Errors: ${stderr}`);
+        });
+    }
+
+
+    crearResumenVideo = async (id, url) => {
+        try {
+           if (1 == 1) {
+                //0 TEST
+                runPython = async () => {
+                    const pythonScriptPath = '../serviciosPython/scriptTEST1.py'; 
+                    const command = `python ${pythonScriptPath}`;
+                    
+                    exec(command, (error, stdout, stderr) => {
+                        if (error) {
+                            console.error(`Error executing Python script: ${error}`);
+                            return;
+                        }
+                        // Output from Python script
+                        console.log(`Output: ${stdout}`);
+                        console.error(`Errors: ${stderr}`);
+                    });
+                }
+                
+            
+                //1 SACAR MP3 DEL VIDEO DE YOUTUBE  
+                //2 SACAR TRANSCRIPT DEL MP3
+
+                //3 DESCARGAR VIDEO - SACAR IMAGENES 
+
+                
+                //...
+           } else {
+            console.log('error de ingreso de datos')
+           }
+        } catch (error) {
             console.log(error.message)   
         }
     }

@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import '../uicoreStyles/uicore_app_title_style.dart';
 import '../uicoreStyles/uicore_input_style.dart';
@@ -12,25 +11,17 @@ import '../uicoreStyles/uicore_title_style.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class LoginScreen extends StatelessWidget {
-  static const String name = 'LoginScreen';
+class CreateAccountScreen extends StatelessWidget {
+  static const String name = 'CreateAccountScreen';
   //Aca creo que iria un atributo para guardar lo del form o input.
   final TextEditingController _inputUsernameController = TextEditingController();
   final TextEditingController _inputPassController = TextEditingController();
-  final List<String> imageNames = ['1.jpeg'];
+  final TextEditingController _inputRepeatPassController = TextEditingController();
 
-  // Método para obtener un nombre de imagen aleatorio
-  String getRandomImage() {
-    Random random = Random(); // Instancia de la clase Random
-    int index = random.nextInt(imageNames.length); // Genera un número aleatorio
-    return imageNames[index]; // Retorna el nombre de la imagen en el índice aleatorio
-  }
-
-  LoginScreen({super.key});
+  CreateAccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String randomImage =  getRandomImage();
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
@@ -41,9 +32,9 @@ class LoginScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
-          image: AssetImage('assets/images/$randomImage'),
+          image: AssetImage('assets/images/3.jpeg'),
           fit: BoxFit.cover,
           ),
         ),
@@ -58,14 +49,25 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 10),
               //input para password
               InputKindle(label:'password', obscureText: true, inputController: _inputPassController),
-               //Agrego espacio al boton
+              //espacio entre inputs
+              const SizedBox(height: 10),
+              //input para repeat your password
+              InputKindle(label:'repeat your password', obscureText: true, inputController: _inputRepeatPassController),
+              //Agrego espacio al boton
               const SizedBox(height: 10),
               //aca va el login button
               ElevatedButton(
                 onPressed: () {
                   print(_inputUsernameController.text);
                   print(_inputPassController.text);
-                  context.goNamed(HomeScreen.name);
+                  print(_inputRepeatPassController.text);
+
+                  if (_inputRepeatPassController.text == _inputPassController.text) {
+                    //Send al back para ver si el email ya esta creado
+                    print('Logeame capo');
+                    context.goNamed(HomeScreen.name);
+                  }
+
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
@@ -77,25 +79,6 @@ class LoginScreen extends StatelessWidget {
                 child: const TitleStyle(
                   text: 'Login',
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: (){context.pushNamed(CreateAccountScreen.name);}, 
-                    child: const TitleStyle(
-                      text: 'Create account',
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: (){
-                      _showDialogForgotPass(context);
-                    }, 
-                    child: const TitleStyle(
-                      text: 'Forgot your pass?',
-                    ),
-                  ),
-                ]
               ),
             ],
           ),
@@ -134,38 +117,4 @@ class LoginScreen extends StatelessWidget {
       //}
       return loginOk; 
   }
-    void _showDialogForgotPass(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Password Recovery'),
-          content: const Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Please enter your email address to recover your password:'),
-              TextField(
-                decoration: InputDecoration(hintText: 'Email'),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
-              },
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Acción para el botón OK
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-  
 }

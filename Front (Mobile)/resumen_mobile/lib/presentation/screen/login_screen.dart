@@ -1,9 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
+import '../uicoreStyles/uicore_app_title_style.dart';
 import '../uicoreStyles/uicore_input_style.dart';
-import '../uicoreStyles/uicore_primary_button_style.dart';
 import '../uicoreStyles/uicore_title_style.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -13,24 +16,33 @@ class LoginScreen extends StatelessWidget {
   //Aca creo que iria un atributo para guardar lo del form o input.
   final TextEditingController _inputUsernameController = TextEditingController();
   final TextEditingController _inputPassController = TextEditingController();
+  final List<String> imageNames = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg"];
+
+  // Método para obtener un nombre de imagen aleatorio
+  String getRandomImage() {
+    Random random = Random(); // Instancia de la clase Random
+    int index = random.nextInt(imageNames.length); // Genera un número aleatorio
+    return imageNames[index]; // Retorna el nombre de la imagen en el índice aleatorio
+  }
 
   LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String randomImage =  getRandomImage();
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
       appBar:
       AppBar(
-        title: const TitleStyle(text:'Kindle'),
+        title: const AppTitleStyle(text:'David Og', color: Colors.white),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-          image: AssetImage("assets/images/5.jpeg"),
+          image: AssetImage("assets/images/$randomImage"),
           fit: BoxFit.cover,
           ),
         ),
@@ -48,21 +60,28 @@ class LoginScreen extends StatelessWidget {
                //Agrego espacio al boton
               const SizedBox(height: 10),
               //aca va el login button
-              PrimaryButton(
-                caller: onClickButtonLogin(context),
-                text: 'Login',
+              ElevatedButton(
+                onPressed: () {
+                  print(_inputUsernameController.text);
+                  print(_inputPassController.text);
+                  context.goNamed(HomeScreen.name);
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
+                  elevation: MaterialStateProperty.all<double>(20), // Ajusta la elevación para la sombra exterior
+                  overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(0, 3, 3, 3)), // Elimina el color de superposición para un efecto más suave
+                  shadowColor: MaterialStateProperty.all<Color>(const Color.fromARGB(177, 3, 3, 3).withOpacity(0.4)), // Color de la sombra
+                  
+                ),
+                child: const TitleStyle(
+                  text: 'Login',
+                ),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  onClickButtonLogin(context) {
-    print(_inputUsernameController.text);
-    print(_inputPassController.text);
-    context.goNamed(HomeScreen.name);
   }
 
   Future<bool> sendLoginData(String username, String password) async {

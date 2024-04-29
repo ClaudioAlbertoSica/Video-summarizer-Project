@@ -62,10 +62,15 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 10),
               //aca va el login button
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   print(_inputUsernameController.text);
-                  print(_inputPassController.text);
-                  context.goNamed(HomeScreen.name);
+                  bool login = await sendLoginData(_inputUsernameController.text,_inputPassController.text);
+                  if(login){
+                    context.goNamed(HomeScreen.name);
+                  }else{
+                    print('No pudimos loguearnos.');
+                  }
+                                  
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),

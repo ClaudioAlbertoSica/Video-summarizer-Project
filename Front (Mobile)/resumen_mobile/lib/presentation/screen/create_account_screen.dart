@@ -34,7 +34,7 @@ class CreateAccountScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-          image: AssetImage('assets/images/3.jpeg'),
+          image: AssetImage('assets/images/1.jpeg'),
           fit: BoxFit.cover,
           ),
         ),

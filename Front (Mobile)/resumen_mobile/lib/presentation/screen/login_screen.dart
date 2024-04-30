@@ -63,7 +63,6 @@ class LoginScreen extends StatelessWidget {
               //aca va el login button
               ElevatedButton(
                 onPressed: () async {
-                  print(_inputUsernameController.text);
                   bool login = await sendLoginData(_inputUsernameController.text,_inputPassController.text);
                   if(login){
                     context.goNamed(HomeScreen.name);
@@ -111,15 +110,16 @@ class LoginScreen extends StatelessWidget {
 
   Future<bool> sendLoginData(String username, String password) async {
     bool loginOk = false;
-    final url = Uri.parse('http://localhost:8080/api/login'); // Reemplaza con la URL de tu servidor Node.js
+    // servidor Node.js
+    final url = Uri.parse('http://localhost:8080/api/login');
     final response = await http.post(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'username': username,
-        'password': password,
+      body: jsonEncode(<String, String> {
+        'userName': username,
+        'passwd': password,
       }),
     );
     //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
@@ -133,10 +133,11 @@ class LoginScreen extends StatelessWidget {
       // Por ejemplo, puedes convertir la respuesta JSON en un objeto Dart
       //final Map<String, dynamic> userData = jsonDecode(response.body);
       // Y usar los datos del usuario en tu aplicación
-    } //else {
+    } else {
+      print(json.decode(response.body));
       // Si la solicitud no es exitosa, imprime el mensaje de error
       //print('Error al enviar los datos de inicio de sesión: ${response.statusCode}');
-      //}
+    }
       return loginOk; 
   }
     void _showDialogForgotPass(BuildContext context) {

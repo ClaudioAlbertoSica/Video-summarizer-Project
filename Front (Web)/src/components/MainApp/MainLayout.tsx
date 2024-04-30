@@ -2,11 +2,13 @@ import Grid from "@mui/material/Grid";
 import "./MainLayout.css";
 import { Container } from "@mui/material";
 import SidePanel from "./SidePanel/SidePanel.tsx";
+import StarCounter from "./StarCounter/StarCounter.tsx";
 
 function GridLayout() {
   /*Please notice that <Grid> component doesn't allow RowSpan, so 
   you will find a <Container> with another <Container> whithin as sidepanel 
   and a <Grid> for the Header, Central, and Footer Panels*/
+
   return (
     <Container className="ExternalContainer">
       <Container className="SidePanelContainer">
@@ -19,6 +21,7 @@ function GridLayout() {
         </Grid>
         <Grid className="CentralPanel" item xs={12}>
           <h1>CentralPanel</h1>
+          <StarCounter starsToShow={5} couterSize="large" />
         </Grid>
         <Grid className="FooterGrid" item xs={12}>
           <h1>Footer</h1>

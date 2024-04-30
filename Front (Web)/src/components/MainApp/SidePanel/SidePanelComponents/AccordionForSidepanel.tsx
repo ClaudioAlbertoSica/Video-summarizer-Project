@@ -23,7 +23,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
   <MuiAccordionSummary expandIcon={<KeyboardArrowDownIcon sx={{ fontSize: "0.9rem" }} />} {...props} />
 ))(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "rgba(255, 255, 255, .05)" : "rgba(0, 0, 0, .03)",
-  flexDirection: "row-reverse",
+  flexDirection: "row",
   "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
     transform: "rotate(90deg)",
   },
@@ -52,9 +52,9 @@ export default function CustomizedAccordions() {
         </AccordionSummary>
         <AccordionDetails>
           <Stack direction={"column"}>
-            <Button size="small">Small</Button>
-            <Button size="small">Small</Button>
-            <Button size="small">Small</Button>
+            <Button size="small">Datos de la cuenta</Button>
+            <Button size="small">Cambiar Contraseña</Button>
+            <Button size="small">Log Out</Button>
           </Stack>
         </AccordionDetails>
       </Accordion>
@@ -64,9 +64,9 @@ export default function CustomizedAccordions() {
         </AccordionSummary>
         <AccordionDetails>
           <Stack direction={"column"}>
-            <Button size="small">Small</Button>
-            <Button size="small">Small</Button>
-            <Button size="small">Small</Button>
+            <Button size="small">Dark Mode</Button>
+            <Button size="small">F.A.Q.</Button>
+            <Button size="small">Ayuda!</Button>
           </Stack>
         </AccordionDetails>
       </Accordion>

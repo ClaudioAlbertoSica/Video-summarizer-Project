@@ -1,6 +1,7 @@
 import Grid from "@mui/material/Grid";
 import "./MainLayout.css";
 import { Container } from "@mui/material";
+import SidePanel from "./SidePanel/SidePanel.tsx";
 
 function GridLayout() {
   /*Please notice that <Grid> component doesn't allow RowSpan, so 
@@ -9,7 +10,7 @@ function GridLayout() {
   return (
     <Container className="ExternalContainer">
       <Container className="SidePanelContainer">
-        <h1>Side Panel</h1>
+        <SidePanel />
       </Container>
 
       <Grid className="ContainerGrid" container spacing={0}>

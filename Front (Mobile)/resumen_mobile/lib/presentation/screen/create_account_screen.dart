@@ -30,6 +30,7 @@ class CreateAccountScreen extends StatelessWidget {
         title: const AppTitleStyle(text:'David Og', color: Colors.white),
         centerTitle: true,
         backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color:Colors.orange[700]),
       ),
       body: Container(
         decoration: const BoxDecoration(

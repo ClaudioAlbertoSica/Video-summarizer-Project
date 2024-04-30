@@ -58,9 +58,8 @@ class Controlador {
             const userLogueado = await this.servicio.loguearse(userName, passwd)
             res.json(userLogueado)
         } catch (error) {
-            res.status(500).json({error:error.message})     
+            res.status(500).json({error:error.message})
         }
-
     }
 
     obtenerResumenes = async (req, res) => {
@@ -69,10 +68,8 @@ class Controlador {
             const resumenes = await this.servicio.obtenerResumenes(id,idres)
             res.json(resumenes)
         } catch (error) {
-            res.status(500).json({error:error.message})   
+            res.status(500).json({error:error.message})
         }
-        
-
     }
 
     borrarResumen = async (req, res) => {

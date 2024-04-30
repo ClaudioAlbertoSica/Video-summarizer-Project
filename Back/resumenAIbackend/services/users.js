@@ -53,30 +53,28 @@ class Servicio {
     }
 
     loguearse = async (userName, passwd) => {
-        console.log(userName)
-        console.log(passwd)
         try {
-            let usuario = {}
+            let usuario = {};
             if (userName) {
                 usuario = await this.model.obtenerUserPorNombre(userName)
                 if (Object.keys(usuario).length === 0) {
                     console.log('usuario no encontrado')
-                    return
+                    throw new Error('Usuario incorrecto');
                 } 
                 if (passwd !== undefined && usuario.passwd == passwd) {
                     console.log('LOGIN EXITOSO')
                     //comparamos con el encontrado
                 } else {
                     console.log('REVISAR PASSWORD')
+                    throw new Error('password incorrecto');
                 }
             } else {
-                console.log('formato de usuario INCORRECTO')
+                throw new Error('formato de usuario INCORRECTO');
             }
             return usuario
         } catch (error) {
-            
+            throw error;
         }
-
     }
 
 

@@ -18,6 +18,7 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _inputUsernameController = TextEditingController();
   final TextEditingController _inputPassController = TextEditingController();
   final List<String> imageNames = ['1.jpeg'];
+  String errorMessage = '';
 
   // Método para obtener un nombre de imagen aleatorio
   String getRandomImage() {
@@ -63,12 +64,11 @@ class LoginScreen extends StatelessWidget {
               //aca va el login button
               ElevatedButton(
                 onPressed: () async {
-                  print(_inputUsernameController.text);
                   bool login = await sendLoginData(_inputUsernameController.text,_inputPassController.text);
-                  if(login){
+                  if(login) {
                     context.goNamed(HomeScreen.name);
-                  }else{
-                    print('No pudimos loguearnos.');
+                  } else {
+                    _showErrorMessage(context);
                   }
                                   
                 },
@@ -111,15 +111,16 @@ class LoginScreen extends StatelessWidget {
 
   Future<bool> sendLoginData(String username, String password) async {
     bool loginOk = false;
-    final url = Uri.parse('http://localhost:8080/api/login'); // Reemplaza con la URL de tu servidor Node.js
+    // servidor Node.js
+    final url = Uri.parse('http://localhost:8080/api/login');
     final response = await http.post(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'username': username,
-        'password': password,
+      body: jsonEncode(<String, String> {
+        'userName': username,
+        'passwd': password,
       }),
     );
     //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
@@ -128,15 +129,9 @@ class LoginScreen extends StatelessWidget {
       print('Respuesta del servidor: ${response.body}');
 
       loginOk = true;
-      
-      // Aquí puedes manejar la respuesta del servidor como desees
-      // Por ejemplo, puedes convertir la respuesta JSON en un objeto Dart
-      //final Map<String, dynamic> userData = jsonDecode(response.body);
-      // Y usar los datos del usuario en tu aplicación
-    } //else {
-      // Si la solicitud no es exitosa, imprime el mensaje de error
-      //print('Error al enviar los datos de inicio de sesión: ${response.statusCode}');
-      //}
+    } else {
+      errorMessage = json.decode(response.body)['error'];
+    }
       return loginOk; 
   }
     void _showDialogForgotPass(BuildContext context) {
@@ -173,4 +168,12 @@ class LoginScreen extends StatelessWidget {
     );
   }
   
+  void _showErrorMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.orange[700],
+      ),
+    );
+  }
 }

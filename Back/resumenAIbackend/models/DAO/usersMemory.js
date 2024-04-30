@@ -79,19 +79,21 @@ class ModelMemory {
     }
 
 
-
+    obtenerUserPorNombre = async (userName) => {
+        try {
+            let usuarioEncontrado = {};
+            const index = this.usuarios.findIndex(usuario => usuario.userName === userName);
+            if (index !== -1) {
+                usuarioEncontrado = this.usuarios[index];
+            }
+            return usuarioEncontrado;
+        }
+        catch {
+            throw new Error('conexion con la BD no establecida - LLAMAR A CLAUDIO');
+        }
+    }
 
     
 }
 
 export default ModelMemory
-
-
-
-
-
-
-
-
-
-

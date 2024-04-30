@@ -18,6 +18,7 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _inputUsernameController = TextEditingController();
   final TextEditingController _inputPassController = TextEditingController();
   final List<String> imageNames = ['1.jpeg'];
+  String errorMessage = '';
 
   // Método para obtener un nombre de imagen aleatorio
   String getRandomImage() {
@@ -64,10 +65,10 @@ class LoginScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   bool login = await sendLoginData(_inputUsernameController.text,_inputPassController.text);
-                  if(login){
+                  if(login) {
                     context.goNamed(HomeScreen.name);
-                  }else{
-                    print('No pudimos loguearnos.');
+                  } else {
+                    _showErrorMessage(context);
                   }
                                   
                 },
@@ -128,15 +129,8 @@ class LoginScreen extends StatelessWidget {
       print('Respuesta del servidor: ${response.body}');
 
       loginOk = true;
-      
-      // Aquí puedes manejar la respuesta del servidor como desees
-      // Por ejemplo, puedes convertir la respuesta JSON en un objeto Dart
-      //final Map<String, dynamic> userData = jsonDecode(response.body);
-      // Y usar los datos del usuario en tu aplicación
     } else {
-      print(json.decode(response.body));
-      // Si la solicitud no es exitosa, imprime el mensaje de error
-      //print('Error al enviar los datos de inicio de sesión: ${response.statusCode}');
+      errorMessage = json.decode(response.body)['error'];
     }
       return loginOk; 
   }
@@ -174,4 +168,12 @@ class LoginScreen extends StatelessWidget {
     );
   }
   
+  void _showErrorMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.orange[700],
+      ),
+    );
+  }
 }

@@ -3,32 +3,32 @@ import { List, ListItem, Paper } from "@mui/material";
 import { ListItemObject } from "./04-ListItem.tsx";
 import SummaryListItem from "./04-ListItem.tsx";
 import "./List&Handler.css";
-//import image from "../../../../../assets/Logo.png";
+import image from "../../../../../assets/Logo.png";
 
 function ListForAccordion() {
   const summariesArray: ListItemObject[] = [
     {
       thisItemRating: 3,
-      image: "../../../../../assets/Logo.png",
+      image: image,
       title: "Testtitle 1",
     },
     {
       thisItemRating: 5,
-      image: "../../../../../assets/Logo.png",
+      image: image,
       title: "Testtitle 2",
     },
     {
-      image: "../../../../../assets/Logo.png",
+      image: image,
       title: "Testtitle 3",
     },
     {
       thisItemRating: 0,
-      image: "../../../../../assets/Logo.png",
+      image: image,
       title: "Testtitle 4",
     },
     {
       thisItemRating: 3,
-      image: "../../../../../assets/Logo.png",
+      image: image,
       title: "Testtitle 5",
     },
   ];

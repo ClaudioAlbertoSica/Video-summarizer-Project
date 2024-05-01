@@ -1,0 +1,9 @@
+.MuiPaper-root.ListWrapper{
+    max-height: 60vh;
+    width: 100%;
+    overflow-y: scroll;
+    border-radius: 30px;
+    overflow-x: hidden;
+    height: "100%";
+    width: "100%";
+}

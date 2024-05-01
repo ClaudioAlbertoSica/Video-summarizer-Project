@@ -4,14 +4,15 @@
     flex-wrap: nowrap;
     align-items: center;
     padding: 0px;
-    height: 99.9vh;
+    height: 100%;
     max-width: none;
+    overflow: hidden;
 }
 
 .MuiContainer-root.SidePanelContainer{
     background-color: lightgray;
-    width: 24%;
-    height: 100%;
+    max-width: 24%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;

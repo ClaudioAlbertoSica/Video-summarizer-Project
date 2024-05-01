@@ -6,6 +6,7 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { Button, Stack } from "@mui/material";
+import ListHandler from "./List/01-ListHandler";
 
 const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters elevation={0} square {...props} />)(
   ({ theme }) => ({
@@ -75,11 +76,7 @@ export default function CustomizedAccordions() {
           <Typography>Historial</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-            eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo
-            lobortis eget.
-          </Typography>
+          <ListHandler />
         </AccordionDetails>
       </Accordion>
     </div>

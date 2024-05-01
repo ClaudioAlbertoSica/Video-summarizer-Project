@@ -1,8 +1,9 @@
-import { Avatar, Container, Typography } from "@mui/material";
+import { Avatar, Container, IconButton, Typography } from "@mui/material";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import StarCounter from "../../../StarCounter/StarCounter.tsx";
 import "./ListItem.css";
 
-interface ListItemObject {
+export interface ListItemObject {
   image: string;
   title: string;
   thisItemRating?: number;
@@ -18,6 +19,9 @@ function SummaryListItem({ thisItemRating = 0, image, title }: ListItemObject) {
         </Typography>
         <StarCounter starsToShow={5} couterSize="small" starsToColour={thisItemRating} disabled={false} />
       </Container>
+      <IconButton>
+        <ArrowForwardIosIcon />
+      </IconButton>
     </Container>
   );
 }

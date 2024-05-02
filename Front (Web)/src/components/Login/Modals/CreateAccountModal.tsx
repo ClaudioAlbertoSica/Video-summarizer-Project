@@ -53,9 +53,11 @@ function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
         <Typography variant="subtitle1" textAlign="center" gutterBottom>
           Ingrese su email, su contraseña, vuelva a ingresar esta última para verificarla, y luego haga click en "Crear".
         </Typography>
-        {showAlert && <Alert severity="warning"> {alertMessage} </Alert>}
-        {showDifferentPasswordslAlert && <Alert severity="warning"> {AlertMessagePasswordsAreDifferent} </Alert>}
-        {showConfirmation && <Alert severity="success"> {ConfirmationMessage} </Alert>}
+        <Container className="AlertsContainer">
+          {showAlert && <Alert severity="warning"> {alertMessage} </Alert>}
+          {showDifferentPasswordslAlert && <Alert severity="warning"> {AlertMessagePasswordsAreDifferent} </Alert>}
+          {showConfirmation && <Alert severity="success"> {ConfirmationMessage} </Alert>}
+        </Container>
         <TextField
           className="FormInputs"
           id="mail"

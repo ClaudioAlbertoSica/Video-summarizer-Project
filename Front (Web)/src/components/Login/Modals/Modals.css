@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     max-width: 500px;
-    background-color: lightgray;
+    background-color: rgba(211, 211, 211, 0.90);
     border-radius: 30px;
 }
 
@@ -22,7 +22,7 @@
 .MuiFormControl-root.FormInputs{
     width: 70%;
     margin-top: 30px;
-
+    background-color: lightgray;
 }
 
 .MuiContainer-root.FormButtonContainer{
@@ -35,4 +35,11 @@
 
 .MuiContainer-root.bottomOptionsContainer{
     margin-bottom: 20px;
+}
+
+.MuiContainer-root.AlertsContainer{
+    height: 60px;
+    padding: 0px;
+    min-width: none;
+    margin: 10px;
 }

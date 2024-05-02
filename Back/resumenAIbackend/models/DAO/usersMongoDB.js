@@ -126,7 +126,7 @@ class ModelMongoDB {
                     await CnxMongoDB.db.collection('usuarios').updateOne(
                         { id: id },
                         { $pull: { inventario: { idres:idres } } }
-                      );
+                    );
 
                     return resumenEliminado
                 } else {

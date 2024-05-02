@@ -104,7 +104,20 @@ class Controlador {
             res.status(500).json({error:error.message})  
         }
     }
+    
+    cambiarPass = async (req, res) => {
 
+        try {
+            const { id } = req.params
+            const {passActual, passNueva, passNuevaBis} = req.body
+            const usuarioActualizado = await this.servicio.cambiarPass(id, passActual, passNueva, passNuevaBis)
+            res.json(usuarioActualizado)
+
+        } catch (error) {
+            res.status(500).json({error:error.message})
+        }
+
+    }
 }
 
 export default Controlador

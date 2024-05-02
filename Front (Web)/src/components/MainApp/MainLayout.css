@@ -38,6 +38,12 @@
 .CentralPanel{
     background-color: lightblue;
     height: 86%; 
+    padding: 50px;
+}
+
+.MuiButton-root.CloseButton{
+    margin-top: 50px;
+
 }
 
 .FooterGrid{

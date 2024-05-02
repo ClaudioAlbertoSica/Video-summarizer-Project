@@ -135,7 +135,7 @@ class Servicio {
 
     crearResumenVideo = async (id, url) => {
         try {
-           if (1 == 1) {
+            if (1 == 1) {
                 //0 TEST
                 runPython = async () => {
                     const pythonScriptPath = '../serviciosPython/scriptTEST1.py'; 
@@ -160,15 +160,44 @@ class Servicio {
 
                 
                 //...
-           } else {
+            } else {
             console.log('error de ingreso de datos')
-           }
+            }
         } catch (error) {
             console.log(error.message)   
         }
     }
 
-
+    cambiarPass = async (id, passActual, passNueva, passNuevaBis) => {
+        //try {
+            let usuarioActualizado = {}
+            if(id, passActual, passNueva, passNuevaBis){
+                const usuario = await this.model.obtenerUsuarios(id)
+                if(usuario){
+                    if(usuario.passwd === passActual){
+                        if(passNueva === passNuevaBis){
+                            if(usuario.passwd !== passNueva){
+                                usuarioActualizado = await this.actualizarUsuario(id, {passwd: passNueva})
+                                console.log("La constraseña se actualizó correctamente.")
+                                return usuarioActualizado
+                            }else{
+                                throw new Error('La contraseña nueva no puede ser igual a la actual.');
+                            }
+                        }else{
+                            throw new Error('Las contraseñas nuevas no coinciden.');
+                        }
+                    }else{
+                        throw new Error('La contraseña actual es inválida.');
+                    }
+                }else{
+                    throw new Error('Usuario no encontrado.');
+                }
+            }else{
+                throw new Error('Faltan datos en la solicitud.');
+            }
+        //}catch (error) {
+          //  console.log(error.message) 
+        //}
+    }
 }
-
 export default Servicio

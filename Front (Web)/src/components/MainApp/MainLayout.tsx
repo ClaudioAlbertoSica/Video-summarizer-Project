@@ -3,6 +3,7 @@ import "./MainLayout.css";
 import { Button, Container } from "@mui/material";
 import SidePanel from "./SidePanel/SidePanel.tsx";
 import AccountData from "./Views/AccountData.tsx";
+import ChangePassword from "./Views/ChangePassword.tsx";
 import { Dispatch, SetStateAction, createContext, useState } from "react";
 import { ValidViewNames } from "./Views/ImTheActiveView.ts";
 import ImTheActiveView from "./Views/ImTheActiveView.ts";
@@ -39,10 +40,13 @@ function GridLayout() {
           {ImTheActiveView(selectedCentralPanelView, ValidViewNames.AccountData) && (
             <AccountData userID="IDFalsa 123" userName="Nombre@Hola.com" />
           )}
+          {ImTheActiveView(selectedCentralPanelView, ValidViewNames.ChangePassword) && <ChangePassword />}
+
           {selectedCentralPanelView != ValidViewNames.noneSelected && (
             <Button
               className="CloseButton"
-              variant="contained"
+              variant="outlined"
+              color="error"
               onClick={() => setSelectedCentralPanelView(ValidViewNames.noneSelected)}
             >
               Cerrar

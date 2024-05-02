@@ -1,10 +1,18 @@
 import { Button, Stack } from "@mui/material";
+import { ButtonViewContext } from "../../../MainLayout";
+import { ValidViewNames } from "../../../Views/ImTheActiveView";
+import { useContext } from "react";
 
 function NewSummaryButtons() {
+  const setSelectedCentralPanelView = useContext(ButtonViewContext);
   return (
     <Stack direction={"column"}>
-      <Button size="small">Resumen de un video...</Button>
-      <Button size="small">Resumen de un Texto...</Button>
+      <Button size="small" onClick={() => setSelectedCentralPanelView(ValidViewNames.VideoForm)}>
+        Resumen de un video...
+      </Button>
+      <Button size="small" onClick={() => setSelectedCentralPanelView(ValidViewNames.TextForm)}>
+        Resumen de un Texto...
+      </Button>
     </Stack>
   );
 }

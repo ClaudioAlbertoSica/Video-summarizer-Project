@@ -36,3 +36,10 @@
 .MuiContainer-root.bottomOptionsContainer{
     margin-bottom: 20px;
 }
+
+.MuiContainer-root.AlertsContainer{
+    height: 60px;
+    padding: 0px;
+    min-width: none;
+    margin: 10px;
+}

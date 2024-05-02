@@ -11,7 +11,7 @@ function AccountData({ userID, userName }: AccountData) {
     <>
       <Stack direction={"column"}>
         <Typography className="ViewTitle" variant="h3">
-          <b>Datos de la cuenta</b>
+          Datos de la cuenta
         </Typography>
         <Typography className="ViewInfo" variant="h4">
           <b>ID:</b> {userID}

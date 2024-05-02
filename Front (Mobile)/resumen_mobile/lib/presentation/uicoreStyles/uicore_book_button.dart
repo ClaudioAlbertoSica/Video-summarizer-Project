@@ -1,38 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../entity/preview_resumen.dart';
+import '../screen/login_screen.dart';
 
 class BookButton extends StatelessWidget {
   const BookButton({
     super.key,
+    required this.resumen,
   });
+
+  final ResumenPreview resumen;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 150,
-      height: 200,
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
-          elevation: MaterialStateProperty.all<double>(20), // Ajusta la elevación para la sombra exterior
-          overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(0, 3, 3, 3)), // Elimina el color de superposición para un efecto más suave
-          shadowColor: MaterialStateProperty.all<Color>(const Color.fromARGB(177, 3, 3, 3).withOpacity(0.4)), // Color de la sombra
-          shape:MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4.0), // Ajusta el radio de los bordes para hacerlos más redondeados
-              side: const BorderSide(color: Colors.blueGrey)
-            ), // Añade un borde para la sombra interior
-          ),
-        ),
-        child: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0), // Ajusta el radio de los bordes de la tarjeta
+      ),
+      child: InkWell(
+        onTap: () {
+          context.pushNamed(LoginScreen.name, extra: resumen);
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Aquí puedes agregar tu imagen
-            Icon(Icons.book, size: 50),
-            SizedBox(height: 8), // Espacio entre la imagen y el texto
-            Text(
-              'Resumen video',
-              style: TextStyle(color: Colors.white),
+            Container(
+              height: 100,
+              decoration: BoxDecoration(
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/thumball.jpeg'),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(2), // Hace que la imagen sea circular
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text(
+                    resumen.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 10,),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.star,
+                        color: Colors.orange.shade600,
+                        size: 15
+                      ),
+                      Text(
+                        '${resumen.range}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        )
+                      ),
+                    ]
+                  )
+                ],
+              ),
             ),
           ],
         ),

@@ -43,8 +43,8 @@ class LoginScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-          image: AssetImage('assets/images/$randomImage'),
-          fit: BoxFit.cover,
+            image: AssetImage('assets/images/$randomImage'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Padding(
@@ -64,7 +64,7 @@ class LoginScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   bool login = true;//await sendLoginData(_inputUsernameController.text,_inputPassController.text);
-                  if(login) {
+                  if(true) {
                     context.goNamed(HomeScreen.name);
                   } else {
                     _showErrorMessage(context);

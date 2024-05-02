@@ -5,8 +5,10 @@ import MuiAccordionSummary, { AccordionSummaryProps } from "@mui/material/Accord
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import { Button, Stack } from "@mui/material";
 import ListHandler from "./List/01-ListHandler";
+import AccountDataButtons from "./ButtonStacks/AccountDataButtons";
+import ConfigurationButtons from "./ButtonStacks/ConfigurationButtons";
+import NewSummaryButtons from "./ButtonStacks/NewSummaryButtons";
 
 const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters elevation={0} square {...props} />)(
   ({ theme }) => ({
@@ -39,7 +41,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function CustomizedAccordions() {
-  const [expanded, setExpanded] = useState<string | false>("panel1"); // possible string values are "panel1", "panel2" or "panel3"
+  const [expanded, setExpanded] = useState<string | false>("panel1"); // possible string values are "panel1", "panel2", "panel3" or "panel4"
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
     setExpanded(newExpanded ? panel : false);
@@ -49,30 +51,30 @@ export default function CustomizedAccordions() {
     <div>
       <Accordion expanded={expanded === "panel1"} onChange={handleChange("panel1")}>
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>Cuenta</Typography>
+          <Typography>Nuevo Resumen</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Stack direction={"column"}>
-            <Button size="small">Datos de la cuenta</Button>
-            <Button size="small">Cambiar Contraseña</Button>
-            <Button size="small">Log Out</Button>
-          </Stack>
+          <NewSummaryButtons />
         </AccordionDetails>
       </Accordion>
       <Accordion expanded={expanded === "panel2"} onChange={handleChange("panel2")}>
         <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <Typography>Configuración</Typography>
+          <Typography>Cuenta</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Stack direction={"column"}>
-            <Button size="small">Dark Mode</Button>
-            <Button size="small">F.A.Q.</Button>
-            <Button size="small">Ayuda!</Button>
-          </Stack>
+          <AccountDataButtons />
         </AccordionDetails>
       </Accordion>
       <Accordion expanded={expanded === "panel3"} onChange={handleChange("panel3")}>
         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+          <Typography>Configuración</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <ConfigurationButtons />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === "panel4"} onChange={handleChange("panel4")}>
+        <AccordionSummary aria-controls="panel4d-content" id="panel4d-header">
           <Typography>Historial</Typography>
         </AccordionSummary>
         <AccordionDetails>

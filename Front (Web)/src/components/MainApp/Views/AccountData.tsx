@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Paper, Stack, Typography } from "@mui/material";
 import "./View.css";
 
 interface AccountData {
@@ -9,17 +9,19 @@ interface AccountData {
 function AccountData({ userID, userName }: AccountData) {
   return (
     <>
-      <Stack direction={"column"}>
-        <Typography className="ViewTitle" variant="h3">
-          Datos de la cuenta
-        </Typography>
-        <Typography className="ViewInfo" variant="h4">
-          <b>ID:</b> {userID}
-        </Typography>
-        <Typography className="ViewInfo" variant="h4">
-          <b>Nombre de Usuario:</b> {userName}{" "}
-        </Typography>
-      </Stack>
+      <Paper className="ViewWrapper" elevation={5}>
+        <Stack direction={"column"}>
+          <Typography className="ViewTitle" variant="h3">
+            Datos de la cuenta
+          </Typography>
+          <Typography className="ViewInfo" variant="h4">
+            <b>ID:</b> {userID}
+          </Typography>
+          <Typography className="ViewInfo" variant="h4">
+            <b>Nombre de Usuario:</b> {userName}{" "}
+          </Typography>
+        </Stack>
+      </Paper>
     </>
   );
 }

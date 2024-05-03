@@ -1,12 +1,15 @@
 import Grid from "@mui/material/Grid";
 import "./MainLayout.css";
-import { Button, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import SidePanel from "./SidePanel/SidePanel.tsx";
 import AccountData from "./Views/AccountData.tsx";
 import ChangePassword from "./Views/ChangePassword.tsx";
 import { Dispatch, SetStateAction, createContext, useState } from "react";
 import { ValidViewNames } from "./Views/ImTheActiveView.ts";
 import ImTheActiveView from "./Views/ImTheActiveView.ts";
+import FAQ from "./Views/FAQ.tsx";
+import CloseButton from "./Views/CloseButton.tsx";
+import Help from "./Views/Help.tsx";
 
 export const ButtonViewContext = createContext<Dispatch<SetStateAction<ValidViewNames>>>(() => {});
 
@@ -41,16 +44,10 @@ function GridLayout() {
             <AccountData userID="IDFalsa 123" userName="Nombre@Hola.com" />
           )}
           {ImTheActiveView(selectedCentralPanelView, ValidViewNames.ChangePassword) && <ChangePassword />}
-
+          {ImTheActiveView(selectedCentralPanelView, ValidViewNames.FAQ) && <FAQ />}
+          {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Help) && <Help />}
           {selectedCentralPanelView != ValidViewNames.noneSelected && (
-            <Button
-              className="CloseButton"
-              variant="outlined"
-              color="error"
-              onClick={() => setSelectedCentralPanelView(ValidViewNames.noneSelected)}
-            >
-              Cerrar
-            </Button>
+            <CloseButton closeFunction={() => setSelectedCentralPanelView(ValidViewNames.noneSelected)} />
           )}
         </Grid>
         <Grid className="FooterGrid" item xs={12}>

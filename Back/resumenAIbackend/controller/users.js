@@ -98,7 +98,7 @@ class Controlador {
         try {
             const { id } = req.params
             const url = req.body
-            const resumenCreado = this.model.crearResumenVideo(id, url)
+            const resumenCreado = this.servicio.crearResumenVideo(id, url)
             res.json(resumenCreado)
         } catch (error) {
             res.status(500).json({error:error.message})  

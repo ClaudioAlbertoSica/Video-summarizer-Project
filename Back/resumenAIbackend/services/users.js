@@ -10,7 +10,7 @@ class Servicio {
     obtenerUsuarios = async (id) => {
         try {
 
-            await this.runPython()
+            //await this.runPython() ESTO ERA UN TEST
 
 
             const usuarios = await this.model.obtenerUsuarios(id)
@@ -56,7 +56,7 @@ class Servicio {
         try {
             let usuario = {};
             if (userName) {
-                usuario = await this.model.obtenerUserPorNombre(userName)
+                usuario = await this.model.obtenerUsuariosLogin(userName)
                 if (Object.keys(usuario).length === 0) {
                     console.log('usuario no encontrado')
                     throw new Error('Usuario incorrecto');
@@ -118,8 +118,10 @@ class Servicio {
     }
 
     runPython = async () => {
-        const pythonScriptPath = './serviciosPython/scriptTEST1.py'; 
-        const command = `python ${pythonScriptPath}`;
+        console.log('entre al script')
+        const pythonScriptPath = './services/serviciosPython/procesarVideo.py'; 
+        const command = `python ${pythonScriptPath} ${'https://www.youtube.com/watch?v=bSvTVREwSNw'}`;
+        console.log('ejecute el script python')
         
         exec(command, (error, stdout, stderr) => {
             if (error) {
@@ -137,20 +139,7 @@ class Servicio {
         try {
             if (1 == 1) {
                 //0 TEST
-                runPython = async () => {
-                    const pythonScriptPath = '../serviciosPython/scriptTEST1.py'; 
-                    const command = `python ${pythonScriptPath}`;
-                    
-                    exec(command, (error, stdout, stderr) => {
-                        if (error) {
-                            console.error(`Error executing Python script: ${error}`);
-                            return;
-                        }
-                        // Output from Python script
-                        console.log(`Output: ${stdout}`);
-                        console.error(`Errors: ${stderr}`);
-                    });
-                }
+                this.runPython()
                 
             
                 //1 SACAR MP3 DEL VIDEO DE YOUTUBE  
@@ -160,6 +149,7 @@ class Servicio {
 
                 
                 //...
+                return {}
             } else {
             console.log('error de ingreso de datos')
             }

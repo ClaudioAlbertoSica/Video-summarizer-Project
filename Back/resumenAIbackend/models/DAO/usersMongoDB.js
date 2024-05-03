@@ -3,6 +3,31 @@ import CnxMongoDB from "../connection/mongodb.js"
 
 class ModelMongoDB {
     
+    obtenerUsuariosLogin = async (userName) => {
+        try {
+            if (userName) {
+                const usuarioEncontrado = await CnxMongoDB.db.collection('usuarios').findOne({userName: userName});
+                if (usuarioEncontrado) {
+                    // Remove the paragraph array from each item in the inventario array
+                    usuarioEncontrado.inventario.forEach(item => delete item.paragraph);
+                }
+                return usuarioEncontrado || {};
+            } else {
+                const usuariosEncontrados = await CnxMongoDB.db.collection('usuarios').find({}).toArray();
+                // Remove the paragraph array from each item in the inventario array
+                usuariosEncontrados.forEach(usuario => {
+                    usuario.inventario.forEach(item => delete item.paragraph);
+                });
+                return usuariosEncontrados;
+            }
+        } catch {
+            throw new Error('conexion con la BD no establecida');
+        }
+    };
+
+
+
+
     obtenerUsuarios = async (id) => {
 
         try {

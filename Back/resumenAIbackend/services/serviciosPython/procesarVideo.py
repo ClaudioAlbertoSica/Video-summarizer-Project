@@ -11,7 +11,7 @@ def descargaVideoYT(url, rutaDestino):
     global tituloVideo
     video = YouTube(url)
     tituloVideo = 'videoTest.mp4'
-    if not os.path.isfile(tituloVideo):
+    if not os.path.isfile('./services/serviciosPython/videoTest.mp4'):
         stream = video.streams.get_by_itag(22)
         if stream is None:
             stream = video.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
@@ -45,13 +45,13 @@ def sacar_screenshots(video, tiempo, rutaimagen, clip):
 
 def borrarVideo(video_file):
     attempts = 0
-    max_attempts = 5  # Maximum number of attempts
-    wait_time = 1  # Wait time in seconds between attempts
+    max_attempts = 5  # max intentos
+    wait_time = 1  # espera para borrar timeout
 
     while attempts < max_attempts:
         try:
             os.remove(video_file)
-            break  # File successfully deleted, exit loop
+            break  # se borro bien
         except PermissionError:
             attempts += 1
             time.sleep(wait_time)
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     total_seconds = int(clip.duration)
     tiempo = [i for i in range(0, total_seconds + 1)]
 
-    ##sacar_screenshots(video, tiempo, rutaimagen, clip)
+    sacar_screenshots(video, tiempo, rutaimagen, clip)
 
 
     print('saque screenshots')
@@ -113,6 +113,6 @@ if __name__ == "__main__":
     extraerAudio(inputVideo, output_audio)
     
 
-    ##borrarVideo(video)
+    borrarVideo(video)
 
     transcribir()

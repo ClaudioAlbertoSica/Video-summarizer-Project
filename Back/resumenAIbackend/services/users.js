@@ -1,6 +1,6 @@
 import Factory from '../models/DAO/modelFactory.js'
 import { exec } from 'child_process'
-
+//import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg'; NO BORRAR, VER RUTAS DE FFMPEG
 
 class Servicio {
     constructor (persistencia) {
@@ -139,7 +139,7 @@ class Servicio {
         try {
             if (1 == 1) {
                 //0 TEST
-                this.runPython()
+                await this.runPython()
                 
             
                 //1 SACAR MP3 DEL VIDEO DE YOUTUBE  

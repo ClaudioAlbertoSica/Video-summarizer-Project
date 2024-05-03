@@ -31,14 +31,7 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  // Para ajustar la cantidad
-                  crossAxisCount: 2, 
-                  // Ajusta según el aspecto deseado de los tiles
-                  childAspectRatio: 0.9, 
-                  crossAxisSpacing: 3,
-                ),
+              child: ListView.builder(
                 itemCount: resumenList.length,
                 itemBuilder: (context, index) {
                   final resumen = resumenList[index];

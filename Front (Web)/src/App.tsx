@@ -4,12 +4,12 @@ import { useState } from "react";
 import { LoggedUser, placeholderUser, LoggedUserContext } from "./ActiveUserContext.ts";
 
 function App() {
-  const [user, setUser] = useState<LoggedUser>(placeholderUser);
+  const [currentUser, setUser] = useState<LoggedUser>(placeholderUser);
 
   return (
     <>
-      <LoggedUserContext.Provider value={user}>
-        {user === placeholderUser ? <LoginLayout setUser={setUser} /> : <GridLayout />};
+      <LoggedUserContext.Provider value={{ userState: currentUser, userSteState: setUser }}>
+        {currentUser === placeholderUser ? <LoginLayout setUser={setUser} /> : <GridLayout />};
       </LoggedUserContext.Provider>
     </>
   );

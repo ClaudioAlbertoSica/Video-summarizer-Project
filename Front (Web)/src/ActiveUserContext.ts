@@ -15,7 +15,7 @@ export type Resumen = {
     miniatura: string;
     }
 
-export const placeholderUser: LoggedUser = {
+export const placeholderUser: LoggedUser = Object.freeze({
     id: "-1",
     userName: "placeholer@placeholder.com",
     passwd: "placeholder",
@@ -31,6 +31,12 @@ export const placeholderUser: LoggedUser = {
             point: 0,
             miniatura: "./assets/Logo.png",
             }]
-    } as const
+    })
 
-export const LoggedUserContext = createContext<LoggedUser>(placeholderUser);
+
+    type UserStateElements = {
+        userState: LoggedUser;
+        userSteState: React.Dispatch<React.SetStateAction<LoggedUser>>;
+    }
+
+export const LoggedUserContext = createContext<UserStateElements>({userState: placeholderUser, userSteState: ()=>{}});

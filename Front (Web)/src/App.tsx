@@ -1,12 +1,19 @@
 import GridLayout from "./components/MainApp/MainLayout.tsx";
-//import LoginLayout from "./components/Login/LoginLayout.tsx";
-//import { useState } from "react";
+import LoginLayout from "./components/Login/LoginLayout.tsx";
+import { useState } from "react";
+import { LoggedUser, placeholderUser, LoggedUserContext } from "./ActiveUserContext.ts";
 
 function App() {
-  // const [isLogedIn, setIsLogedIn] = useState(false);
-  return <GridLayout />;
+  const [user, setUser] = useState<LoggedUser>(placeholderUser);
 
-  //return <>{isLogedIn ? <GridLayout /> : <LoginLayout setStatus={setIsLogedIn} />};</>;
+  return (
+    <>
+      <LoggedUserContext.Provider value={user}>
+        {user === placeholderUser ? <LoginLayout setUser={setUser} /> : <GridLayout />};
+      </LoggedUserContext.Provider>
+    </>
+  );
+  //  return <GridLayout />;
 }
 
 export default App;

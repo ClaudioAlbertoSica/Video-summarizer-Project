@@ -1,19 +1,20 @@
 import { TextField, Box, Button, Container, Typography, Link, Alert } from "@mui/material";
 import "./Modals.css";
-import { ModalNames } from "../LoginLayout.tsx";
+import { ModalNames } from "./ImTheActiveModal.ts";
 import server from "../../Services/serverCall.ts";
 import { FormEvent, useRef, useState } from "react";
+import { LoggedUser } from "../../../ActiveUserContext.ts";
 
 // Link as RouterLink,
 interface LoginModalInterface {
-  selectorCallback: (modalName: ModalNames["modalName"]) => void;
-  setLoginBoolean: (status: boolean) => void;
+  selectorCallback: (modalName: ModalNames) => void;
+  setNewLoggedUser: (user: LoggedUser) => void;
 }
 
-function LoginModal({ selectorCallback, setLoginBoolean }: LoginModalInterface) {
+function LoginModal({ selectorCallback, setNewLoggedUser }: LoginModalInterface) {
   const formRef = useRef<HTMLFormElement>();
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const alertMessage: string = "Acceso denegado: por favor revise su usario y contraseña";
+  let alertMessage: string = "Acceso denegado: por favor revise su usario y contraseña";
 
   const handleSumbit = async (event: FormEvent) => {
     event.preventDefault();
@@ -21,13 +22,20 @@ function LoginModal({ selectorCallback, setLoginBoolean }: LoginModalInterface) 
     const submittedEmail = formData?.get("yourEmail");
     const submittedPassword = formData?.get("yourPassword");
     await server
-      .post("/login", { userName: submittedEmail, passwd: submittedPassword })
-      .then(() => {
-        setLoginBoolean(true);
+      .post<LoggedUser>("/login", { userName: submittedEmail, passwd: submittedPassword })
+      .then((res) => {
+        console.log(res.data);
+        setNewLoggedUser(res.data);
       })
-      .catch(() => {
-        setShowAlert(true);
+      .catch((err) => {
+        displayAlert(err.message);
       });
+  };
+
+  const displayAlert = (err: string) => {
+    alertMessage = err;
+    console.log(err);
+    setShowAlert(true);
   };
 
   return (
@@ -67,13 +75,13 @@ function LoginModal({ selectorCallback, setLoginBoolean }: LoginModalInterface) 
       <Container className="bottomOptionsContainer">
         <Typography variant="caption" display="block" gutterBottom>
           ¿No tiene cuenta? &nbsp;
-          <Link onClick={() => selectorCallback("CreateAccountModal")} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Create)} underline="hover">
             Crear Una
           </Link>
         </Typography>
         <Typography variant="caption" display="block" gutterBottom>
           ¿Olvidó su contraseña? &nbsp;
-          <Link onClick={() => selectorCallback("PasswordResetModal")} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Password)} underline="hover">
             Recuperarla
           </Link>
         </Typography>

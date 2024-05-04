@@ -4,27 +4,27 @@ import "./LoginLayout.css";
 import LoginModal from "./Modals/LoginModal.tsx";
 import CreateAccountModal from "./Modals/CreateAccountModal.tsx";
 import PasswordResetModal from "./Modals/PasswordResetModal.tsx";
+import { LoggedUser } from "../../ActiveUserContext.ts";
+import { ModalNames, ImTheActiveModal } from "./Modals/ImTheActiveModal.ts";
 
-export interface ModalNames {
-  modalName?: "LoginModal" | "CreateAccountModal" | "PasswordResetModal";
+export interface SetLoggedUser {
+  setUser: (user: LoggedUser) => void;
 }
 
-export interface SetLoginStatus {
-  setStatus: (loginStatus: boolean) => void;
-}
+function LoginLayout({ setUser }: SetLoggedUser) {
+  const [selectedModalName, setmodalName] = useState<ModalNames>(ModalNames.Login);
 
-function LoginLayout({ setStatus }: SetLoginStatus) {
-  const [selectedModalName, setmodalName] = useState<ModalNames["modalName"]>("LoginModal");
-
-  const handleModalChange = (modalName: ModalNames["modalName"]) => {
+  const handleModalChange = (modalName: ModalNames) => {
     setmodalName(modalName);
   };
 
   return (
     <Container className="ExternalLoginLayoutContainer">
-      {selectedModalName === "LoginModal" && <LoginModal selectorCallback={handleModalChange} setLoginBoolean={setStatus} />}
-      {selectedModalName === "CreateAccountModal" && <CreateAccountModal selectorCallback={handleModalChange} />}
-      {selectedModalName === "PasswordResetModal" && <PasswordResetModal selectorCallback={handleModalChange} />}
+      {ImTheActiveModal(selectedModalName, ModalNames.Login) && (
+        <LoginModal selectorCallback={handleModalChange} setNewLoggedUser={setUser} />
+      )}
+      {ImTheActiveModal(selectedModalName, ModalNames.Create) && <CreateAccountModal selectorCallback={handleModalChange} />}
+      {ImTheActiveModal(selectedModalName, ModalNames.Password) && <PasswordResetModal selectorCallback={handleModalChange} />}
     </Container>
   );
 }

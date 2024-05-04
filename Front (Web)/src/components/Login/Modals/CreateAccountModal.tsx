@@ -1,11 +1,11 @@
 import { TextField, Box, Button, Container, Link, Typography, Alert } from "@mui/material";
 import "./Modals.css";
-import { ModalNames } from "../LoginLayout.tsx";
+import { ModalNames } from "./ImTheActiveModal.ts";
 import { FormEvent, useRef, useState } from "react";
 import server from "../../Services/serverCall.ts";
 
 interface LoginModalSelector {
-  selectorCallback: (modalName: ModalNames["modalName"]) => void;
+  selectorCallback: (modalName: ModalNames) => void;
 }
 
 function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
@@ -36,7 +36,7 @@ function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
     await server
       .post("/", { userName: emailToBeSent, passwd: passwordToBeSent })
       .then(() => {
-        setTimeout(() => selectorCallback("LoginModal"), 1000);
+        setTimeout(() => selectorCallback(ModalNames.Login), 1000);
         setShowConfirmation(true);
       })
       .catch(() => {
@@ -94,13 +94,13 @@ function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
       <Container className="bottomOptionsContainer">
         <Typography variant="caption" display="block" gutterBottom>
           ¿Ya posee una cuenta? &nbsp;
-          <Link onClick={() => selectorCallback("LoginModal")} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Login)} underline="hover">
             Ingresar
           </Link>
         </Typography>
         <Typography variant="caption" display="block" gutterBottom>
           ¿Olvidó su contraseña? &nbsp;
-          <Link onClick={() => selectorCallback("PasswordResetModal")} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Password)} underline="hover">
             Recuperarla
           </Link>
         </Typography>

@@ -9,4 +9,4 @@ const MONGO_BD = process.env.MONGO_BD
 
 
 
-export default{PORT, PERSISTENCIA, MONGO_STRCNX, MONGO_BD}
+export default { PORT, PERSISTENCIA, MONGO_STRCNX, MONGO_BD }

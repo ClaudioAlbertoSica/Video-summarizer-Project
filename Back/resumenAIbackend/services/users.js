@@ -3,7 +3,7 @@ import { exec } from 'child_process'
 //import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg'; NO BORRAR, VER RUTAS DE FFMPEG
 
 class Servicio {
-    constructor (persistencia) {
+    constructor(persistencia) {
         this.model = Factory.get(persistencia)
     }
 
@@ -16,8 +16,8 @@ class Servicio {
             const usuarios = await this.model.obtenerUsuarios(id)
             return usuarios
         }
-        catch(error) {
-            console.log(error.message)   
+        catch (error) {
+            console.log(error.message)
         }
     }
 
@@ -26,7 +26,7 @@ class Servicio {
             const usuarioGuardado = await this.model.guardarUsuario(usuario)
             return usuarioGuardado
         }
-        catch(error) {
+        catch (error) {
             console.log(error.message)
         }
     }
@@ -36,7 +36,7 @@ class Servicio {
             const usuarioActualizado = this.model.actualizarUsuario(id, usuario)
             return usuarioActualizado
         }
-        catch(error) {
+        catch (error) {
             console.log(error.message)
         }
     }
@@ -46,7 +46,7 @@ class Servicio {
             const usuarioBorrado = this.model.borrarUsuario(id)
             return usuarioBorrado
         }
-        catch(error) {
+        catch (error) {
             console.log(`Error en servicios ${error.message}`)
             console.log(error.message)
         }
@@ -60,7 +60,7 @@ class Servicio {
                 if (Object.keys(usuario).length === 0) {
                     console.log('usuario no encontrado')
                     throw new Error('Usuario incorrecto');
-                } 
+                }
                 if (passwd !== undefined && usuario.passwd == passwd) {
                     console.log('LOGIN EXITOSO')
                     //comparamos con el encontrado
@@ -84,8 +84,8 @@ class Servicio {
             const resumen = await this.model.obtenerResumenes(id, idres)
             return resumen
         }
-        catch(error) {
-            console.log(error.message)   
+        catch (error) {
+            console.log(error.message)
         }
     }
 
@@ -95,8 +95,8 @@ class Servicio {
             const resumenEliminado = await this.model.borrarResumen(id, idres)
             return resumenEliminado
         }
-        catch(error) {
-            console.log(error.message)   
+        catch (error) {
+            console.log(error.message)
         }
     }
 
@@ -107,22 +107,22 @@ class Servicio {
                     const resumenActualizado = await this.model.actualizarResumen(id, idres, resumenNuevo)
                     return resumenActualizado
                 } else {
-                    console.log('resumen nuevo incorrecto')    
+                    console.log('resumen nuevo incorrecto')
                 }
             } else {
                 console.log('faltan datos para actualizar su resumen')
             }
         } catch (error) {
-            console.log(error.message)   
+            console.log(error.message)
         }
     }
 
     runPython = async () => {
         console.log('entre al script')
-        const pythonScriptPath = './services/serviciosPython/procesarVideo.py'; 
+        const pythonScriptPath = './services/serviciosPython/procesarVideo.py';
         const command = `python ${pythonScriptPath} ${'https://www.youtube.com/watch?v=bSvTVREwSNw'}`;
         console.log('ejecute el script python')
-        
+
         exec(command, (error, stdout, stderr) => {
             if (error) {
                 console.error(`Error executing Python script: ${error}`);
@@ -140,53 +140,53 @@ class Servicio {
             if (1 == 1) {
                 //0 TEST
                 await this.runPython()
-                
-            
+
+
                 //1 SACAR MP3 DEL VIDEO DE YOUTUBE  
                 //2 SACAR TRANSCRIPT DEL MP3
 
                 //3 DESCARGAR VIDEO - SACAR IMAGENES 
 
-                
+
                 //...
                 return {}
             } else {
-            console.log('error de ingreso de datos')
+                console.log('error de ingreso de datos')
             }
         } catch (error) {
-            console.log(error.message)   
+            console.log(error.message)
         }
     }
 
     cambiarPass = async (id, passActual, passNueva, passNuevaBis) => {
         //try {
-            let usuarioActualizado = {}
-            if(id, passActual, passNueva, passNuevaBis){
-                const usuario = await this.model.obtenerUsuarios(id)
-                if(usuario){
-                    if(usuario.passwd === passActual){
-                        if(passNueva === passNuevaBis){
-                            if(usuario.passwd !== passNueva){
-                                usuarioActualizado = await this.actualizarUsuario(id, {passwd: passNueva})
-                                console.log("La constraseña se actualizó correctamente.")
-                                return usuarioActualizado
-                            }else{
-                                throw new Error('La contraseña nueva no puede ser igual a la actual.');
-                            }
-                        }else{
-                            throw new Error('Las contraseñas nuevas no coinciden.');
+        let usuarioActualizado = {}
+        if (id, passActual, passNueva, passNuevaBis) {
+            const usuario = await this.model.obtenerUsuarios(id)
+            if (usuario) {
+                if (usuario.passwd === passActual) {
+                    if (passNueva === passNuevaBis) {
+                        if (usuario.passwd !== passNueva) {
+                            usuarioActualizado = await this.actualizarUsuario(id, { passwd: passNueva })
+                            console.log("La constraseña se actualizó correctamente.")
+                            return usuarioActualizado
+                        } else {
+                            throw new Error('La contraseña nueva no puede ser igual a la actual.');
                         }
-                    }else{
-                        throw new Error('La contraseña actual es inválida.');
+                    } else {
+                        throw new Error('Las contraseñas nuevas no coinciden.');
                     }
-                }else{
-                    throw new Error('Usuario no encontrado.');
+                } else {
+                    throw new Error('La contraseña actual es inválida.');
                 }
-            }else{
-                throw new Error('Faltan datos en la solicitud.');
+            } else {
+                throw new Error('Usuario no encontrado.');
             }
+        } else {
+            throw new Error('Faltan datos en la solicitud.');
+        }
         //}catch (error) {
-          //  console.log(error.message) 
+        //  console.log(error.message) 
         //}
     }
 }

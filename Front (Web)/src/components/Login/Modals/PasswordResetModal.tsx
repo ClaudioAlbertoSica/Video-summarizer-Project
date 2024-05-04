@@ -1,9 +1,9 @@
 import { TextField, Box, Button, Container, Link, Typography } from "@mui/material";
 import "./Modals.css";
-import { ModalNames } from "../LoginLayout.tsx";
+import { ModalNames } from "./ImTheActiveModal.ts";
 
 interface LoginModalSelector {
-  selectorCallback: (modalName: ModalNames["modalName"]) => void;
+  selectorCallback: (modalName: ModalNames) => void;
 }
 
 function PasswordResetModal({ selectorCallback }: LoginModalSelector) {
@@ -34,13 +34,13 @@ function PasswordResetModal({ selectorCallback }: LoginModalSelector) {
       <Container className="bottomOptionsContainer">
         <Typography variant="caption" display="block" gutterBottom>
           ¿Ya posee una cuenta? &nbsp;
-          <Link onClick={() => selectorCallback("LoginModal")} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Login)} underline="hover">
             Ingresar
           </Link>
         </Typography>
         <Typography variant="caption" display="block" gutterBottom>
           ¿No tiene cuenta? &nbsp;
-          <Link onClick={() => selectorCallback("CreateAccountModal")} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Create)} underline="hover">
             Crear Una
           </Link>
         </Typography>

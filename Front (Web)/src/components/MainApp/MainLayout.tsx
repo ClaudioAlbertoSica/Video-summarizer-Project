@@ -4,7 +4,7 @@ import { Container } from "@mui/material";
 import SidePanel from "./SidePanel/SidePanel.tsx";
 import AccountData from "./Views/AccountData.tsx";
 import ChangePassword from "./Views/ChangePassword.tsx";
-import { Dispatch, SetStateAction, createContext, useState } from "react";
+import { useState } from "react";
 import { ValidViewNames } from "./Views/ImTheActiveView.ts";
 import ImTheActiveView from "./Views/ImTheActiveView.ts";
 import FAQ from "./Views/FAQ.tsx";
@@ -12,8 +12,7 @@ import CloseButton from "./Views/CloseButton.tsx";
 import Help from "./Views/Help.tsx";
 import VideoForm from "./Views/VideoForm.tsx";
 import TextForm from "./Views/TextForm.tsx";
-
-export const ButtonViewContext = createContext<Dispatch<SetStateAction<ValidViewNames>>>(() => {});
+import { ButtonViewContext } from "./ButtonViewContext.ts";
 
 function GridLayout() {
   const [selectedCentralPanelView, setSelectedCentralPanelView] = useState<ValidViewNames>(ValidViewNames.noneSelected);

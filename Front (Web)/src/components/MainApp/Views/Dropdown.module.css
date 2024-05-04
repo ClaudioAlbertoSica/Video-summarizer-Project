@@ -1,0 +1,16 @@
+.Form{
+    width: 50%;
+    background-color: lightgray;
+    margin-bottom: 15px;
+}
+
+.Select{
+    margin-bottom: 0px;
+    background-color: lightgray;
+}
+
+.MuiMenuItem-root.MuiButtonBase-root.Item{
+    width: 100%;
+    margin-bottom: 50px;
+    background-color: rgb(43, 59, 227);
+}

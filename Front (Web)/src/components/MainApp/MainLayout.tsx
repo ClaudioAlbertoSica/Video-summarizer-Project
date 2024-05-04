@@ -10,6 +10,8 @@ import ImTheActiveView from "./Views/ImTheActiveView.ts";
 import FAQ from "./Views/FAQ.tsx";
 import CloseButton from "./Views/CloseButton.tsx";
 import Help from "./Views/Help.tsx";
+import VideoForm from "./Views/VideoForm.tsx";
+import TextForm from "./Views/TextForm.tsx";
 
 export const ButtonViewContext = createContext<Dispatch<SetStateAction<ValidViewNames>>>(() => {});
 
@@ -46,6 +48,8 @@ function GridLayout() {
           {ImTheActiveView(selectedCentralPanelView, ValidViewNames.ChangePassword) && <ChangePassword />}
           {ImTheActiveView(selectedCentralPanelView, ValidViewNames.FAQ) && <FAQ />}
           {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Help) && <Help />}
+          {ImTheActiveView(selectedCentralPanelView, ValidViewNames.VideoForm) && <VideoForm />}
+          {ImTheActiveView(selectedCentralPanelView, ValidViewNames.TextForm) && <TextForm />}
           {selectedCentralPanelView != ValidViewNames.noneSelected && (
             <CloseButton closeFunction={() => setSelectedCentralPanelView(ValidViewNames.noneSelected)} />
           )}

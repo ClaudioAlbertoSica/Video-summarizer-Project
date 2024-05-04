@@ -1,19 +1,20 @@
 .MuiTypography-root.ViewTitle{
 margin-bottom: 30px;
 font-weight: bold;
+align-self: center;
 }
 
 .MuiTypography-root.ViewSubTitle{
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     font-weight: bold;
     }
 
 .MuiTypography-root.ViewInfo{
-
+    margin-bottom: 20px;
 }
 
 .MuiContainer-root.AlertsContainer{
-    height: 60px;
+    height: 30px;
     padding: 0px;
     min-width: none;
     margin: 10px;
@@ -23,12 +24,15 @@ font-weight: bold;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: -30px;
+    margin-left: 0px;
 }
 
 .FormBox{
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    align-content: center;
 }
 
 .MuiFormControl-root.FormInputs{
@@ -40,13 +44,19 @@ font-weight: bold;
 .MuiPaper-root.ViewWrapper{
     background-color: rgb(255 255 255 / 26%);
     width: 92%;
-    height: 80%;
+    height: 75%;
     margin: 40px;
     margin-bottom: 30px;
     overflow-y: hidden;
     border-radius: 30px;
     overflow-x: hidden;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
 }
 
 /* This is just a wrapper that comes with the MaterialUI Button.
@@ -61,7 +71,36 @@ Don't touch it. I just used it to kill it's built-in margin */
 .MuiContainer-root.CloseButtonContainer{
     margin: 50px;
     margin-top: 0px;
+    margin-bottom: 20px;
     height: 5vh;
     width: 100%;
     padding-right: 10px;
+}
+
+.MuiContainer-root.SwitchsContainer{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-bottom: 15px;
+}
+
+.MuiButton-root.GenerateSummaryButton{
+    margin: 10px;
+}
+
+.MuiButton-root.ClearSummaryButton{
+    margin: 10px;
+}
+
+.MuiContainer-root.FormButtonsContainer{
+    display: flex;
+    justify-content: space-around;
+}
+
+
+.MuiFormControl-root.MuiTextField-root.MultiLineInput{
+    width: 80%;
+    background-color: rgba(0, 255, 255, 0.2);
+    margin: 0px;
+    margin-bottom: 10px;
 }

@@ -32,7 +32,8 @@
 
 .HeaderGrid{
     background-color: lightseagreen;
-    height: 8vh
+    height: 8vh;
+    align-content: center;
 }
 
 
@@ -51,4 +52,5 @@
 .FooterGrid{
     background-color: lightseagreen;
     height: 6vh;
+    align-content: center;
 }

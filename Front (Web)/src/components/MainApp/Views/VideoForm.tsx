@@ -1,9 +1,10 @@
-import { TextField, Box, Button, Container, Typography, Alert, Paper } from "@mui/material";
+import { TextField, Box, Button, Container, Typography, Alert, Paper, FormControlLabel, Switch } from "@mui/material";
 import "./View.css";
 import { FormEvent, useRef, useState } from "react";
+import Dropdown from "./Dropdown";
 //import server from "../../Services/serverCall.ts";
 
-function ChangePassword() {
+function VideoForm() {
   const formRef = useRef<HTMLFormElement>();
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [showDifferentPasswordslAlert, setShowDifferentPasswordsAlert] = useState<boolean>(false);
@@ -44,11 +45,7 @@ function ChangePassword() {
     <Paper className="ViewWrapper" elevation={5}>
       <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>
         <Typography className="ViewTitle" variant="h3">
-          Cambiar Contraseña
-        </Typography>
-        <Typography className="ViewInfo" variant="h4">
-          Ingrese su contraseña actual. <br /> Luego ingrese la nueva, y vuelva a ingresar esta última para verificarla. <br />
-          Finalmente, haga click en "Modificar".
+          Generá tu resumen (Video)
         </Typography>
         <Container className="AlertsContainer">
           {showAlert && <Alert severity="warning"> {alertMessage} </Alert>}
@@ -58,38 +55,66 @@ function ChangePassword() {
         <Container className="InputsContainer">
           <TextField
             className="FormInputs"
-            id="mail"
-            name="currentPassword"
-            label="Ingrese su Password actual"
-            type="password"
+            id="AddLink"
+            name="AddLink"
+            label="URL Youtube Link"
+            type="url"
             variant="outlined"
             required
           />
+          <Container className="SwitchsContainer">
+            <FormControlLabel
+              className="FormSwitchInputs"
+              name="CompactSummarySwitch"
+              control={<Switch />}
+              label="Resumen Compacto"
+            />
+            <FormControlLabel
+              className="FormSwitchInputs"
+              name="TranscriptionSwitch"
+              control={<Switch />}
+              label="Obtener Transcripción"
+            />
+            <FormControlLabel className="FormSwitchInputs" name="ImagesSwitch" control={<Switch />} label="Obtener Imágenes" />
+          </Container>
+          <Dropdown
+            required={true}
+            id="language"
+            name="language"
+            placeHolderItem="Sleccione un idioma..."
+            label="Idioma del Resumen"
+          >
+            {["Español", "Inglés"]}
+          </Dropdown>
+          <Dropdown
+            required={true}
+            id="format"
+            name="format"
+            placeHolderItem="seleccione un formato.."
+            label="Formato del Resumen"
+          >
+            {[".PDF", ".DOCx"]}
+          </Dropdown>
           <TextField
             className="FormInputs"
-            id="pass1"
-            name="yourPassword"
-            label="Ingrese su nueva Password"
-            type="password"
+            id="optionalTitle"
+            name="optionalTitle"
+            label="Ingrese un título (opcional)"
+            type="text"
             variant="outlined"
-            required
           />
-          <TextField
-            className="FormInputs"
-            id="pass2"
-            name="yourRepeatedPassword"
-            label="Ingrese nuevamente su nueva Password"
-            type="password"
-            variant="outlined"
-            required
-          />
-          <Button variant="contained" type="submit">
-            Modificar
-          </Button>
+          <Container className="FormButtonsContainer">
+            <Button className="GenerateSummaryButton" variant="contained" type="submit">
+              Generar
+            </Button>
+            <Button className="ClearSummaryButton" variant="text" color="error" type="reset">
+              Borrar
+            </Button>
+          </Container>
         </Container>
       </Box>
     </Paper>
   );
 }
 
-export default ChangePassword;
+export default VideoForm;

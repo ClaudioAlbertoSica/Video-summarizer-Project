@@ -44,7 +44,7 @@ function VideoForm() {
   return (
     <Paper className="ViewWrapper" elevation={5}>
       <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>
-        <Typography className="ViewTitle" variant="h4">
+        <Typography className="ViewTitle" variant="h4" sx={{ margin: "0px", marginBottom: "0px" }}>
           Generá tu resumen (Texto)
         </Typography>
         <Container className="AlertsContainerViews">

@@ -1,7 +1,7 @@
 import { TextField, Box, Button, Container, Typography, Link, Alert } from "@mui/material";
 import "./Modals.css";
 import { ModalNames } from "./ImTheActiveModal.ts";
-import server from "../../Services/serverCall.ts";
+import server from "../../../Services/serverCall.ts";
 import { FormEvent, useRef, useState } from "react";
 import { LoggedUser } from "../../../ActiveUserContext.ts";
 

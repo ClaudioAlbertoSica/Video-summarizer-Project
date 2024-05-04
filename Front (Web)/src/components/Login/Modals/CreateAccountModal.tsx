@@ -2,7 +2,7 @@ import { TextField, Box, Button, Container, Link, Typography, Alert } from "@mui
 import "./Modals.css";
 import { ModalNames } from "./ImTheActiveModal.ts";
 import { FormEvent, useRef, useState } from "react";
-import server from "../../Services/serverCall.ts";
+import server from "../../../Services/serverCall.ts";
 
 interface LoginModalSelector {
   selectorCallback: (modalName: ModalNames) => void;

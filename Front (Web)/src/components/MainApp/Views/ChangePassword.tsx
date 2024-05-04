@@ -1,16 +1,18 @@
 import { TextField, Box, Button, Container, Typography, Alert, Paper } from "@mui/material";
 import "./View.css";
-import { FormEvent, useRef, useState } from "react";
-//import server from "../../Services/serverCall.ts";
+import { FormEvent, useContext, useRef, useState } from "react";
+import server from "../../../Services/serverCall.ts";
+import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 
 function ChangePassword() {
+  const userContext = useContext(LoggedUserContext);
   const formRef = useRef<HTMLFormElement>();
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [showDifferentPasswordslAlert, setShowDifferentPasswordsAlert] = useState<boolean>(false);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const AlertMessagePasswordsAreDifferent: string = "Las contraseñas provistas no son coincidentes";
   const ConfirmationMessage: string = "La contraseña fue modificada satisfactoriamente";
-  const alertMessage: string = "Hubo un problema...";
+  let alertMessage: string = "Hubo un problema...";
 
   const handleSumbit = async (event: FormEvent) => {
     event.preventDefault();
@@ -20,24 +22,27 @@ function ChangePassword() {
     const submittedPassword2 = formData?.get("yourRepeatedPassword");
 
     if (submittedPassword1 === submittedPassword2) {
-      handleServerQuerry(submittedPassword1 as string);
+      handleServerQuerry(submittedPassword1 as string, submittedPassword2 as string);
     } else {
       setShowDifferentPasswordsAlert(true);
     }
   };
 
-  const handleServerQuerry = async (passwordToBeSent: string) => {
-    /* await server
-      .post("/", { userName: emailToBeSent, passwd: passwordToBeSent })
-      .then(() => {
-        setTimeout(() => selectorCallback("LoginModal"), 1000);
+  const handleServerQuerry = async (passwordToBeSent1: string, passwordToBeSent2: string) => {
+    await server
+      .post(`/cambiarpass/${userContext.userState.id}`, {
+        passActual: userContext.userState.passwd,
+        passNueva: passwordToBeSent1,
+        passNuevaBis: passwordToBeSent2,
+      })
+      .then((res) => {
+        userContext.userSteState(res.data);
         setShowConfirmation(true);
       })
-      .catch(() => {
+      .catch((err) => {
+        alertMessage = err.message;
         setShowAlert(true);
       });
-      */
-    console.log("submitted! " + passwordToBeSent);
   };
 
   return (

@@ -1,12 +1,10 @@
 import { Paper, Stack, Typography } from "@mui/material";
 import "./View.css";
+import { useContext } from "react";
+import { LoggedUserContext } from "../../../ActiveUserContext";
 
-interface AccountData {
-  userID: string;
-  userName: string;
-}
-
-function AccountData({ userID, userName }: AccountData) {
+function AccountData() {
+  const currentlyLoggedUsuer = useContext(LoggedUserContext).userState;
   return (
     <>
       <Paper className="ViewWrapper" elevation={5}>
@@ -15,10 +13,10 @@ function AccountData({ userID, userName }: AccountData) {
             Datos de la cuenta
           </Typography>
           <Typography className="ViewInfo" variant="h4">
-            <b>ID:</b> {userID}
+            <b>ID:</b> {currentlyLoggedUsuer.id}
           </Typography>
           <Typography className="ViewInfo" variant="h4">
-            <b>Nombre de Usuario:</b> {userName}{" "}
+            <b>Nombre de Usuario:</b> {currentlyLoggedUsuer.userName}
           </Typography>
         </Stack>
       </Paper>

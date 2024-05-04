@@ -43,21 +43,22 @@ function ChangePassword() {
   return (
     <Paper className="ViewWrapper" elevation={5}>
       <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>
-        <Typography className="ViewTitle" variant="h3">
+        <Typography className="ViewTitle" variant="h4">
           Cambiar Contraseña
         </Typography>
-        <Typography className="ViewInfo" variant="h4">
+        <Typography className="ViewInfo" variant="h6">
           Ingrese su contraseña actual. <br /> Luego ingrese la nueva, y vuelva a ingresar esta última para verificarla. <br />
           Finalmente, haga click en "Modificar".
         </Typography>
-        <Container className="AlertsContainer">
+        <Container className="AlertsContainerViews">
           {showAlert && <Alert severity="warning"> {alertMessage} </Alert>}
           {showDifferentPasswordslAlert && <Alert severity="warning"> {AlertMessagePasswordsAreDifferent} </Alert>}
           {showConfirmation && <Alert severity="success"> {ConfirmationMessage} </Alert>}
         </Container>
         <Container className="InputsContainer">
           <TextField
-            className="FormInputs"
+            size="small"
+            className="FormInputsViews"
             id="mail"
             name="currentPassword"
             label="Ingrese su Password actual"
@@ -66,7 +67,8 @@ function ChangePassword() {
             required
           />
           <TextField
-            className="FormInputs"
+            size="small"
+            className="FormInputsViews"
             id="pass1"
             name="yourPassword"
             label="Ingrese su nueva Password"
@@ -75,7 +77,8 @@ function ChangePassword() {
             required
           />
           <TextField
-            className="FormInputs"
+            size="small"
+            className="FormInputsViews"
             id="pass2"
             name="yourRepeatedPassword"
             label="Ingrese nuevamente su nueva Password"

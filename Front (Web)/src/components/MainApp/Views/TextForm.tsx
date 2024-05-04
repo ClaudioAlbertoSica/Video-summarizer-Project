@@ -44,10 +44,10 @@ function VideoForm() {
   return (
     <Paper className="ViewWrapper" elevation={5}>
       <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>
-        <Typography className="ViewTitle" variant="h3">
+        <Typography className="ViewTitle" variant="h4">
           Generá tu resumen (Texto)
         </Typography>
-        <Container className="AlertsContainer">
+        <Container className="AlertsContainerViews">
           {showAlert && <Alert severity="warning"> {alertMessage} </Alert>}
           {showDifferentPasswordslAlert && <Alert severity="warning"> {AlertMessagePasswordsAreDifferent} </Alert>}
           {showConfirmation && <Alert severity="success"> {ConfirmationMessage} </Alert>}
@@ -58,7 +58,7 @@ function VideoForm() {
             id="outlined-multiline-static"
             label="Multiline"
             multiline
-            rows={5}
+            rows={4}
             defaultValue="Default Value"
           />
           <Container className="SwitchsContainer">
@@ -88,7 +88,8 @@ function VideoForm() {
             {[".PDF", ".DOCx"]}
           </Dropdown>
           <TextField
-            className="FormInputs"
+            size="small"
+            className="FormInputsViews"
             id="optionalTitle"
             name="optionalTitle"
             label="Ingrese un título (opcional)"

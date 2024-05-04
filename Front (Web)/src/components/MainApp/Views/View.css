@@ -13,11 +13,11 @@ align-self: center;
     margin-bottom: 20px;
 }
 
-.MuiContainer-root.AlertsContainer{
+.MuiContainer-root.AlertsContainerViews{
     height: 30px;
     padding: 0px;
     min-width: none;
-    margin: 10px;
+    margin: 0px;
 }
 
 .MuiContainer-root.InputsContainer{
@@ -32,25 +32,26 @@ align-self: center;
     flex-direction: column;
     flex-wrap: wrap;
     width: 100%;
+    height: 100%;
     align-content: center;
 }
 
-.MuiFormControl-root.FormInputs{
+.MuiFormControl-root.FormInputsViews{
     width: 50%;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     background-color: lightgray;
 }
 
 .MuiPaper-root.ViewWrapper{
     background-color: rgb(255 255 255 / 26%);
     width: 92%;
-    height: 75%;
+    height: 80%;
     margin: 40px;
     margin-bottom: 30px;
     overflow-y: hidden;
     border-radius: 30px;
     overflow-x: hidden;
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -95,6 +96,7 @@ Don't touch it. I just used it to kill it's built-in margin */
 .MuiContainer-root.FormButtonsContainer{
     display: flex;
     justify-content: space-around;
+    margin-top: 10px;
 }
 
 

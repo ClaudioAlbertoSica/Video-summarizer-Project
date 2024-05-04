@@ -32,7 +32,7 @@
 
 .HeaderGrid{
     background-color: lightseagreen;
-    height: 8vh;
+    height: 6vh;
     align-content: center;
 }
 
@@ -40,7 +40,7 @@
 .CentralPanel{
     background-color: lightblue;
     max-width:inherit;
-    height: 86vh; 
+    height: 88vh; 
     padding: 0px;
 }
 

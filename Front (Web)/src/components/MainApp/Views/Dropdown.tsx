@@ -21,7 +21,7 @@ function Dropdown({ id, name, label, placeHolderItem, required = false, children
   /*Notice when you provide a className to the Dropdown, you are actually not using it in the .css, but the 3 classNames derived here,
 whith the sufixes "Form", "Slect" and "Item"*/
   return (
-    <FormControl required={required} className={styles.Form} style={{ marginBottom: "15px" }}>
+    <FormControl required={required} size="small" className={styles.Form} style={{ marginBottom: "10px" }}>
       <InputLabel id={`${label}-helper`}>{label}</InputLabel>
       <Select
         className={styles.Select}

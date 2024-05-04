@@ -44,17 +44,18 @@ function VideoForm() {
   return (
     <Paper className="ViewWrapper" elevation={5}>
       <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>
-        <Typography className="ViewTitle" variant="h3">
+        <Typography className="ViewTitle" variant="h4">
           Generá tu resumen (Video)
         </Typography>
-        <Container className="AlertsContainer">
+        <Container className="AlertsContainerViews">
           {showAlert && <Alert severity="warning"> {alertMessage} </Alert>}
           {showDifferentPasswordslAlert && <Alert severity="warning"> {AlertMessagePasswordsAreDifferent} </Alert>}
           {showConfirmation && <Alert severity="success"> {ConfirmationMessage} </Alert>}
         </Container>
         <Container className="InputsContainer">
           <TextField
-            className="FormInputs"
+            size="small"
+            className="FormInputsViews"
             id="AddLink"
             name="AddLink"
             label="URL Youtube Link"
@@ -96,7 +97,8 @@ function VideoForm() {
             {[".PDF", ".DOCx"]}
           </Dropdown>
           <TextField
-            className="FormInputs"
+            size="small"
+            className="FormInputsViews"
             id="optionalTitle"
             name="optionalTitle"
             label="Ingrese un título (opcional)"

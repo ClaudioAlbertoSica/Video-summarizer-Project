@@ -1,50 +1,35 @@
-import { useEffect } from "react";
+import { ReactElement, useContext } from "react";
 import { List, ListItem, Paper } from "@mui/material";
-import { ListItemObject } from "./04-ListItem.tsx";
 import SummaryListItem from "./04-ListItem.tsx";
+import ListItemPlaceholder from "./05-ListItemPlaceHolder.tsx";
 import "./List&Handler.css";
 import image from "../../../../../assets/Logo.png";
+import { LoggedUserContext } from "../../../../../ActiveUserContext.ts";
 
 function ListForAccordion() {
-  const summariesArray: ListItemObject[] = [
-    {
-      thisItemRating: 3,
-      image: image,
-      title: "Testtitle 1",
-    },
-    {
-      thisItemRating: 5,
-      image: image,
-      title: "Testtitle 2",
-    },
-    {
-      image: image,
-      title: "Testtitle 3",
-    },
-    {
-      thisItemRating: 0,
-      image: image,
-      title: "Testtitle 4",
-    },
-    {
-      thisItemRating: 3,
-      image: image,
-      title: "Testtitle 5",
-    },
-  ];
+  const currentlyLoggedUsuer = useContext(LoggedUserContext).userState;
 
-  useEffect(() => {}, []);
+  const listToShow = () => {
+    let objetcToReturn: ReactElement[] = [
+      <ListItem key={"Nothing to show"}>
+        <ListItemPlaceholder image={image} title="No summaries yet" />
+      </ListItem>,
+    ];
+
+    if (currentlyLoggedUsuer.inventario.length !== 0) {
+      objetcToReturn = currentlyLoggedUsuer.inventario.map((itm) => (
+        <ListItem key={itm.idres}>
+          <SummaryListItem thisItemRating={itm.point} image={itm.miniatura} title={itm.title} />
+        </ListItem>
+      ));
+    }
+    return objetcToReturn;
+  };
 
   return (
     <>
       <Paper className="ListWrapper" elevation={1}>
-        <List>
-          {summariesArray.map((itm, pos) => (
-            <ListItem key={pos}>
-              <SummaryListItem thisItemRating={itm.thisItemRating} image={itm.image} title={itm.title} />
-            </ListItem>
-          ))}
-        </List>
+        <List>{listToShow()}</List>
       </Paper>
     </>
   );

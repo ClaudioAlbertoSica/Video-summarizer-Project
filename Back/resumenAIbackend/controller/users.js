@@ -104,6 +104,17 @@ class Controlador {
             res.status(500).json({error:error.message})  
         }
     }
+
+    crearResumenTexto = async (req, res) => {
+        try {
+            const { id } = req.params
+            const texto = req.body
+            const resumenCreado = this.servicio.crearResumenTexto(id, texto)
+            res.json(resumenCreado)
+        } catch (error) {
+            res.status(500).json({error:error.message})  
+        }
+    }
     
     cambiarPass = async (req, res) => {
 

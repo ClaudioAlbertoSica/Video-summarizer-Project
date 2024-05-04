@@ -1,7 +1,7 @@
 import Factory from '../models/DAO/modelFactory.js'
 import { exec } from 'child_process'
 //import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg'; NO BORRAR, VER RUTAS DE FFMPEG
-
+import fs from 'fs'
 class Servicio {
     constructor(persistencia) {
         this.model = Factory.get(persistencia)
@@ -117,10 +117,27 @@ class Servicio {
         }
     }
 
-    runPython = async () => {
+    runPythonVideo = async () => {
         console.log('entre al script')
         const pythonScriptPath = './services/serviciosPython/procesarVideo.py';
         const command = `python ${pythonScriptPath} ${'https://www.youtube.com/watch?v=bSvTVREwSNw'}`;
+        console.log('ejecute el script python')
+
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error executing Python script: ${error}`);
+                return;
+            }
+            // Output from Python script
+            console.log(`Output: ${stdout}`);
+            console.error(`Errors: ${stderr}`);
+        });
+    }
+
+    runPythonTexto = async () => {
+        console.log('entre al script')
+        const pythonScriptPath = './services/serviciosPython/procesarTexto.py';
+        const command = `python ${pythonScriptPath}`;
         console.log('ejecute el script python')
 
         exec(command, (error, stdout, stderr) => {
@@ -139,7 +156,7 @@ class Servicio {
         try {
             if (1 == 1) {
                 //0 TEST
-                await this.runPython()
+                await this.runPythonVideo()
 
 
                 //1 SACAR MP3 DEL VIDEO DE YOUTUBE  
@@ -149,6 +166,33 @@ class Servicio {
 
 
                 //...
+                return {}
+            } else {
+                console.log('error de ingreso de datos')
+            }
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    crearResumenTexto = async (id, texto) => {
+        const ruta = './services/serviciosPython/textoEntrada.txt'
+        const texto1 = 'asdasdasdd'
+        try {
+            if (1 == 1) {
+
+
+
+                fs.writeFile(ruta, texto1, (err) => {
+                    if (err) {
+                        console.log('error escribiendo archivo')
+                    } else {
+                        console.log('se escribio')
+                    }
+                })
+
+                await this.runPythonTexto()
+
                 return {}
             } else {
                 console.log('error de ingreso de datos')

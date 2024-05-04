@@ -9,7 +9,8 @@ class Router {
 
     start() {
         this.router.get('/:id?', this.controlador.obtenerUsuarios)
-        this.router.post('/:id/resumen/', this.controlador.crearResumenVideo)
+        this.router.post('/:id/resumen/video', this.controlador.crearResumenVideo)
+        this.router.post('/:id/resumen/texto', this.controlador.crearResumenTexto)
         this.router.get('/:id/resumen/:idres?', this.controlador.obtenerResumenes)
         this.router.delete('/:id/resumen/:idres', this.controlador.borrarResumen)
         this.router.put('/:id/resumen/:idres', this.controlador.actualizarResumen)

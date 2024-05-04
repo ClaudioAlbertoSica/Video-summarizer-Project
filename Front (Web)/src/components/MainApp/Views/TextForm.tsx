@@ -1,7 +1,6 @@
 import { TextField, Box, Button, Container, Typography, Alert, Paper, FormControlLabel, Switch } from "@mui/material";
 import "./View.css";
 import { FormEvent, useRef, useState } from "react";
-import TextArea from "./TextArea.tsx";
 import Dropdown from "./Dropdown";
 //import server from "../../Services/serverCall.ts";
 

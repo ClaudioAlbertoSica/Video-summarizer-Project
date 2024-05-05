@@ -62,7 +62,7 @@ align-self: center;
 }
 
 /* This is just a wrapper that comes with the MaterialUI Button.
-Don't touch it. I just used it to kill it's built-in margin */
+Touch it with caution. I just used it to kill it's built-in margin */
 .MuiButton-root.CloseButton{
     margin: 0px;
     height: 20px;

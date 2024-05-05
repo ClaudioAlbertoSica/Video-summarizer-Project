@@ -62,7 +62,7 @@ function TextForm() {
             label="Multiline"
             multiline
             rows={4}
-            defaultValue="Default Value"
+            defaultValue="Copia y pega el texto a resumir aquí..."
           />
           <Container className="SwitchsContainer">
             <FormControlLabel

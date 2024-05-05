@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
 import '../uicoreStyles/uicore_app_title_style.dart';
@@ -43,6 +44,7 @@ class FormVideo extends StatefulWidget {
     super.key,
   });
 
+
   @override
   State<FormVideo> createState() => _FormVideoState();
 }
@@ -51,6 +53,10 @@ class _FormVideoState extends State<FormVideo> {
   bool shortValue = false;
   bool transcrpit = false;
   bool imagesObtain = false;
+
+  final TextEditingController _inputURLController = TextEditingController();
+  final TextEditingController _inputTitleController = TextEditingController();
+  
   Idiomas idiomaSeleccionado = Idiomas.spanish; 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +64,7 @@ class _FormVideoState extends State<FormVideo> {
       child: Column(
         children: [
           TextFormField(
+            controller: _inputURLController,
             decoration: const InputDecoration(
               hintText: 'Url youtube video',
               border: OutlineInputBorder(
@@ -116,15 +123,25 @@ class _FormVideoState extends State<FormVideo> {
                 )
             ]),
             TextFormField(
-                  decoration: const InputDecoration(
-                  hintText: 'Titulo (Opcional)',
-                  border: OutlineInputBorder(
-                    borderRadius:  BorderRadius.all(Radius.circular(10)),
-                    )
-                  ),
-                ),
+              controller: _inputTitleController,
+              decoration: const InputDecoration(
+                hintText: 'Titulo (Opcional)',
+                border: OutlineInputBorder(
+                  borderRadius:  BorderRadius.all(Radius.circular(10)),
+                )
+              ),
+            ),
           ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                /*
+                  print(_inputURLController.text);
+                  print(shortValue);
+                  print(transcrpit);
+                  print(imagesObtain);
+                  print(idiomaSeleccionado);
+                  print(_inputTitleController.text);
+                */
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
                   elevation: MaterialStateProperty.all<double>(20), // Ajusta la elevación para la sombra exterior

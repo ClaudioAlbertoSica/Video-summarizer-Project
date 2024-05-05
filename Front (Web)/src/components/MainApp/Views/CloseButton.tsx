@@ -8,7 +8,12 @@ interface CloseInterface {
 function CloseButton({ closeFunction }: CloseInterface) {
   return (
     <Container className="CloseButtonContainer">
-      <Button className="CloseButton" variant="outlined" color="error" onClick={() => closeFunction(ValidViewNames.noneSelected)}>
+      <Button
+        className="CloseButton"
+        variant="contained"
+        color="error"
+        onClick={() => closeFunction(ValidViewNames.noneSelected)}
+      >
         Cerrar
       </Button>
     </Container>

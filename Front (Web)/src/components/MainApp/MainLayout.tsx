@@ -41,9 +41,7 @@ function GridLayout() {
           Close Button beloew shoots "noneSelected", so no view is displayed at all.
           */}
         <Grid className="CentralPanel" item xs={12}>
-          {ImTheActiveView(selectedCentralPanelView, ValidViewNames.AccountData) && (
-            <AccountData userID="IDFalsa 123" userName="Nombre@Hola.com" />
-          )}
+          {ImTheActiveView(selectedCentralPanelView, ValidViewNames.AccountData) && <AccountData />}
           {ImTheActiveView(selectedCentralPanelView, ValidViewNames.ChangePassword) && <ChangePassword />}
           {ImTheActiveView(selectedCentralPanelView, ValidViewNames.FAQ) && <FAQ />}
           {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Help) && <Help />}

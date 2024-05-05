@@ -6,7 +6,7 @@ import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart
 import '../uicoreStyles/uicore_app_title_style.dart';
 import '../uicoreStyles/uicore_book_button.dart';
 import '../uicoreStyles/uicore_paragraph_style.dart';
-
+//PARA VER MÁS ADELANTE CUANDO SE TRABAJEN LOS ESTILOS
 class HomeScreen extends StatelessWidget {
   static const String name = 'HomeScreen';
   const HomeScreen({super.key});
@@ -69,8 +69,8 @@ class HomeScreen extends StatelessWidget {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BookButton(),
-                  BookButton(),
+                  //BookButton(),
+                  //BookButton(),
                 ]
               ),
             ],

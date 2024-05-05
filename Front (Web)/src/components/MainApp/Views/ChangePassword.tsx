@@ -25,6 +25,7 @@ function ChangePassword() {
       handleServerQuerry(submittedPassword1 as string, submittedPassword2 as string);
     } else {
       setShowDifferentPasswordsAlert(true);
+      setTimeout(() => setShowDifferentPasswordsAlert(false), 3000);
     }
   };
 
@@ -38,10 +39,12 @@ function ChangePassword() {
       .then((res) => {
         userContext.userSteState(res.data);
         setShowConfirmation(true);
+        setTimeout(() => setShowConfirmation(false), 3000);
       })
       .catch((err) => {
         alertMessage = err.message;
         setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000);
       });
   };
 

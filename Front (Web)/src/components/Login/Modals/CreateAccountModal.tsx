@@ -1,14 +1,16 @@
 import { TextField, Box, Button, Container, Link, Typography, Alert } from "@mui/material";
 import "./Modals.css";
 import { ModalNames } from "./ImTheActiveModal.ts";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useContext, useRef, useState } from "react";
 import server from "../../../Services/serverCall.ts";
+import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 
 interface LoginModalSelector {
   selectorCallback: (modalName: ModalNames) => void;
 }
 
 function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
+  const userContext = useContext(LoggedUserContext);
   const formRef = useRef<HTMLFormElement>();
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [showDifferentPasswordslAlert, setShowDifferentPasswordsAlert] = useState<boolean>(false);
@@ -29,18 +31,20 @@ function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
       handleServerQuerry(submittedEmail as string, submittedPassword1 as string);
     } else {
       setShowDifferentPasswordsAlert(true);
+      setTimeout(() => setShowDifferentPasswordsAlert(false), 3000);
     }
   };
 
   const handleServerQuerry = async (emailToBeSent: string, passwordToBeSent: string) => {
     await server
       .post("/", { userName: emailToBeSent, passwd: passwordToBeSent })
-      .then(() => {
-        setTimeout(() => selectorCallback(ModalNames.Login), 1000);
+      .then((res) => {
         setShowConfirmation(true);
+        setTimeout(() => userContext.userSteState(res.data), 1500);
       })
       .catch(() => {
         setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000);
       });
   };
 

@@ -1,10 +1,13 @@
 import { TextField, Box, Button, Container, Typography, Alert, Paper, FormControlLabel, Switch } from "@mui/material";
 import "./View.css";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useContext, useRef, useState } from "react";
 import Dropdown from "./Dropdown";
+import { ValidViewNames } from "./ImTheActiveView";
+import { ButtonViewContext } from "../ButtonViewContext";
 //import server from "../../Services/serverCall.ts";
 
 function VideoForm() {
+  const setSelectedCentralPanelView = useContext(ButtonViewContext);
   const formRef = useRef<HTMLFormElement>();
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [showDifferentPasswordslAlert, setShowDifferentPasswordsAlert] = useState<boolean>(false);
@@ -106,7 +109,12 @@ function VideoForm() {
             variant="outlined"
           />
           <Container className="FormButtonsContainer">
-            <Button className="GenerateSummaryButton" variant="contained" type="submit">
+            <Button
+              className="GenerateSummaryButton"
+              variant="contained"
+              type="submit"
+              onClick={() => setSelectedCentralPanelView(ValidViewNames.Loading)}
+            >
               Generar
             </Button>
             <Button className="ClearSummaryButton" variant="text" color="error" type="reset">

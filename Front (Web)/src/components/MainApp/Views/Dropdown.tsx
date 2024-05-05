@@ -35,8 +35,8 @@ whith the sufixes "Form", "Slect" and "Item"*/
         <MenuItem className={styles.Item} value="">
           <em>{placeHolderItem}</em>
         </MenuItem>
-        {children.map((element) => (
-          <MenuItem className={styles.Item} value={element}>
+        {children.map((element, index) => (
+          <MenuItem key={index} className={styles.Item} value={element}>
             {element}
           </MenuItem>
         ))}

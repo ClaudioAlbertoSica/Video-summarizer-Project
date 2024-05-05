@@ -107,3 +107,11 @@ Don't touch it. I just used it to kill it's built-in margin */
     margin: 0px;
     margin-bottom: 10px;
 }
+
+.ProgressLoadingBox{
+    width: 80%;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

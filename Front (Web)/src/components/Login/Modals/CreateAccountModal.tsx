@@ -4,6 +4,7 @@ import { ModalNames } from "./ImTheActiveModal.ts";
 import { FormEvent, useContext, useRef, useState } from "react";
 import server from "../../../Services/serverCall.ts";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
+import { alertMessagesHandler, AlertMessage, alertTypes } from "../../../Services/alertMessagesHandler.ts";
 
 interface LoginModalSelector {
   selectorCallback: (modalName: ModalNames) => void;
@@ -12,12 +13,14 @@ interface LoginModalSelector {
 function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
   const userContext = useContext(LoggedUserContext);
   const formRef = useRef<HTMLFormElement>();
-  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
+
+  /* const [showAlert, setShowAlert] = useState<boolean>(false);
   const [showDifferentPasswordslAlert, setShowDifferentPasswordsAlert] = useState<boolean>(false);
-  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);*/
   const AlertMessagePasswordsAreDifferent: string = "Las contraseñas provistas no son coincidentes";
   const ConfirmationMessage: string = "El usuario fué creado satisfactoriamente";
-  const alertMessage: string = "Hubo un problema...";
+  const defaultAlertMessage: string = "Hubo un problema...";
 
   const handleSumbit = async (event: FormEvent) => {
     event.preventDefault();
@@ -30,8 +33,7 @@ function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
     if (submittedPassword1 === submittedPassword2) {
       handleServerQuerry(submittedEmail as string, submittedPassword1 as string);
     } else {
-      setShowDifferentPasswordsAlert(true);
-      setTimeout(() => setShowDifferentPasswordsAlert(false), 3000);
+      alertMessagesHandler(setAlertToShow, AlertMessagePasswordsAreDifferent, alertTypes.warning);
     }
   };
 
@@ -39,12 +41,12 @@ function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
     await server
       .post("/", { userName: emailToBeSent, passwd: passwordToBeSent })
       .then((res) => {
-        setShowConfirmation(true);
+        alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success);
         setTimeout(() => userContext.userSteState(res.data), 1500);
       })
-      .catch(() => {
-        setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 3000);
+      .catch((error) => {
+        console.log;
+        alertMessagesHandler(setAlertToShow, error.error || defaultAlertMessage, alertTypes.success);
       });
   };
 
@@ -58,9 +60,7 @@ function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
           Ingrese su email, su contraseña, vuelva a ingresar esta última para verificarla, y luego haga click en "Crear".
         </Typography>
         <Container className="AlertsContainer">
-          {showAlert && <Alert severity="warning"> {alertMessage} </Alert>}
-          {showDifferentPasswordslAlert && <Alert severity="warning"> {AlertMessagePasswordsAreDifferent} </Alert>}
-          {showConfirmation && <Alert severity="success"> {ConfirmationMessage} </Alert>}
+          {alertToShow.message !== "don't show" && <Alert severity={alertToShow.type}> {alertToShow.message} </Alert>}
         </Container>
         <TextField
           className="FormInputs"

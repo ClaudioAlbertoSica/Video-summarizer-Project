@@ -11,7 +11,7 @@ export enum ValidViewNames  {
   LogOut= 'LogOut',
 }
 
-function ImTheActiveView(nameToCompare: ValidViewNames, thisComponentsName: ValidViewNames) {
+const ImTheActiveView = (nameToCompare: ValidViewNames, thisComponentsName: ValidViewNames) => {
   return nameToCompare === thisComponentsName;
 }
 

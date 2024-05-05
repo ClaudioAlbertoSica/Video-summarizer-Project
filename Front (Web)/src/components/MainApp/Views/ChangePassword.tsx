@@ -3,16 +3,15 @@ import "./View.css";
 import { FormEvent, useContext, useRef, useState } from "react";
 import server from "../../../Services/serverCall.ts";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
+import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../Services/alertMessagesHandler.ts";
 
 function ChangePassword() {
   const userContext = useContext(LoggedUserContext);
   const formRef = useRef<HTMLFormElement>();
-  const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [showDifferentPasswordslAlert, setShowDifferentPasswordsAlert] = useState<boolean>(false);
-  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
   const AlertMessagePasswordsAreDifferent: string = "Las contraseñas provistas no son coincidentes";
   const ConfirmationMessage: string = "La contraseña fue modificada satisfactoriamente";
-  let alertMessage: string = "Hubo un problema...";
+  const defaultAlertMessage: string = "Hubo un problema...";
 
   const handleSumbit = async (event: FormEvent) => {
     event.preventDefault();
@@ -24,8 +23,7 @@ function ChangePassword() {
     if (submittedPassword1 === submittedPassword2) {
       handleServerQuerry(submittedPassword1 as string, submittedPassword2 as string);
     } else {
-      setShowDifferentPasswordsAlert(true);
-      setTimeout(() => setShowDifferentPasswordsAlert(false), 3000);
+      alertMessagesHandler(setAlertToShow, AlertMessagePasswordsAreDifferent, alertTypes.warning);
     }
   };
 
@@ -38,13 +36,10 @@ function ChangePassword() {
       })
       .then((res) => {
         userContext.userSteState(res.data);
-        setShowConfirmation(true);
-        setTimeout(() => setShowConfirmation(false), 3000);
+        alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success);
       })
       .catch((err) => {
-        alertMessage = err.message;
-        setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 3000);
+        alertMessagesHandler(setAlertToShow, err.error || defaultAlertMessage, alertTypes.error);
       });
   };
 
@@ -59,9 +54,7 @@ function ChangePassword() {
           Finalmente, haga click en "Modificar".
         </Typography>
         <Container className="AlertsContainerViews">
-          {showAlert && <Alert severity="warning"> {alertMessage} </Alert>}
-          {showDifferentPasswordslAlert && <Alert severity="warning"> {AlertMessagePasswordsAreDifferent} </Alert>}
-          {showConfirmation && <Alert severity="success"> {ConfirmationMessage} </Alert>}
+          {alertToShow.message !== "don't show" && <Alert severity={alertToShow.type}> {alertToShow.message} </Alert>}
         </Container>
         <Container className="InputsContainer">
           <TextField

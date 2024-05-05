@@ -4,6 +4,7 @@ import { ModalNames } from "./ImTheActiveModal.ts";
 import server from "../../../Services/serverCall.ts";
 import { FormEvent, useRef, useState } from "react";
 import { LoggedUser } from "../../../ActiveUserContext.ts";
+import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../Services/alertMessagesHandler.ts";
 
 // Link as RouterLink,
 interface LoginModalInterface {
@@ -13,8 +14,9 @@ interface LoginModalInterface {
 
 function LoginModal({ selectorCallback, setNewLoggedUser }: LoginModalInterface) {
   const formRef = useRef<HTMLFormElement>();
-  const [showAlert, setShowAlert] = useState<boolean>(false);
-  let alertMessage: string = "Acceso denegado: por favor revise su usario y contraseña";
+  const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
+  const confirmationMessage: string = "Ingreso Correcto";
+  const defaultAlertMessage: string = "Acceso denegado: por favor revise su usario y contraseña";
 
   const handleSumbit = async (event: FormEvent) => {
     event.preventDefault();
@@ -24,18 +26,12 @@ function LoginModal({ selectorCallback, setNewLoggedUser }: LoginModalInterface)
     await server
       .post<LoggedUser>("/login", { userName: submittedEmail, passwd: submittedPassword })
       .then((res) => {
-        console.log(res.data);
-        setNewLoggedUser(res.data);
+        alertMessagesHandler(setAlertToShow, confirmationMessage, alertTypes.success, 500);
+        setTimeout(() => setNewLoggedUser(res.data), 500);
       })
       .catch((err) => {
-        displayAlert(err.message);
+        alertMessagesHandler(setAlertToShow, err.error || defaultAlertMessage, alertTypes.error);
       });
-  };
-
-  const displayAlert = (err: string) => {
-    alertMessage = err;
-    console.log(err);
-    setShowAlert(true);
   };
 
   return (
@@ -47,7 +43,9 @@ function LoginModal({ selectorCallback, setNewLoggedUser }: LoginModalInterface)
         <Typography variant="subtitle1" textAlign="center" gutterBottom>
           Por favor, ingrese su email y su contraseña
         </Typography>
-        {showAlert && <Alert severity="warning"> {alertMessage} </Alert>}
+        <Container className="AlertsContainer">
+          {alertToShow.message !== "don't show" && <Alert severity={alertToShow.type}> {alertToShow.message} </Alert>}
+        </Container>
         <TextField
           className="FormInputs"
           id="mail"

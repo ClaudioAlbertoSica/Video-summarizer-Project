@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
+import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/login_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
@@ -30,6 +31,10 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         child: Column(
           children: [
+            const SizedBox(
+              height: 250,
+              child: Placeholder(),
+            ),
             Expanded(
               child: ListView.builder(
                 itemCount: resumenList.length,
@@ -47,7 +52,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Acción para el primer botón
+                    context.pushNamed(CoreFormVideo.name);
                   },
                   child: const Text('Botón 1'),
                 ),

@@ -3,9 +3,11 @@ import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import 'package:resumen_mobile/presentation/screen/login_screen.dart';
 
 import '../presentation/screen/create_account_screen.dart';
+import '../presentation/screen/form_video_screen.dart';
 
 // GoRouter configuration
 final appRouter = GoRouter(
+  initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',
@@ -21,6 +23,11 @@ final appRouter = GoRouter(
       path: '/home-screen',
       builder: (context, state) => const HomeScreen(),
       name: HomeScreen.name
+    ),
+    GoRoute(
+      path: '/resumen-video-form',
+      builder: (context, state) => const CoreFormVideo(),
+      name: CoreFormVideo.name
     ),
   ],
 );

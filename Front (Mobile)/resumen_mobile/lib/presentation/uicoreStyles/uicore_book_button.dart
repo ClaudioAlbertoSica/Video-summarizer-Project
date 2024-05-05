@@ -20,6 +20,9 @@ class BookButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(9.0), // Ajusta el radio de los bordes de la tarjeta
       ),
       child: ListTile(
+        onTap: () {
+          context.pushNamed(LoginScreen.name, extra: resumen);
+        },
         leading: Container(
               width: 100,
               height: 100,

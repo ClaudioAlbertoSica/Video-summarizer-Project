@@ -108,8 +108,8 @@ class Controlador {
     crearResumenTexto = async (req, res) => {
         try {
             const { id } = req.params
-            const texto = req.body
-            const resumenCreado = this.servicio.crearResumenTexto(id, texto)
+            const { texto, esBreve, idioma, titulo} = req.body
+            const resumenCreado = this.servicio.crearResumenTexto(id, texto, esBreve, idioma, titulo)
             res.json(resumenCreado)
         } catch (error) {
             res.status(500).json({error:error.message})  

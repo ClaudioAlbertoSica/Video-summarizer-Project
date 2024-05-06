@@ -139,16 +139,17 @@ class Servicio {
         const pythonScriptPath = './services/serviciosPython/procesarTexto.py';
         const command = `python ${pythonScriptPath}`;
         console.log('ejecute el script python')
-
+        return new Promise((resolve, reject) => {
         exec(command, (error, stdout, stderr) => {
             if (error) {
                 console.error(`Error executing Python script: ${error}`);
-                return;
+                reject(error);
             }
             // Output from Python script
             console.log(`Output: ${stdout}`);
             console.error(`Errors: ${stderr}`);
-        });
+            resolve();
+        })});
     }
 
 
@@ -175,15 +176,21 @@ class Servicio {
         }
     }
 
-    crearResumenTexto = async (id, texto) => {
-        const ruta = './services/serviciosPython/textoEntrada.txt'
-        const texto1 = 'asdasdasdd'
+    crearResumenTexto = async (id, texto, esBreve, idioma, titulo) => {
+        const rutaEntrada = './services/serviciosPython/textoEntrada.txt'
+        const rutaSalida = './services/serviciosPython/textoSalida.txt'
+        const resumen = {}
         try {
-            if (1 == 1) {
+            if (id, texto, esBreve, idioma) {
+                resumen.esBreve = esBreve
+                resumen.idioma = idioma
+                if(titulo){
+                    resumen.titulo = titulo
+                }else{
+                    resumen.titulo = "ResumenDeTexto"
+                }
 
-
-
-                fs.writeFile(ruta, texto1, (err) => {
+                await fs.promises.writeFile(rutaEntrada, texto, (err) => {
                     if (err) {
                         console.log('error escribiendo archivo')
                     } else {
@@ -192,12 +199,25 @@ class Servicio {
                 })
 
                 await this.runPythonTexto()
-
-                return {}
-            } else {
+                
+                const textoResumido = await fs.promises.readFile(rutaSalida, 'utf-8', (err) => {
+                    if (err) {
+                        console.log('error leyendo archivo')
+                    } else {
+                        console.log('Leido')
+                    }
+                })
+                resumen.text = textoResumido
+            }else {
                 console.log('error de ingreso de datos')
             }
-        } catch (error) {
+
+                
+
+                const resumenNuevo = await this.model.crearResumenTexto(id, resumen)
+
+                return resumenNuevo
+            }catch (error) {
             console.log(error.message)
         }
     }
@@ -233,5 +253,8 @@ class Servicio {
         //  console.log(error.message) 
         //}
     }
+
+    
+
 }
 export default Servicio

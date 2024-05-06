@@ -200,6 +200,16 @@ class ModelMongoDB {
         }
     }
 
+    crearResumenTexto = async (id, resumen) => {
+        const usuario =  await this.obtenerUsuarios(id)
+        const inventario = usuario.inventario
+        resumen.idres = String(parseInt(inventario[inventario.length - 1]?.id || 0) + 1)
+        inventario.push(resumen)
+        await this.actualizarUsuario(id, {inventario: inventario})
+        const resumenNuevo = await this.obtenerResumenes(id, idres)
+        return resumenNuevo
+    }
+
 
 
 }

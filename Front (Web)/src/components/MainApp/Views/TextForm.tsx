@@ -4,14 +4,13 @@ import { FormEvent, useContext, useRef, useState } from "react";
 import Dropdown from "./Dropdown";
 import { ButtonViewContext } from "../ButtonViewContext";
 import { ValidViewNames } from "./ImTheActiveView";
+import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../Services/alertMessagesHandler";
 //import server from "../../Services/serverCall.ts";
 
 function TextForm() {
   const setSelectedCentralPanelView = useContext(ButtonViewContext);
   const formRef = useRef<HTMLFormElement>();
-  const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [showDifferentPasswordslAlert, setShowDifferentPasswordsAlert] = useState<boolean>(false);
-  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
   const AlertMessagePasswordsAreDifferent: string = "Las contraseñas provistas no son coincidentes";
   const ConfirmationMessage: string = "La contraseña fue modificada satisfactoriamente";
   const alertMessage: string = "Hubo un problema...";
@@ -26,7 +25,7 @@ function TextForm() {
     if (submittedPassword1 === submittedPassword2) {
       handleServerQuerry(submittedPassword1 as string);
     } else {
-      setShowDifferentPasswordsAlert(true);
+      alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success);
     }
   };
 
@@ -51,9 +50,7 @@ function TextForm() {
           Generá tu resumen (Texto)
         </Typography>
         <Container className="AlertsContainerViews">
-          {showAlert && <Alert severity="warning"> {alertMessage} </Alert>}
-          {showDifferentPasswordslAlert && <Alert severity="warning"> {AlertMessagePasswordsAreDifferent} </Alert>}
-          {showConfirmation && <Alert severity="success"> {ConfirmationMessage} </Alert>}
+          {alertToShow.message !== "don't show" && <Alert severity={alertToShow.type}> {alertToShow.message} </Alert>}
         </Container>
         <Container className="InputsContainer">
           <TextField
@@ -80,15 +77,6 @@ function TextForm() {
             label="Idioma del Resumen"
           >
             {["Español", "Inglés"]}
-          </Dropdown>
-          <Dropdown
-            required={true}
-            id="format"
-            name="format"
-            placeHolderItem="seleccione un formato.."
-            label="Formato del Resumen"
-          >
-            {[".PDF", ".DOCx"]}
           </Dropdown>
           <TextField
             size="small"

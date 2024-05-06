@@ -95,6 +95,7 @@ class Controlador {
     }
 
     crearResumenVideo = async (req, res) => {
+        debugger;
         try {
             const { id } = req.params
             const url = req.body

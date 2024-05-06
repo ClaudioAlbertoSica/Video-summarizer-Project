@@ -3,7 +3,9 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:resumen_mobile/main.dart';
 import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import '../uicoreStyles/uicore_app_title_style.dart';
@@ -12,7 +14,8 @@ import '../uicoreStyles/uicore_title_style.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class LoginScreen extends StatelessWidget {
+
+class LoginScreen extends ConsumerWidget {
   static const String name = 'LoginScreen';
   //Aca creo que iria un atributo para guardar lo del form o input.
   final TextEditingController _inputUsernameController = TextEditingController();
@@ -30,7 +33,7 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     String randomImage =  getRandomImage();
     return Scaffold(
       drawerEnableOpenDragGesture: false,
@@ -63,8 +66,8 @@ class LoginScreen extends StatelessWidget {
               //aca va el login button
               ElevatedButton(
                 onPressed: () async {
-                  bool login = true; //await sendLoginData(_inputUsernameController.text,_inputPassController.text);
-                  if(true) {
+                  String? user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
+                  if(user != null) {
                     context.goNamed(HomeScreen.name);
                   } else {
                     _showErrorMessage(context);
@@ -108,8 +111,8 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> sendLoginData(String username, String password) async {
-    bool loginOk = false;
+  Future<String?> sendLoginData(String username, String password, WidgetRef ref) async {
+    String? loginOk;
     // servidor Node.js
     final url = Uri.parse('http://localhost:8080/api/login');
     final response = await http.post(
@@ -126,8 +129,10 @@ class LoginScreen extends StatelessWidget {
     if (response.statusCode == 200) {
       // Si la solicitud es exitosa, imprime la respuesta del servidor
       print('Respuesta del servidor: ${response.body}');
-
-      loginOk = true;
+      // ver de no guardar el user porque esta el password!!
+      //{"_id":"663445cf0a08e557fa580267","id":"3","userName":"Marian@Marian","passwd":"222","inventario":[]}
+      ref.read(userProvider.notifier).state = json.decode(response.body)['id'];
+      loginOk = response.body;
     } else {
       errorMessage = json.decode(response.body)['error'];
     }

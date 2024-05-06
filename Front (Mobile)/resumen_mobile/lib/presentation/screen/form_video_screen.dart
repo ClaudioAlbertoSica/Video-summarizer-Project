@@ -79,24 +79,27 @@ class _FormVideoState extends State<FormVideo> {
             title: const Text('Short resumen'),
             value: shortValue,
             onChanged: (value) {
-              shortValue = !shortValue;
-              setState((){});
+              setState((){
+                shortValue = value;
+              });
             },
           ),
           SwitchListTile(
             title: const Text('I want transcript'),
             value: transcrpit,
             onChanged: (value) {
-              transcrpit = !transcrpit;
-              setState((){});
+              setState((){
+                transcrpit = value;
+              });
             },
           ),
           SwitchListTile(
             title: const Text('I want Images'),
             value: imagesObtain,
             onChanged: (value) {
-              imagesObtain = !imagesObtain;
-              setState((){});
+              setState((){
+                imagesObtain = value;
+              });
             },
           ),
           ExpansionTile(

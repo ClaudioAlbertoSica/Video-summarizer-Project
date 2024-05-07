@@ -5,11 +5,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:resumen_mobile/main.dart';
 import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import '../uicoreStyles/uicore_app_title_style.dart';
 import '../uicoreStyles/uicore_input_style.dart';
+import '../uicoreStyles/uicore_montain_backgound.dart';
 import '../uicoreStyles/uicore_title_style.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -36,77 +38,96 @@ class LoginScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     String randomImage =  getRandomImage();
     return Scaffold(
-      drawerEnableOpenDragGesture: false,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: const AppTitleStyle(text:'David Og', color: Colors.white),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/$randomImage'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(50.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              //input para usuario
-              InputKindle(label:'email', obscureText: false, inputController: _inputUsernameController),
-              //espacio entre inputs
-              const SizedBox(height: 10),
-              //input para password
-              InputKindle(label:'password', obscureText: true, inputController: _inputPassController),
-               //Agrego espacio al boton
-              const SizedBox(height: 10),
-              //aca va el login button
-              ElevatedButton(
-                onPressed: () async {
-                  String? user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
-                  if(user != null) {
-                    context.goNamed(HomeScreen.name);
-                  } else {
-                    _showErrorMessage(context);
-                  }
-                                  
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
-                  elevation: MaterialStateProperty.all<double>(20), // Ajusta la elevación para la sombra exterior
-                  overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(0, 3, 3, 3)), // Elimina el color de superposición para un efecto más suave
-                  shadowColor: MaterialStateProperty.all<Color>(const Color.fromARGB(177, 3, 3, 3).withOpacity(0.4)), // Color de la sombra
-                  
-                ),
-                child: const TitleStyle(
-                  text: 'Login',
-                ),
+      body: Stack(
+        children: [
+          Container(
+            height: 350,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/fondoConejo.gif'),
+                fit: BoxFit.cover,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: (){context.pushNamed(CreateAccountScreen.name);}, 
-                    child: const TitleStyle(
-                      text: 'Create account',
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: (){
-                      _showDialogForgotPass(context);
-                    }, 
-                    child: const TitleStyle(
-                      text: 'Forgot your pass?',
-                    ),
-                  ),
-                ]
-              ),
-            ],
+            ),
           ),
-        ),
+          Positioned.fill(
+            child: ClipPath(
+              clipper: MountainClipper(),
+              child: Container(
+               color: Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(50.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text('Writer', 
+                  style: GoogleFonts.pacifico(
+                    textStyle: Theme.of(context).textTheme.displayLarge,
+                    fontSize: 80,
+                    color: const Color.fromARGB(255, 5, 5, 5)
+                  ),
+                ),
+                const Text('rabbit', 
+                  style: TextStyle(
+                    fontFamily: 'PoetsenOne',
+                    fontSize: 32,
+                  )
+                ),
+                const SizedBox(height: 120,),
+                InputKindle(label:'email', obscureText: false, inputController: _inputUsernameController),
+                //espacio entre inputs
+                const SizedBox(height: 10),
+                //input para password
+                InputKindle(label:'password', obscureText: true, inputController: _inputPassController),
+                //Agrego espacio al boton
+                const SizedBox(height: 10),
+                //aca va el login button
+                ElevatedButton(
+                  onPressed: () async {
+                   // String? user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
+                    if(true /* || user != null */) {
+                      context.goNamed(HomeScreen.name);
+                    } else {
+                      _showErrorMessage(context);
+                    }
+                                    
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
+                    elevation: MaterialStateProperty.all<double>(20), // Ajusta la elevación para la sombra exterior
+                    overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(0, 3, 3, 3)), // Elimina el color de superposición para un efecto más suave
+                    shadowColor: MaterialStateProperty.all<Color>(const Color.fromARGB(177, 3, 3, 3).withOpacity(0.4)), // Color de la sombra
+                    
+                  ),
+                  child: const TitleStyle(
+                    text: 'Login',
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: (){context.pushNamed(CreateAccountScreen.name);}, 
+                      child: const TitleStyle(
+                        text: 'Create account',
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: (){
+                        _showDialogForgotPass(context);
+                      }, 
+                      child: const TitleStyle(
+                        text: 'Forgot your pass?',
+                      ),
+                    ),
+                  ]
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -21,6 +21,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
+  fonts:
+    - family: PoetsenOne
+      fonts:
+        - asset: fonts/PoetsenOne-Regular.ttf
   assets:
     - assets/images/

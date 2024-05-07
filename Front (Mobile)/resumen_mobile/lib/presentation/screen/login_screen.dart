@@ -36,12 +36,13 @@ class LoginScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final screenHeight = MediaQuery.of(context).size.height;
     String randomImage =  getRandomImage();
     return Scaffold(
       body: Stack(
         children: [
           Container(
-            height: 350,
+            height: screenHeight * 0.4,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/fondoConejo.gif'),
@@ -109,17 +110,27 @@ class LoginScreen extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(
-                      onPressed: (){context.pushNamed(CreateAccountScreen.name);}, 
-                      child: const TitleStyle(
-                        text: 'Create account',
+                      onPressed: (){
+                        context.pushNamed(CreateAccountScreen.name);
+                      }, 
+                      child: Text('Create account', 
+                        style: TextStyle(
+                          fontFamily: 'PoetsenOne',
+                          fontSize: 15,
+                          color: Color.fromARGB(255, 5, 5, 5)
+                        ),
                       ),
                     ),
                     TextButton(
                       onPressed: (){
                         _showDialogForgotPass(context);
-                      }, 
-                      child: const TitleStyle(
-                        text: 'Forgot your pass?',
+                      },
+                      child: Text('Forgot your pass?', 
+                        style: TextStyle(
+                          fontFamily: 'PoetsenOne',
+                          fontSize: 15,
+                          color: Color.fromARGB(255, 5, 5, 5)
+                        ),
                       ),
                     ),
                   ]

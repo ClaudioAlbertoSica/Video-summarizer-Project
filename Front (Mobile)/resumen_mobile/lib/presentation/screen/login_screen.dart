@@ -86,8 +86,8 @@ class LoginScreen extends ConsumerWidget {
                 //aca va el login button
                 ElevatedButton(
                   onPressed: () async {
-                   // String? user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
-                    if(true /* || user != null */) {
+                  String? user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
+                    if(user != null) {
                       context.goNamed(HomeScreen.name);
                     } else {
                       _showErrorMessage(context);

@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import 'package:resumen_mobile/presentation/screen/login_screen.dart';
 
@@ -28,6 +29,11 @@ final appRouter = GoRouter(
       path: '/resumen-video-form',
       builder: (context, state) => const CoreFormVideo(),
       name: CoreFormVideo.name
+    ),
+    GoRoute(
+      path: '/resumen-text-form',
+      builder: (context, state) => const CoreFormText(),
+      name: CoreFormText.name
     ),
   ],
 );

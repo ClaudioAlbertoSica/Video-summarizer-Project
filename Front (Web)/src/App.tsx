@@ -6,15 +6,16 @@ import { LoggedUser, placeholderUser, LoggedUserContext } from "./ActiveUserCont
 function App() {
   const [currentUser, setUser] = useState<LoggedUser>(placeholderUser);
 
-  /*  return (
+  return (
     <>
       <LoggedUserContext.Provider value={{ userState: currentUser, userSteState: setUser }}>
         {currentUser === placeholderUser ? <LoginLayout setUser={setUser} /> : <GridLayout />};
       </LoggedUserContext.Provider>
     </>
   );
-  */
-  return <GridLayout />;
+
+  /*<GridLayout />
+  );*/
 }
 
 export default App;

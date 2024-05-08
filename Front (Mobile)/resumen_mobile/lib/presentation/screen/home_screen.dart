@@ -17,7 +17,7 @@ import '../uicoreStyles/uicore_paragraph_style.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String name = 'HomeScreen';
-  final List<String> imageNames = ['home1.gif','home2.gif', 'home3.gif', 'home4.gif'];
+  final List<String> imageNames = ['home1.gif','home2.gif', 'home3.gif', 'home4.gif', 'home5.gif', 'home6.gif', 'home7.gif'];
 
   HomeScreen({super.key});
   String getRandomImage() {
@@ -51,9 +51,9 @@ class HomeScreen extends StatelessWidget {
           ),
           Positioned.fill(
             child: ClipPath(
-              clipper: MountainClipper(),
+              clipper: MountainClipperMediumFlat(),
               child: Container(
-               color: Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
+               color: Color.fromARGB(255, 255, 241, 241), // Cambia este color al color que desees para el fondo dentado
               ),
             ),
           ),

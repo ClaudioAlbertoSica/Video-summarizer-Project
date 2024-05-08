@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:resumen_mobile/main.dart';
+import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgound.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
 import '../uicoreStyles/uicore_app_title_style.dart';
@@ -16,6 +18,7 @@ class CoreFormText extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final screenHeight = MediaQuery.of(context).size.height;
     final idUser = ref.watch(userProvider.notifier).state;
     return Scaffold(
       drawerEnableOpenDragGesture: false,
@@ -25,20 +28,37 @@ class CoreFormText extends ConsumerWidget {
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[200], // Color de fondo
-        ),
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 250,
-              child: Placeholder(),
+      body: Stack(
+        children: [
+          Container(
+            height: screenHeight * 0.4,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/formTextResumenBackground.gif'),
+                fit: BoxFit.cover,
+              ),
             ),
-            FormText(id: idUser as String),
-          ]
-        ),
+          ),
+          Positioned.fill(
+            child: ClipPath(
+              clipper: MountainClipperMediumFlat(),
+              child: Container(
+               color: Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 250,
+                ),
+                FormText(id: idUser as String),
+              ]
+            ),
+          ),
+        ]
       ),
     );
   }
@@ -72,7 +92,7 @@ class _FormTextState extends State<FormText> {
       child: Column(
         children: [
           TextFormField(
-            maxLines: 9,
+            maxLines: 4,
             keyboardType: TextInputType.multiline,
             controller: _inputTextController,
             decoration: const InputDecoration(

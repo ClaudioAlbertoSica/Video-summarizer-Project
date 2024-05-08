@@ -87,8 +87,8 @@ class LoginScreen extends ConsumerWidget {
                 //aca va el login button
                 ElevatedButton(
                   onPressed: () async {
-                  String? user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
-                    if(user != null) {
+                  bool user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
+                    if(user) {
                       context.goNamed(HomeScreen.name);
                     } else {
                       _showErrorMessage(context);
@@ -143,34 +143,40 @@ class LoginScreen extends ConsumerWidget {
     );
   }
 
-  Future<String?> sendLoginData(String username, String password, WidgetRef ref) async {
-    String? loginOk;
+  Future<bool> sendLoginData(String username, String password, WidgetRef ref) async {
+    bool loginOk = false;
     // servidor Node.js
-    final url = Uri.parse('http://localhost:8080/api/login');
-    final response = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String> {
-        'userName': username,
-        'passwd': password,
-      }),
-    );
-    //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
-    if (response.statusCode == 200) {
-      // Si la solicitud es exitosa, imprime la respuesta del servidor
-      print('Respuesta del servidor: ${response.body}');
-      // ver de no guardar el user porque esta el password!!
-      //{"_id":"663445cf0a08e557fa580267","id":"3","userName":"Marian@Marian","passwd":"222","inventario":[]}
-      ref.read(userProvider.notifier).state = json.decode(response.body)['id'];
-      loginOk = response.body;
-    } else {
-      errorMessage = json.decode(response.body)['error'];
+    try {
+      final url = Uri.parse('http://localhost:8080/api/login');
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String> {
+          'userName': username,
+          'passwd': password,
+        }),
+      );
+      //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
+      if (response.statusCode == 200) {
+        // Si la solicitud es exitosa, imprime la respuesta del servidor
+        print('Respuesta del servidor: ${response.body}');
+        // ver de no guardar el user porque esta el password!!
+        //{"_id":"663445cf0a08e557fa580267","id":"3","userName":"Marian@Marian","passwd":"222","inventario":[]}
+        ref.read(userProvider.notifier).state = json.decode(response.body)['id'];
+        loginOk = true;
+      } else {
+        errorMessage = json.decode(response.body)['error'];
+      }
+    } catch (error) {
+      errorMessage = 'Error: Connection ERROR - Server not found';
     }
-      return loginOk; 
+
+    return loginOk;
   }
-    void _showDialogForgotPass(BuildContext context) {
+
+  void _showDialogForgotPass(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

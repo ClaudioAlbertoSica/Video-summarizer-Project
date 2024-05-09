@@ -22,22 +22,13 @@ class LoginScreen extends ConsumerWidget {
   //Aca creo que iria un atributo para guardar lo del form o input.
   final TextEditingController _inputUsernameController = TextEditingController();
   final TextEditingController _inputPassController = TextEditingController();
-  final List<String> imageNames = ['1.jpeg'];
   String errorMessage = '';
-
-  // Método para obtener un nombre de imagen aleatorio
-  String getRandomImage() {
-    Random random = Random(); // Instancia de la clase Random
-    int index = random.nextInt(imageNames.length); // Genera un número aleatorio
-    return imageNames[index]; // Retorna el nombre de la imagen en el índice aleatorio
-  }
 
   LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenHeight = MediaQuery.of(context).size.height;
-    String randomImage =  getRandomImage();
     return Scaffold(
       body: Stack(
         children: [
@@ -63,18 +54,9 @@ class LoginScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('Writer', 
-                  style: GoogleFonts.pacifico(
-                    textStyle: Theme.of(context).textTheme.displayLarge,
-                    fontSize: 80,
-                    color: const Color.fromARGB(255, 5, 5, 5)
-                  ),
-                ),
-                const Text('rabbit', 
-                  style: TextStyle(
-                    fontFamily: 'PoetsenOne',
-                    fontSize: 32,
-                  )
+                Image.asset(
+                  'assets/images/WriterRabbitLogo.png',
+                  height: screenHeight * 0.15,  
                 ),
                 const SizedBox(height: 120,),
                 InputKindle(label:'email', obscureText: false, inputController: _inputUsernameController),

@@ -3,6 +3,7 @@ import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import 'package:resumen_mobile/presentation/screen/login_screen.dart';
 
+import '../presentation/screen/config_screen.dart';
 import '../presentation/screen/create_account_screen.dart';
 import '../presentation/screen/form_video_screen.dart';
 
@@ -34,6 +35,11 @@ final appRouter = GoRouter(
       path: '/resumen-text-form',
       builder: (context, state) => const CoreFormText(),
       name: CoreFormText.name
+    ),
+    GoRoute(
+      path: '/config-screen',
+      builder: (context, state) => const ConfigScreen(),
+      name: ConfigScreen.name
     ),
   ],
 );

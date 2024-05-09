@@ -37,10 +37,10 @@ class CreateAccountScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            height: screenHeight * 0.3,
+            height: screenHeight * 0.4,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/createAccount.gif'),
+                image: AssetImage('assets/images/fondoConejo.gif'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -49,7 +49,7 @@ class CreateAccountScreen extends StatelessWidget {
             child: ClipPath(
               clipper: MountainClipper(),
               child: Container(
-               color: Color.fromARGB(255, 199, 236, 245), // Cambia este color al color que desees para el fondo dentado
+               color: Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
               ),
             ),
           ),
@@ -58,6 +58,11 @@ class CreateAccountScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                Image.asset(
+                  'assets/images/WriterRabbitLogo.png',
+                  height: screenHeight * 0.15,  
+                ),
+                const SizedBox(height: 120,),
                 //input para usuario
                 InputKindle(label:'email', obscureText: false, inputController: _inputUsernameController),
                 //espacio entre inputs

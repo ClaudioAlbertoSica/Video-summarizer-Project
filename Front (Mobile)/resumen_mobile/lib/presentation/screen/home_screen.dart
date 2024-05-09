@@ -11,6 +11,7 @@ import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgoun
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
 import '../../core/data/resume_datasource.dart';
+import '../../core/menu/drawer_menu.dart';
 import '../uicoreStyles/uicore_app_title_style.dart';
 import '../uicoreStyles/uicore_book_button.dart';
 import '../uicoreStyles/uicore_paragraph_style.dart';
@@ -34,10 +35,12 @@ class HomeScreen extends StatelessWidget {
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const AppTitleStyle(text:'David Og', color: Colors.black),
+        title: const AppTitleStyle(text: 'David Og', color: Colors.black),
         centerTitle: true,
         backgroundColor: Colors.transparent,
+        
       ),
+      endDrawer: DrawerMenu(),
       body: Stack(
         children: [
           Container(
@@ -62,7 +65,7 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(
-                  height: 250
+                  height: screenHeight * 0.32
                 ),
                 Expanded(
                   child: ListView.builder(

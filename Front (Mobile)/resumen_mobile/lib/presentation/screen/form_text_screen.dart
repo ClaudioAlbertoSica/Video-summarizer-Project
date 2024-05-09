@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:resumen_mobile/main.dart';
+import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgound.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
@@ -20,6 +21,11 @@ class CoreFormText extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final screenHeight = MediaQuery.of(context).size.height;
     final idUser = ref.watch(userProvider.notifier).state;
+    final background = ref.watch(themeNotifierProvider)
+      .isDark 
+        ? 'formTextResumenBackgroundD.gif' 
+        : 'formTextResumenBackground.gif';
+
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
@@ -32,9 +38,9 @@ class CoreFormText extends ConsumerWidget {
         children: [
           Container(
             height: screenHeight * 0.4,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/formTextResumenBackground.gif'),
+                image: AssetImage('assets/images/$background'),
                 fit: BoxFit.cover,
               ),
             ),

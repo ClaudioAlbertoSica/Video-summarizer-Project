@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
 import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
@@ -12,24 +13,27 @@ import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart
 
 import '../../core/data/resume_datasource.dart';
 import '../../core/menu/drawer_menu.dart';
+import '../providers/theme_provider.dart';
 import '../uicoreStyles/uicore_app_title_style.dart';
 import '../uicoreStyles/uicore_book_button.dart';
 import '../uicoreStyles/uicore_paragraph_style.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   static const String name = 'HomeScreen';
   final List<String> imageNames = ['home1.gif','home2.gif', 'home3.gif', 'home4.gif', 'home5.gif', 'home6.gif', 'home7.gif'];
+  final List<String> imageDark = ['dome1.gif','dome2.gif', 'dome3.gif', 'dome4.gif', 'dome5.gif', 'dome6.gif', 'dome7.gif'];
 
   HomeScreen({super.key});
-  String getRandomImage() {
+  String getRandomImage(bool isDark) {
     Random random = Random(); // Instancia de la clase Random
     int index = random.nextInt(imageNames.length); // Genera un número aleatorio
-    return imageNames[index]; // Retorna el nombre de la imagen en el índice aleatorio
+    return isDark ? imageDark[index] : imageNames[index]; // Retorna el nombre de la imagen en el índice aleatorio
   }
 
   @override
-  Widget build(BuildContext context) {
-    String randomImage =  getRandomImage();
+  Widget build(BuildContext context,  WidgetRef ref) {
+    final isDark = ref.watch(themeNotifierProvider).isDark;
+    String randomImage =  getRandomImage(isDark);
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       drawerEnableOpenDragGesture: false,

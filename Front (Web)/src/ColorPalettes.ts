@@ -1,5 +1,5 @@
 import { PaletteMode, hexToRgb } from "@mui/material";
-import { amber, blue, deepOrange, grey } from "@mui/material/colors";
+import {  blue, deepOrange, grey } from "@mui/material/colors";
 
 declare module "@mui/material/styles" {
     interface Theme {
@@ -32,10 +32,10 @@ declare module "@mui/material/styles" {
         ? {
             // palette values for light mode
             primary: blue,
-            divider: amber[200],
+            divider: grey[500],
             background: {
-              default: blue[100],
-              paper: deepOrange[900],
+              default: blue[500],
+              paper: grey[200],
             },
             text: {
               primary: grey[900],
@@ -69,3 +69,4 @@ declare module "@mui/material/styles" {
           }),
     },
   });
+

@@ -3,7 +3,7 @@ import { List, ListItem, Paper } from "@mui/material";
 import SummaryListItem from "./04-ListItem.tsx";
 import ListItemPlaceholder from "./05-ListItemPlaceHolder.tsx";
 import "./List&Handler.css";
-import image from "../../../../../assets/Logo.png";
+import placeholderImage from "../../../../../assets/Logo.png";
 import { LoggedUserContext } from "../../../../../ActiveUserContext.ts";
 
 function ListForAccordion() {
@@ -12,7 +12,7 @@ function ListForAccordion() {
   const listToShow = () => {
     let objetcToReturn: ReactElement[] = [
       <ListItem key={"Nothing to show"}>
-        <ListItemPlaceholder image={image} title="No summaries yet" />
+        <ListItemPlaceholder image={placeholderImage} title="No summaries yet" />
       </ListItem>,
     ];
 

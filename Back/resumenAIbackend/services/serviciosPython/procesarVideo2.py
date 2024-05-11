@@ -114,6 +114,18 @@ arrComparacion = compararCapturasCResumen(descrCapturas, textoS)
 
 ##print(arrComparacion)
 
+def extract_numbers(array):
+    numbers = []
+    for string in array:
+
+        matches = re.findall(r'\b\d+\b', string)
+
+        numbers.extend(matches)
+    return numbers
+
+arrComparacionLimpio = extract_numbers(arrComparacion)
+
+
 ##CONVIERTO ARR A INT
 def convertirArrInt(arrStr):
     arrInt = []
@@ -121,7 +133,7 @@ def convertirArrInt(arrStr):
         arrInt.append(int(i))
     return arrInt
 
-arrInteger = convertirArrInt(arrComparacion)
+arrInteger = convertirArrInt(arrComparacionLimpio)
 
 def seleccionarCapturasRankeadas(arrCap, arrEval):
     capturasDEF = []

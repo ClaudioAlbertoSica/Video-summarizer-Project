@@ -120,9 +120,12 @@ class Servicio {
 
     //LLAMAMOS A LOS DOS SCRIPTS PY PARA PROCESAR VIDEO
     runPythonVideo = async () => {
+        let urlVideo = 'https://www.youtube.com/watch?v=nJPQDyw9YXI'
+        
         console.log('entre al script')
         const pythonScriptPath = './services/serviciosPython/procesarVideo.py';
-        const command = `python ${pythonScriptPath} ${'https://www.youtube.com/watch?v=2Xa3Y4xz8_s'}`;
+        //const command = `python ${pythonScriptPath} ${'https://www.youtube.com/watch?v=2Xa3Y4xz8_s'}`; VIDEO 6 MIN
+        const command = `python ${pythonScriptPath} ${urlVideo}`;
         
 
         return new Promise((resolve, reject) => {

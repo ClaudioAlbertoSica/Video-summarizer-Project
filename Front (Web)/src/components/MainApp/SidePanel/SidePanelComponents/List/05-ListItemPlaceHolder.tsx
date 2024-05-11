@@ -30,7 +30,7 @@ function ListItemPlaceHolder({ image, title }: Optionals) {
             </Typography>
           </Skeleton>
         )}
-        <StarCounter starsToShow={5} couterSize="small" starsToColour={3} disabled={true} />
+        <StarCounter starsToShow={5} couterSize="small" starsToColour={3} disabled={"usePlaceHolder"} />
       </Container>
       <IconButton>
         <ArrowForwardIosIcon />

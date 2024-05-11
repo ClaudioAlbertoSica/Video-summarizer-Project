@@ -28,7 +28,7 @@ export const placeholderUser: LoggedUser = Object.freeze({
         {
             idres: "2",
             title: "placeholder2",
-            point: 0,
+            point: 3,
             miniatura: "./assets/Logo.png",
             }]
     })

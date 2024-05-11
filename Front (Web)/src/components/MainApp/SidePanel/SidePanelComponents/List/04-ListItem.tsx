@@ -17,7 +17,7 @@ function SummaryListItem({ thisItemRating = 0, image, title }: ListItemObject) {
         <Typography className="ListItemTitle" variant="h6" textAlign="left">
           {title}
         </Typography>
-        <StarCounter starsToShow={5} couterSize="small" starsToColour={thisItemRating} disabled={false} />
+        <StarCounter starsToShow={5} couterSize="small" starsToColour={thisItemRating} disabled="counter" />
       </Container>
       <IconButton>
         <ArrowForwardIosIcon />

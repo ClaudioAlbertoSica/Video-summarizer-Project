@@ -31,9 +31,10 @@ safety_settings = [
     },
 ]
 
+APIkey  = "AIzaSyAgMBH_nlI8pg7QTS1abBMWlh_9ZqFq7YY"
+APIurl = "https://ai.google.dev/api/rest#service:-generativelanguage.googleapis.com"
 
-APIkey  = ""
-APIurl = ""
+
 
 
 ###SACO RESUMEN DEL TRASNCRIPT

@@ -34,13 +34,13 @@ def cambiarNombre(directorio_ruta):
 
 
 
-
+##Saca 1 screenshot por minuto y los deja en /capturas de forma enumerada 1.png, 2.png...n.png
 def sacar_screenshots(video, tiempo, rutaimagen, clip):
     if not os.path.exists(rutaimagen):
         os.makedirs(rutaimagen)
     
-    for t in tiempo:
-        rutaLoop = os.path.join(rutaimagen, '{}.png'.format(int(t * clip.fps)))
+    for i, t in enumerate(tiempo):
+        rutaLoop = os.path.join(rutaimagen, '{}.png'.format(i + 1))
         clip.save_frame(rutaLoop, t)
 
 
@@ -75,31 +75,6 @@ def transcribir():
 def eliminarMP3():
     os.remove("./services/serviciosPython/output_audio.mp3")
 
-'''
-def transcribir(tiempo):
-    model = whisper.load_model("base")
-    result = model.transcribe("./services/serviciosPython/output_audio.mp3")
-    
-    # Get the duration of each segment in seconds
-    segment_duration = len(result['text']) / len(tiempo)
-    
-    # Initialize variable to keep track of current transcription position
-    current_position = 0
-    
-    with open("./services/serviciosPython/transcripcion.txt", "w") as f:
-        for i, text in enumerate(result['text']):
-            # Calculate the minute mark
-            minute = math.ceil((i * segment_duration) / 60)
-            
-            # Add the minute mark to the transcription if necessary
-            while current_position < minute:
-                f.write(f"[{current_position}] ")
-                current_position += 1
-            
-            # Add the text to the transcription
-            f.write(text + " ")
-
-'''
 
 
 if __name__ == "__main__":
@@ -127,13 +102,8 @@ if __name__ == "__main__":
     rutaimagen = './services/serviciosPython/capturas'
 
     clip = VideoFileClip(video)
-    ##total_seconds = int(clip.duration) ##una por segundo
-    ##tiempo = [i for i in range(0, total_seconds + 1)] ##UNA CAPTURA POR SEGUNDO
     total_minutes = int(clip.duration / 60) ##una por minuto
     tiempo = [i * 60 for i in range(total_minutes + 1)]## una captura por minuto
-
-    ## total_frames = int(clip.duration * clip.fps)  # 20 x segundo
-    ## tiempo = [i * 20 for i in range(total_frames // 20 + 1)] ##20 X SEGUNDO
 
     sacar_screenshots(video, tiempo, rutaimagen, clip)
 

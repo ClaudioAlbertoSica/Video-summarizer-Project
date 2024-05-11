@@ -117,27 +117,53 @@ class Servicio {
         }
     }
 
+    //LLAMAMOS A LOS DOS SCRIPTS PY PARA PROCESAR VIDEO
     runPythonVideo = async () => {
         console.log('entre al script')
         const pythonScriptPath = './services/serviciosPython/procesarVideo.py';
-        const command = `python ${pythonScriptPath} ${'https://www.youtube.com/watch?v=bSvTVREwSNw'}`;
-        console.log('ejecute el script python')
+        const command = `python ${pythonScriptPath} ${'https://www.youtube.com/watch?v=2Xa3Y4xz8_s'}`;
+        
+               
+        return new Promise((resolve, reject) => {
+            console.log('ejecute el script python - primera parte video')
+            exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`Error executing Python script: ${error}`);
+                    reject(error);
+                }
 
-        exec(command, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`Error executing Python script: ${error}`);
-                return;
-            }
-            // Output from Python script
-            console.log(`Output: ${stdout}`);
-            console.error(`Errors: ${stderr}`);
-        });
+                console.log(`Output: ${stdout}`);
+                console.error(`Errors: ${stderr}`);
+                resolve()
+        })});
     }
 
+    runPythoonVideo2 = async () => {       
+
+        const pythonScriptPath2 = './services/serviciosPython/procesarVideo2.py';
+        const command2 = `python ${pythonScriptPath2}`;
+        
+        
+        return new Promise((resolve, reject) => {
+        exec(command2, (error, stdout, stderr) => {
+            console.log('ejecute el script python - segunda parte video')
+            if (error) {
+                console.error(`Error executing Python script: ${error}`);
+                reject(error)
+            }
+
+            console.log(`Output: ${stdout}`);
+            console.error(`Errors: ${stderr}`);
+            resolve()
+        })});
+    }
+
+    //LLAMAMOS AL SCRIPT PY PARA PROCESAR TEXTO
     runPythonTexto = async () => {
         console.log('entre al script')
         const pythonScriptPath = './services/serviciosPython/procesarTexto.py';
         const command = `python ${pythonScriptPath}`;
+        console.log('ejecute el script python - texto')
         console.log('ejecute el script python')
         return new Promise((resolve, reject) => {
         exec(command, (error, stdout, stderr) => {
@@ -156,17 +182,10 @@ class Servicio {
     crearResumenVideo = async (id, url) => {
         try {
             if (1 == 1) {
-                //0 TEST
+
                 await this.runPythonVideo()
+                await this.runPythoonVideo2();
 
-
-                //1 SACAR MP3 DEL VIDEO DE YOUTUBE  
-                //2 SACAR TRANSCRIPT DEL MP3
-
-                //3 DESCARGAR VIDEO - SACAR IMAGENES 
-
-
-                //...
                 return {}
             } else {
                 console.log('error de ingreso de datos')

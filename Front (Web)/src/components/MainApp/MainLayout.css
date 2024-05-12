@@ -43,6 +43,12 @@
     max-width:inherit;
     height: 88vh; 
     padding: 0px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
 
 }
 

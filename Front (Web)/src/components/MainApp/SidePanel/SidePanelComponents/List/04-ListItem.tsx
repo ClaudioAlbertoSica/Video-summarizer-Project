@@ -19,7 +19,10 @@ function SummaryListItem({ thisItemRating = 0, image, title, idRes }: ListItemOb
   const userContext = useContext(LoggedUserContext);
 
   const handleClick = () => {
-    userContext.userSteState({ ...userContext.userState, selectedSummary: { idRes, title } });
+    userContext.userSteState({
+      ...userContext.userState,
+      selectedSummary: { idRes, title, point: thisItemRating, miniatura: image },
+    });
     setSelectedCentralPanelView(ValidViewNames.Summary);
   };
 

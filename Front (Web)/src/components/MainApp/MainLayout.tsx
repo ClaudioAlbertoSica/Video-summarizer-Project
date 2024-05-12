@@ -51,7 +51,10 @@ function GridLayout() {
             {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Loading) && <LoadingScreen />}
             {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Summary) && <PDFviewer />}
             {selectedCentralPanelView != ValidViewNames.noneSelected && (
-              <CloseButton closeFunction={() => setSelectedCentralPanelView(ValidViewNames.noneSelected)} />
+              <CloseButton
+                closeFunction={() => setSelectedCentralPanelView(ValidViewNames.noneSelected)}
+                context={selectedCentralPanelView}
+              />
             )}
           </Grid>
           <Grid className="FooterGrid" item xs={12}>

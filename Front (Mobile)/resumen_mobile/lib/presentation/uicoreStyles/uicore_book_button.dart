@@ -35,7 +35,7 @@ class BookButton extends StatelessWidget {
               ),
             ),
         title:Text(resumen.title, 
-          style:TextStyle(fontSize: 16,
+          style:TextStyle(fontSize: 14,
           fontWeight: FontWeight.bold),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,

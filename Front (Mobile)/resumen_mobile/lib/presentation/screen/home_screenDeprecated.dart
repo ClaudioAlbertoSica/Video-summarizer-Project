@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
 import '../uicoreStyles/uicore_app_title_style.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
+      backgroundColor: ,
       appBar: AppBar(
         title: const AppTitleStyle(text:'David Og', color: Colors.white),
         centerTitle: true,
@@ -77,6 +79,86 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+
+
+
+
+
+class HomeScreen extends ConsumerWidget {
+  static const String name = 'HomeScreen';
+  final List<String> imageNames = ['home1.gif','home2.gif', 'home3.gif', 'home4.gif', 'home5.gif', 'home6.gif', 'home7.gif'];
+  final List<String> imageDark = ['dome1.gif','dome2.gif', 'dome3.gif', 'dome4.gif', 'dome5.gif', 'dome6.gif', 'dome7.gif'];
+
+  HomeScreen({super.key});
+  String getRandomImage(bool isDark) {
+    Random random = Random(); // Instancia de la clase Random
+    int index = random.nextInt(imageNames.length); // Genera un número aleatorio
+    return isDark ? imageDark[index] : imageNames[index]; // Retorna el nombre de la imagen en el índice aleatorio
+  }
+
+  @override
+  Widget build(BuildContext context,  WidgetRef ref) {
+    final isDark = ref.watch(themeNotifierProvider).isDark;
+    final colorTheme = ref.watch(themeNotifierProvider.notifier).getColor();
+    String randomImage =  getRandomImage(isDark);
+    final screenHeight = MediaQuery.of(context).size.height;
+    return Scaffold(
+      drawerEnableOpenDragGesture: false,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const AppTitleStyle(text: '', color: Colors.black),
+        centerTitle: true,
+        backgroundColor: colorTheme,
+      ),
+      endDrawer: DrawerMenu(),
+      body: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              children: [
+                Card(
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9.0), // Ajusta el radio de los bordes de la tarjeta
+                  ),
+                  shadowColor: Colors.black,
+                  child: Image(image: AssetImage('assets/images/$randomImage'))
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: resumenList.length,
+                    itemBuilder: (context, index) {
+                      final resumen = resumenList[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: BookButton(resumen: resumen),
+                      );
+                    },
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        context.pushNamed(CoreFormVideo.name);
+                      },
+                      child: const Text('Botón 1'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.pushNamed(CoreFormText.name);
+                      },
+                      child: const Text('Botón 2'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
     );
   }
 }

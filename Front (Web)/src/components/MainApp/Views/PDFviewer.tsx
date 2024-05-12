@@ -1,6 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import server from "../../../Services/serverCall.ts";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
+import isloadingGif from "../../../assets/isLoading.gif";
+import "./View.css";
+import { Container } from "@mui/material";
+import PDFviwerHeader from "./PDFviwerHeader.tsx";
 
 type receivedResponse = {
   pdf: pdf;
@@ -15,6 +19,7 @@ type pdf = {
 function PDFviewer() {
   const activeUSer = useContext(LoggedUserContext);
   const [documentToShow, setDocumentToShow] = useState<Blob>(new Blob());
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const base64toBlob = (data: string) => {
     // Remove the prefix 'data:application/pdf;base64' from the raw base64
@@ -28,18 +33,38 @@ function PDFviewer() {
       await server
         .get<receivedResponse>(`/${activeUSer.userState.id}/resumen/${activeUSer.userState.selectedSummary.idRes}`)
         .then((res) => {
-          console.log(`then : ${activeUSer.userState.selectedSummary.idRes} + ${activeUSer.userState.selectedSummary.idRes}`);
+          setIsLoading(false);
+          console.log(`then : ${activeUSer.userState.id} + ${activeUSer.userState.selectedSummary.idRes}`);
           setDocumentToShow(base64toBlob(res.data.pdf.data));
         })
         .catch((err) => console.log(err.error));
     };
+    setIsLoading(true);
     call();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeUSer.userState.selectedSummary]);
 
   return (
-    <div>
-      <embed src={URL.createObjectURL(documentToShow)} title="Titulo" type="application/pdf" width="100%" height="600px" />
-    </div>
+    <Container className="ContainerForPDFViewr">
+      <Container className="ContainerForPDFViewrHeader">
+        <PDFviwerHeader />
+      </Container>
+      <Container className="containerForPDFViewrEmbededs">
+        {isLoading ? (
+          <embed
+            className="embededPDFViewr"
+            src={isloadingGif}
+            title="Titulo"
+            type="application/pdf"
+            width="100%"
+            height="600px"
+          />
+        ) : (
+          <embed className="embededPDFViewr" src={URL.createObjectURL(documentToShow)} type="application/pdf" />
+        )}
+      </Container>
+    </Container>
   );
 }
 

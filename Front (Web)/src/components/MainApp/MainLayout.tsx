@@ -15,12 +15,9 @@ import TextForm from "./Views/TextForm.tsx";
 import { ButtonViewContext } from "./ButtonViewContext.ts";
 import LoadingScreen from "./Views/LoadingScreen.tsx";
 import PDFviewer from "./Views/PDFviewer.tsx";
-import { SelectedSummaryContext } from "./SelectedSummaryContext.ts";
-import { selectedSummary } from "./SelectedSummaryContext.ts";
 
 function GridLayout() {
   const [selectedCentralPanelView, setSelectedCentralPanelView] = useState<ValidViewNames>(ValidViewNames.noneSelected);
-  const [selectedSummary, setSelectedSummary] = useState<selectedSummary>({ idRes: "", title: "" });
 
   /*Please notice that <Grid> component doesn't allow RowSpan, so 
   you will find a <Container> with another <Container> whithin as sidepanel 
@@ -28,42 +25,40 @@ function GridLayout() {
 
   return (
     <ButtonViewContext.Provider value={setSelectedCentralPanelView}>
-      <SelectedSummaryContext.Provider value={[selectedSummary, setSelectedSummary]}>
-        <Container className="ExternalContainer">
-          <Container className="SidePanelContainer">
-            <SidePanel />
-          </Container>
+      <Container className="ExternalContainer">
+        <Container className="SidePanelContainer">
+          <SidePanel />
+        </Container>
 
-          <Grid className="ContainerGrid" container spacing={0}>
-            <Grid className="HeaderGrid" item xs={12}>
-              <h1>Header</h1>
-            </Grid>
-            {/*
+        <Grid className="ContainerGrid" container spacing={0}>
+          <Grid className="HeaderGrid" item xs={12}>
+            <h1>Header</h1>
+          </Grid>
+          {/*
           Idea here is that, when clicked, Buttons in the SidePanel shoot a View-Name. That name is stored as a State
           in this MainLayoutcomponent.
           The code below the "CentralPanel" Grid will use the ImTheActiveView() function, that will only be true for the
           desired View.
           Close Button below shoots "noneSelected", so no view is displayed at all.
           */}
-            <Grid className="CentralPanel" item xs={12}>
-              {ImTheActiveView(selectedCentralPanelView, ValidViewNames.AccountData) && <AccountData />}
-              {ImTheActiveView(selectedCentralPanelView, ValidViewNames.ChangePassword) && <ChangePassword />}
-              {ImTheActiveView(selectedCentralPanelView, ValidViewNames.FAQ) && <FAQ />}
-              {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Help) && <Help />}
-              {ImTheActiveView(selectedCentralPanelView, ValidViewNames.VideoForm) && <VideoForm />}
-              {ImTheActiveView(selectedCentralPanelView, ValidViewNames.TextForm) && <TextForm />}
-              {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Loading) && <LoadingScreen />}
-              {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Summary) && <PDFviewer />}
-              {selectedCentralPanelView != ValidViewNames.noneSelected && (
-                <CloseButton closeFunction={() => setSelectedCentralPanelView(ValidViewNames.noneSelected)} />
-              )}
-            </Grid>
-            <Grid className="FooterGrid" item xs={12}>
-              <h1>Footer</h1>
-            </Grid>
+          <Grid className="CentralPanel" item xs={12}>
+            {ImTheActiveView(selectedCentralPanelView, ValidViewNames.AccountData) && <AccountData />}
+            {ImTheActiveView(selectedCentralPanelView, ValidViewNames.ChangePassword) && <ChangePassword />}
+            {ImTheActiveView(selectedCentralPanelView, ValidViewNames.FAQ) && <FAQ />}
+            {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Help) && <Help />}
+            {ImTheActiveView(selectedCentralPanelView, ValidViewNames.VideoForm) && <VideoForm />}
+            {ImTheActiveView(selectedCentralPanelView, ValidViewNames.TextForm) && <TextForm />}
+            {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Loading) && <LoadingScreen />}
+            {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Summary) && <PDFviewer />}
+            {selectedCentralPanelView != ValidViewNames.noneSelected && (
+              <CloseButton closeFunction={() => setSelectedCentralPanelView(ValidViewNames.noneSelected)} />
+            )}
           </Grid>
-        </Container>
-      </SelectedSummaryContext.Provider>
+          <Grid className="FooterGrid" item xs={12}>
+            <h1>Footer</h1>
+          </Grid>
+        </Grid>
+      </Container>
     </ButtonViewContext.Provider>
   );
 }

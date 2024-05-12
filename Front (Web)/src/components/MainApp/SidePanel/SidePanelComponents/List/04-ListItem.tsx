@@ -4,9 +4,8 @@ import StarCounter from "../../../StarCounter/StarCounter.tsx";
 import "./ListItem.css";
 import { useContext } from "react";
 import { ButtonViewContext } from "../../../ButtonViewContext.ts";
-import { SelectedSummaryContext } from "../../../SelectedSummaryContext.ts";
-//import { selectedSummary } from "../../../SelectedSummaryContext.ts";
 import { ValidViewNames } from "../../../Views/ImTheActiveView.ts";
+import { LoggedUserContext } from "../../../../../ActiveUserContext.ts";
 
 export interface ListItemObject {
   idRes: string;
@@ -17,10 +16,10 @@ export interface ListItemObject {
 
 function SummaryListItem({ thisItemRating = 0, image, title, idRes }: ListItemObject) {
   const setSelectedCentralPanelView = useContext(ButtonViewContext);
-  const [, setSelectedSummary] = useContext(SelectedSummaryContext);
+  const userContext = useContext(LoggedUserContext);
 
   const handleClick = () => {
-    setSelectedSummary({ idRes: idRes, title: title });
+    userContext.userSteState({ ...userContext.userState, selectedSummary: { idRes, title } });
     setSelectedCentralPanelView(ValidViewNames.Summary);
   };
 

@@ -9,14 +9,14 @@ class ModelMongoDB {
                 const usuarioEncontrado = await CnxMongoDB.db.collection('usuarios').findOne({userName: userName});
                 if (usuarioEncontrado) {
                     // Remove the paragraph array from each item in the inventario array
-                    usuarioEncontrado.inventario.forEach(item => delete item.paragraph);
+                    usuarioEncontrado.inventario.forEach(item => delete item.pdf);
                 }
                 return usuarioEncontrado || {};
             } else {
                 const usuariosEncontrados = await CnxMongoDB.db.collection('usuarios').find({}).toArray();
                 // Remove the paragraph array from each item in the inventario array
                 usuariosEncontrados.forEach(usuario => {
-                    usuario.inventario.forEach(item => delete item.paragraph);
+                    usuario.inventario.forEach(item => delete item.pdf);
                 });
                 return usuariosEncontrados;
             }

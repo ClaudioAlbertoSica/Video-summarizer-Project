@@ -1,6 +1,5 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import server from "../../../Services/serverCall.ts";
-import { SelectedSummaryContext } from "../SelectedSummaryContext.ts";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 
 type receivedResponse = {
@@ -14,10 +13,8 @@ type pdf = {
 };
 
 function PDFviewer() {
-  const [selectedSummary] = useContext(SelectedSummaryContext);
   const activeUSer = useContext(LoggedUserContext);
   const [documentToShow, setDocumentToShow] = useState<Blob>(new Blob());
-  const title = useRef("");
 
   const base64toBlob = (data: string) => {
     // Remove the prefix 'data:application/pdf;base64' from the raw base64
@@ -29,16 +26,15 @@ function PDFviewer() {
   useEffect(() => {
     const call = async () => {
       await server
-        .get<receivedResponse>(`/${activeUSer.userState.id}/resumen/${selectedSummary.idRes}`)
+        .get<receivedResponse>(`/${activeUSer.userState.id}/resumen/${activeUSer.userState.selectedSummary.idRes}`)
         .then((res) => {
-          console.log(`then - ${selectedSummary.idRes} + ${selectedSummary.title}`);
+          console.log(`then : ${activeUSer.userState.selectedSummary.idRes} + ${activeUSer.userState.selectedSummary.idRes}`);
           setDocumentToShow(base64toBlob(res.data.pdf.data));
-          title.current = res.data.pdf.filename;
         })
         .catch((err) => console.log(err.error));
     };
     call();
-  }, [selectedSummary]);
+  }, [activeUSer.userState.selectedSummary]);
 
   return (
     <div>
@@ -48,5 +44,3 @@ function PDFviewer() {
 }
 
 export default PDFviewer;
-
-//      <iframe src={samplePDF}></iframe>

@@ -5,7 +5,13 @@ export type LoggedUser = {
 id: string;
 userName: string;
 passwd: string;
-inventario: Resumen[];
+inventario: Resumen[]; // Data to create the List of previous summaries
+selectedSummary: selectedSummary; // Data to display a full summary, when List is clicked
+}
+
+export type selectedSummary ={
+    idRes: string,
+    title: string,
 }
 
 export type Resumen = {
@@ -30,7 +36,11 @@ export const placeholderUser: LoggedUser = Object.freeze({
             title: "placeholder2",
             point: 3,
             miniatura: "./assets/Logo.png",
-            }]
+            }],
+ selectedSummary:{
+    idRes: "-1",
+    title: "placeHolder"
+ }
     })
 
 

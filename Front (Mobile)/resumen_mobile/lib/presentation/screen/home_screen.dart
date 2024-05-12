@@ -23,7 +23,7 @@ import '../uicoreStyles/uicore_book_button.dart';
 class HomeScreen extends ConsumerWidget {
   static const String name = 'HomeScreen';
   final List<String> imageNames = ['home1.gif','home2.gif', 'home3.gif', 'home4.gif', 'home5.gif', 'home6.gif', 'home7.gif'];
-  final List<String> imageDark = ['dome1.gif','dome2.gif', 'dome3.gif', 'dome4.gif', 'dome5.gif', 'dome6.gif', 'dome7.gif'];
+  final List<String> imageDark = ['dome1.gif','dome1.gif', 'dome3.gif', 'dome4.gif', 'dome5.gif', 'dome6.gif', 'dome7.gif'];
   final TextEditingController searchValue = TextEditingController();
 
   HomeScreen({super.key});
@@ -47,8 +47,8 @@ class HomeScreen extends ConsumerWidget {
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const AppTitleStyle(text: '', color: Colors.black),
-        centerTitle: true,
+        //title: const AppTitleStyle(text: '', color: Colors.black),
+        //centerTitle: true,
         backgroundColor: Colors.transparent,
         
       ),
@@ -113,13 +113,13 @@ class HomeScreen extends ConsumerWidget {
                 onPressed: () {
                   context.pushNamed(CoreFormVideo.name);
                 },
-                child: const Text('Botón 1'),
+                child: const Text('Resumen Video'),
               ),
               ElevatedButton(
                 onPressed: () {
                   context.pushNamed(CoreFormText.name);
                 },
-                child: const Text('Botón 2'),
+                child: const Text('Resumen Texto'),
               ),
             ],
           ),

@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
 import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import 'package:resumen_mobile/presentation/screen/login_screen.dart';
@@ -40,6 +41,11 @@ final appRouter = GoRouter(
       path: '/config-screen',
       builder: (context, state) => const ConfigScreen(),
       name: ConfigScreen.name
+    ),
+    GoRoute(
+      path: '/account-screen',
+      builder: (context, state) => AcconutScreen(),
+      name: AcconutScreen.name
     ),
   ],
 );

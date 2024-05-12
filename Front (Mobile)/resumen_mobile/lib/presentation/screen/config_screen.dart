@@ -37,7 +37,7 @@ class ConfigScreen extends ConsumerWidget {
             child: ClipPath(
               clipper: MountainClipperMediumFlat(),
               child: Container(
-               color: Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
+               color: isDark ? Color.fromRGBO(30, 30, 30, 1) : Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
               ),
             ),
           ),

@@ -129,7 +129,8 @@ class LoginScreen extends ConsumerWidget {
     bool loginOk = false;
     // servidor Node.js
     try {
-      final url = Uri.parse('http://localhost:8080/api/login');
+      //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
+      final url = Uri.parse('http://10.0.2.2:8080/api/login');
       final response = await http.post(
         url,
         headers: <String, String>{

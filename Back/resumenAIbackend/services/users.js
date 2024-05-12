@@ -120,13 +120,13 @@ class Servicio {
 
     //LLAMAMOS A LOS DOS SCRIPTS PY PARA PROCESAR VIDEO
     runPythonVideo = async () => {
-        let urlVideo = 'https://www.youtube.com/watch?v=nJPQDyw9YXI'
-        
+        //let urlVideo = 'https://www.youtube.com/watch?v=nJPQDyw9YXI'
+
         console.log('entre al script')
         const pythonScriptPath = './services/serviciosPython/procesarVideo.py';
-        //const command = `python ${pythonScriptPath} ${'https://www.youtube.com/watch?v=2Xa3Y4xz8_s'}`; VIDEO 6 MIN
-        const command = `python ${pythonScriptPath} ${urlVideo}`;
-        
+        const command = `python ${pythonScriptPath} ${'https://www.youtube.com/watch?v=2Xa3Y4xz8_s'}`; //VIDEO 6 MIN
+        //const command = `python ${pythonScriptPath} ${urlVideo}`;
+
 
         return new Promise((resolve, reject) => {
             console.log('ejecute el script python - primera parte video')
@@ -139,27 +139,29 @@ class Servicio {
                 console.log(`Output: ${stdout}`);
                 console.error(`Errors: ${stderr}`);
                 resolve()
-        })});
+            })
+        });
     }
 
-    runPythonVideo2 = async () => {       
+    runPythonVideo2 = async () => {
 
         const pythonScriptPath2 = './services/serviciosPython/procesarVideo2.py';
         const command2 = `python ${pythonScriptPath2}`;
-        
-        
-        return new Promise((resolve, reject) => {
-        exec(command2, (error, stdout, stderr) => {
-            console.log('ejecute el script python - segunda parte video')
-            if (error) {
-                console.error(`Error executing Python script: ${error}`);
-                reject(error)
-            }
 
-            console.log(`Output: ${stdout}`);
-            console.error(`Errors: ${stderr}`);
-            resolve()
-        })});
+
+        return new Promise((resolve, reject) => {
+            exec(command2, (error, stdout, stderr) => {
+                console.log('ejecute el script python - segunda parte video')
+                if (error) {
+                    console.error(`Error executing Python script: ${error}`);
+                    reject(error)
+                }
+
+                console.log(`Output: ${stdout}`);
+                console.error(`Errors: ${stderr}`);
+                resolve()
+            })
+        });
     }
 
     //LLAMAMOS AL SCRIPT PY PARA PROCESAR TEXTO
@@ -170,16 +172,17 @@ class Servicio {
         console.log('ejecute el script python - texto')
         console.log('ejecute el script python')
         return new Promise((resolve, reject) => {
-        exec(command, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`Error executing Python script: ${error}`);
-                reject(error);
-            }
-            // Output from Python script
-            console.log(`Output: ${stdout}`);
-            console.error(`Errors: ${stderr}`);
-            resolve();
-        })});
+            exec(command, (error, stdout, stderr) => {
+                if (error) {
+                    console.error(`Error executing Python script: ${error}`);
+                    reject(error);
+                }
+                // Output from Python script
+                console.log(`Output: ${stdout}`);
+                console.error(`Errors: ${stderr}`);
+                resolve();
+            })
+        });
     }
 
 
@@ -200,7 +203,7 @@ class Servicio {
         }
     }
 
-    leerTxt = async () =>{
+    leerTxt = async () => {
         try {
             const textoResumido = await fs.promises.readFile('./services/serviciosPython/resumenSalida.txt', 'utf-8')
             console.log('Leído:')
@@ -212,25 +215,25 @@ class Servicio {
         }
     }
 
-    dividirTextoEnPartes = async() => {
+    dividirTextoEnPartes = async () => {
         let texto = await this.leerTxt()
         texto = texto.replace(/\r?\n/g, '\n')
         const imagenes = await this.contarArchivosEnCarpeta()
         const numPartes = imagenes.length
 
         const parrafos = texto.split('\n').filter(parrafo => parrafo.trim() !== '')
-    
+
 
         const parrafosPorParte = Math.ceil(parrafos.length / numPartes)
-    
+
         const partes = []
 
         let inicio = 0
         for (let i = 0; i < numPartes; i++) {
             const fin = Math.min(inicio + parrafosPorParte, parrafos.length)
             let parte = parrafos.slice(inicio, fin).join('\n')
-            
-            
+
+
             if (parte.length < parrafosPorParte * 0.8 && i > 0) {
                 partes[i - 1] += '\n' + parte
             } else {
@@ -250,12 +253,12 @@ class Servicio {
             const archivos = await fs.promises.readdir(carpeta);
             // Ordenar los nombres de archivo como números
             archivos.sort((a, b) => {
-            // Obtener los números de los nombres de archivo
-            const numA = parseInt(a.split('.')[0]);
-            const numB = parseInt(b.split('.')[0]);
-            // Comparar los números
-            return numA - numB;
-        });
+                // Obtener los números de los nombres de archivo
+                const numA = parseInt(a.split('.')[0]);
+                const numB = parseInt(b.split('.')[0]);
+                // Comparar los números
+                return numA - numB;
+            });
 
             console.log(archivos)
             return archivos
@@ -273,14 +276,14 @@ class Servicio {
 
             doc.pipe(writeStream);
             doc.fontSize(12);
-    
+
             for (let index = 0; index < textoArray.length; index++) {
 
                 let texto = textoArray[index];
 
                 doc.text(texto)
                 doc.moveDown(0.5)
-                
+
                 doc.image(`./services/serviciosPython/capturas/${imagenes[index]}`, {
                     fit: [250, 250],
                     align: 'center',
@@ -288,19 +291,19 @@ class Servicio {
                 })
                 doc.moveDown(0.5)
 
-                if(index < textoArray.length-1){
+                if (index < textoArray.length - 1) {
                     doc.addPage()
                 }
 
             }
-            
+
             doc.end();
-    
+
             writeStream.on('finish', () => {
                 console.log('Documento PDF generado correctamente.');
                 resolve({ path: pdfPath, name: 'documento.pdf' });
             });
-    
+
             writeStream.on('error', error => {
                 console.error('Error al generar documento PDF:', error);
                 reject(error);
@@ -315,9 +318,9 @@ class Servicio {
             if (id, texto, esBreve, idioma) {
                 resumen.esBreve = esBreve
                 resumen.idioma = idioma
-                if(titulo){
+                if (titulo) {
                     resumen.titulo = titulo
-                }else{
+                } else {
                     resumen.titulo = "ResumenDeTexto"
                 }
 
@@ -330,7 +333,7 @@ class Servicio {
                 })
 
                 await this.runPythonTexto()
-                
+
                 const textoResumido = await fs.promises.readFile(rutaSalida, 'utf-8', (err) => {
                     if (err) {
                         console.log('error leyendo archivo')
@@ -339,16 +342,16 @@ class Servicio {
                     }
                 })
                 resumen.text = textoResumido
-            }else {
+            } else {
                 console.log('error de ingreso de datos')
             }
 
-                
 
-                const resumenNuevo = await this.model.crearResumenTexto(id, resumen)
 
-                return resumenNuevo
-            }catch (error) {
+            const resumenNuevo = await this.model.crearResumenTexto(id, resumen)
+
+            return resumenNuevo
+        } catch (error) {
             console.log(error.message)
         }
     }
@@ -385,7 +388,7 @@ class Servicio {
         //}
     }
 
-    
+
 
 }
 export default Servicio

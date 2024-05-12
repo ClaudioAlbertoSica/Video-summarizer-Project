@@ -3,7 +3,7 @@ import shutil
 import google.generativeai as genai #Hubo que instalar el generative AI de google
 import PIL.Image #instalé Pillow library
 import re
-import spacy
+##import spacy
 import numpy as np
 
 

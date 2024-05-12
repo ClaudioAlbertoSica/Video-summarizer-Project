@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
+import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/login_screen.dart';
@@ -13,12 +14,11 @@ import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgoun
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_stack_layout.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
-import '../../core/data/resume_datasource.dart';
 import '../../core/menu/drawer_menu.dart';
+import '../../entity/resumen_list_search.dart';
 import '../providers/theme_provider.dart';
 import '../uicoreStyles/uicore_app_title_style.dart';
 import '../uicoreStyles/uicore_book_button.dart';
-import '../uicoreStyles/uicore_paragraph_style.dart';
 
 class HomeScreen extends ConsumerWidget {
   static const String name = 'HomeScreen';
@@ -36,6 +36,11 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context,  WidgetRef ref) {
     final isDark = ref.watch(themeNotifierProvider).isDark;
+    //esta es la lista del datasource
+    final resumenList = ref.watch(resumenListProvider);
+    //este es el provider
+    final resumenProvider = ref.watch(resumenNotifierProvider.notifier);
+    final resumenes = ref.watch(resumenNotifierProvider);
     String randomImage =  getRandomImage(isDark);
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -60,8 +65,15 @@ class HomeScreen extends ConsumerWidget {
               children: [
                 TextField(
                   controller: searchValue,
-                    onChanged: (value) {
-                     
+                  onSubmitted: (value) {
+                    List<ResumenPreview> searchFound = [];
+                    for (var i = 0; i < resumenList.length; i++) {
+                      if (resumenList[i].title.toLowerCase().contains(value.toLowerCase())) {
+                        searchFound.add(resumenList[i]);
+                      }
+                    }
+                    resumenProvider.changeList(searchFound);
+//                    ref.read(resumenProvider).changeList(searchFound);
                   },
                     // Actualiza el texto de búsqueda
                 //                searchText = value;
@@ -77,9 +89,11 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     prefixIcon: Icon(Icons.book_outlined),
                     suffixIcon: IconButton(
+                      //ver de sacar si es que no hay nada escrito
                       icon: Icon(Icons.cancel),
                       onPressed: () {
                         searchValue.text = '';
+                        resumenProvider.changeList(resumenList);
                       },
                     ),
                     border: InputBorder.none,
@@ -90,16 +104,7 @@ class HomeScreen extends ConsumerWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: resumenList.length,
-              itemBuilder: (context, index) {
-                final resumen = resumenList[index];
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: BookButton(resumen: resumen),
-                );
-              },
-            ),
+            child: resumenes.getResumenFound()//ResumenListSearch(resumenFound: resumenList).getResumenFound()
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

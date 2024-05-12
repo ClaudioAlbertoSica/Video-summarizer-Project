@@ -2,6 +2,10 @@
 import '../../entity/preview_resumen.dart';
 
 final resumenList = [
+                //"esBreve":"false",
+              //"idioma":"ES",
+              //"titulo":"RESUMEN PRUEBA",
+              //"idres":"1"
   ResumenPreview(
     id: 1,
     image: 'assets/images/thumball.jpeg',

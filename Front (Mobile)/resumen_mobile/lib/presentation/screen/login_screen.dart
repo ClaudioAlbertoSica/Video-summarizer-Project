@@ -145,7 +145,28 @@ class LoginScreen extends ConsumerWidget {
         // Si la solicitud es exitosa, imprime la respuesta del servidor
         print('Respuesta del servidor: ${response.body}');
         // ver de no guardar el user porque esta el password!!
-        //{"_id":"663445cf0a08e557fa580267","id":"3","userName":"Marian@Marian","passwd":"222","inventario":[]}
+        //{
+          //"_id":"663445cf0a08e557fa580265",
+          //"id":"1",
+          //"userName":"Rocio@Rocio",
+          //"passwd":"123",
+          //"inventario":
+          //[
+            //{
+              //"esBreve":"false",
+              //"idioma":"ES",
+              //"titulo":"RESUMEN PRUEBA",
+              //"idres":"1"
+            //},
+            //{
+              //"esBreve":"false",
+              //"idioma":"ES",
+              //"titulo":"RESUMEN PRUEBA",
+              //"text":null,
+              //"idres":"2"
+            //}
+          //]
+        //}
         ref.read(userProvider.notifier).state = json.decode(response.body)['id'];
         loginOk = true;
       } else {

@@ -19,7 +19,7 @@ function ListForAccordion() {
     if (currentlyLoggedUsuer.inventario.length !== 0) {
       objetcToReturn = currentlyLoggedUsuer.inventario.map((itm) => (
         <ListItem key={itm.idres}>
-          <SummaryListItem thisItemRating={itm.point} image={itm.miniatura} title={itm.title} />
+          <SummaryListItem thisItemRating={itm.point} image={itm.miniatura} title={itm.title} idRes={itm.idres} />
         </ListItem>
       ));
     }

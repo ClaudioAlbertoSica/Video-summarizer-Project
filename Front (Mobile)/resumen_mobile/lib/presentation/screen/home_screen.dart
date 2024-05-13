@@ -1,7 +1,5 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,21 +7,14 @@ import 'package:resumen_mobile/entity/preview_resumen.dart';
 import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
-import 'package:resumen_mobile/presentation/screen/login_screen.dart';
-import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgound.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_stack_layout.dart';
-import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
-
 import '../../core/menu/drawer_menu.dart';
-import '../../entity/resumen_list_search.dart';
 import '../providers/theme_provider.dart';
-import '../uicoreStyles/uicore_app_title_style.dart';
-import '../uicoreStyles/uicore_book_button.dart';
 
 class HomeScreen extends ConsumerWidget {
   static const String name = 'HomeScreen';
-  final List<String> imageNames = ['home1.gif','home2.gif', 'home3.gif', 'home4.gif', 'home5.gif', 'home6.gif', 'home7.gif'];
-  final List<String> imageDark = ['dome1.gif','dome1.gif', 'dome3.gif', 'dome4.gif', 'dome5.gif', 'dome6.gif', 'dome7.gif'];
+  final List<String> imageNames = ['home1.gif','home2.gif', 'home3.gif', 'home4.gif'];
+  final List<String> imageDark = ['dome1.gif','dome1.gif', 'dome3.gif', 'dome4.gif'];
   final TextEditingController searchValue = TextEditingController();
 
   HomeScreen({super.key});
@@ -52,14 +43,14 @@ class HomeScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         
       ),
-      endDrawer: DrawerMenu(),
+      endDrawer: const DrawerMenu(),
       body: StackLayout(
         screenHeight: screenHeight,
         backgroundImage: randomImage,
-        backgroundColor: isDark ? Color.fromRGBO(30, 30, 30, 1) : Color.fromARGB(255, 255, 241, 241),
+        backgroundColor: isDark ? const Color.fromRGBO(30, 30, 30, 1) : const Color.fromARGB(255, 255, 241, 241),
         content: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -87,10 +78,10 @@ class HomeScreen extends ConsumerWidget {
                     hintStyle:  GoogleFonts.ubuntu(
                       fontWeight: FontWeight.w100
                     ),
-                    prefixIcon: Icon(Icons.book_outlined),
+                    prefixIcon: const Icon(Icons.book_outlined),
                     suffixIcon: IconButton(
                       //ver de sacar si es que no hay nada escrito
-                      icon: Icon(Icons.cancel),
+                      icon: const Icon(Icons.cancel),
                       onPressed: () {
                         searchValue.text = '';
                         resumenProvider.changeList(resumenList);
@@ -99,7 +90,7 @@ class HomeScreen extends ConsumerWidget {
                     border: InputBorder.none,
                   ),
                 ),
-                Divider(),
+                const Divider(),
               ],
             ),
           ),

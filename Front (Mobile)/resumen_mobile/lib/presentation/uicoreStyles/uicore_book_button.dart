@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import '../../entity/preview_resumen.dart';
 import '../screen/login_screen.dart';
@@ -34,9 +33,12 @@ class BookButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8), // Hace que la imagen sea circular
               ),
             ),
-        title:Text(resumen.title, 
-          style:TextStyle(fontSize: 14,
-          fontWeight: FontWeight.bold),
+        title: Text(
+          resumen.title, 
+          style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold
+            ),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ) ,
@@ -44,22 +46,22 @@ class BookButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.star,
-                    color: Colors.orange,
-                    size: 15,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.star,
+                  color: Colors.orange,
+                  size: 15,
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  '${resumen.range}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(width: 5),
-                  Text(
-                    '${resumen.range}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+                ),
+              ],
             ),
           ],
         ),//TextButton.icon(onPressed: (){}, icon: Icon(Icons.star), label: Text(resumen.range),),

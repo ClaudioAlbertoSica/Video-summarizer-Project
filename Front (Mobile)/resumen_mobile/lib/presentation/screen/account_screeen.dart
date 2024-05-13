@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_app_title_style.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_input_style.dart';
-import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgound.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_stack_layout.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
@@ -34,12 +32,12 @@ class AcconutScreen extends ConsumerWidget {
         title: const AppTitleStyle(text:'', color: Color.fromARGB(255, 29, 29, 29)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color:Colors.white),
+        iconTheme: const IconThemeData(color:Colors.white),
       ),
       body: StackLayout(
         screenHeight: screenHeight,
         backgroundImage: background,
-        backgroundColor: isDark ? Color.fromRGBO(30, 30, 30, 1) : Color.fromARGB(255, 241, 253, 255),
+        backgroundColor: isDark ? const Color.fromRGBO(30, 30, 30, 1) : const Color.fromARGB(255, 241, 253, 255),
         content:[
           Padding(
             padding: const EdgeInsets.all(50.0),

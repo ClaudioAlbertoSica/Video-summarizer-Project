@@ -1,15 +1,12 @@
 // ignore_for_file: avoid_print
 
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:resumen_mobile/main.dart';
 import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
-import '../uicoreStyles/uicore_app_title_style.dart';
 import '../uicoreStyles/uicore_input_style.dart';
 import '../uicoreStyles/uicore_montain_backgound.dart';
 import '../uicoreStyles/uicore_title_style.dart';
@@ -69,13 +66,12 @@ class LoginScreen extends ConsumerWidget {
                 //aca va el login button
                 ElevatedButton(
                   onPressed: () async {
-                  bool user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
-                    if(user) {
+                    bool user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
+                    if (user) {
                       context.goNamed(HomeScreen.name);
                     } else {
                       _showErrorMessage(context);
                     }
-                                    
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
@@ -95,7 +91,7 @@ class LoginScreen extends ConsumerWidget {
                       onPressed: (){
                         context.pushNamed(CreateAccountScreen.name);
                       }, 
-                      child: Text('Create account', 
+                      child: const Text('Create account', 
                         style: TextStyle(
                           fontFamily: 'PoetsenOne',
                           fontSize: 15,
@@ -107,7 +103,7 @@ class LoginScreen extends ConsumerWidget {
                       onPressed: (){
                         _showDialogForgotPass(context);
                       },
-                      child: Text('Forgot your pass?', 
+                      child: const Text('Forgot your pass?', 
                         style: TextStyle(
                           fontFamily: 'PoetsenOne',
                           fontSize: 15,
@@ -130,7 +126,7 @@ class LoginScreen extends ConsumerWidget {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/login');
+      final url = Uri.parse('http://localhost:8080/api/login');
       final response = await http.post(
         url,
         headers: <String, String>{

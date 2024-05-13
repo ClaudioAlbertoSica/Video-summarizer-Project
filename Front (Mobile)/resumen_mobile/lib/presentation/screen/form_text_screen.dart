@@ -1,16 +1,9 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:resumen_mobile/main.dart';
 import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
-import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgound.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_stack_layout.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
-
-import '../uicoreStyles/uicore_app_title_style.dart';
 
 enum Idiomas{ english, spanish}
 

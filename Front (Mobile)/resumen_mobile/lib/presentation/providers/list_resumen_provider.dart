@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:resumen_mobile/core/data/resume_datasource.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';

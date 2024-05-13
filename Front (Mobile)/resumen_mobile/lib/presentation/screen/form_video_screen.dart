@@ -1,15 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:resumen_mobile/main.dart';
 import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
-import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgound.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_stack_layout.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
-
-import '../uicoreStyles/uicore_app_title_style.dart';
 
 enum Idiomas{ english, spanish}
 
@@ -38,15 +32,15 @@ class CoreFormVideo extends ConsumerWidget {
       body: StackLayout(
         screenHeight: screenHeight,
         backgroundImage: background,
-        backgroundColor: isDark ? Color.fromRGBO(30, 30, 30, 1) : Color.fromRGBO(235, 240, 241, 1),
+        backgroundColor: isDark ? const Color.fromRGBO(30, 30, 30, 1) : const Color.fromRGBO(235, 240, 241, 1),
         content:[
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-              FormVideo(id: idUser as String),
+                FormVideo(id: idUser as String),
               ]
             ),
           ),
@@ -156,7 +150,7 @@ class _FormVideoState extends State<FormVideo> {
                     )
                   ),
                 ),
-                SizedBox(height: 25,),
+                const SizedBox(height: 25,),
             ],
           ),
           ElevatedButton(

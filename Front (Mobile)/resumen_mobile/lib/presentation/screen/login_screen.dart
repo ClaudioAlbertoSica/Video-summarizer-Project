@@ -52,13 +52,12 @@ class LoginScreen extends ConsumerWidget {
                 //aca va el login button
                 ElevatedButton(
                   onPressed: () async {
-                  bool user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
-                    if(user) {
+                    bool user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
+                    if (user) {
                       context.goNamed(HomeScreen.name);
                     } else {
                       _showErrorMessage(context);
                     }
-                                    
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
@@ -103,7 +102,7 @@ class LoginScreen extends ConsumerWidget {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/login');
+      final url = Uri.parse('http://localhost:8080/api/login');
       final response = await http.post(
         url,
         headers: <String, String>{

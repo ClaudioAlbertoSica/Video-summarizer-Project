@@ -55,14 +55,14 @@ class ModelMongoDB {
                     await CnxMongoDB.db.collection('usuarios').insertOne({...usuario})
                     return await CnxMongoDB.db.collection('usuarios').findOne({userName: usuario.userName})
                 } else {
-                    console.log('Faltan datos para completar la solicitud')
-                } 
+                    throw new Error('Faltan datos para completar la solicitud.');
+                }
             } else {
-                console.log('Usuario existente. Por favor, iniciar sesión.')
+                throw new Error('Usuario existente. Por favor, iniciar sesión.');
             }
         }
-        catch {
-            throw new Error('conexion con la BD no establecida')
+        catch (error) {
+            throw error;
         }
     }
 

@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
 import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
+import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:resumen_mobile/presentation/screen/login_screen.dart';
 import '../presentation/screen/config_screen.dart';
 import '../presentation/screen/create_account_screen.dart';
@@ -45,6 +46,11 @@ final appRouter = GoRouter(
       path: '/account-screen',
       builder: (context, state) => AcconutScreen(),
       name: AcconutScreen.name
+    ),
+    GoRoute(
+      path: '/loading-screen',
+      builder: (context, state) => LoadingScreen(),
+      name: LoadingScreen.name
     ),
   ],
 );

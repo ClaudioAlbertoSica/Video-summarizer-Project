@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
+import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_app_title_style.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_input_style.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
@@ -65,7 +66,7 @@ class AcconutScreen extends ConsumerWidget {
                           if (_inputRepeatPassController.text == _inputPassController.text) {
                               bool changeOk = await changePass(_inputCurrentPass.text,_inputPassController.text, _inputRepeatPassController.text, idUser as String);
                               if (changeOk) {
-                              context.goNamed(HomeScreen.name);
+                              context.goNamed(LoadingScreen.name);
                             } else {
                               _showErrorMessage(context);
                             }

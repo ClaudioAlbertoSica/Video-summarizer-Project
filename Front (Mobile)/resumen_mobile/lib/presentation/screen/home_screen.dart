@@ -16,11 +16,11 @@ class HomeScreen extends StatelessWidget {
   static const String name = 'HomeScreen';
 
   HomeScreen({super.key});
-
+  
 
   @override
   Widget build(BuildContext context) {
-    
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
       ),
       endDrawer: const DrawerMenu(),
       //MODULARICÉ 
-      body: _StackLayoutHome()
+      body: _StackLayoutHome(screenHeight: screenHeight)
     );
   }
 }
@@ -39,12 +39,14 @@ class HomeScreen extends StatelessWidget {
 //WIDGET STACKLAYOUT 
 class _StackLayoutHome extends ConsumerWidget {
   //ME TRAJE LAS LISTAS DE IMÁGENES
-  final List<String> imageNames = ['home1.gif','home2.gif', 'home3.gif', 'home4.gif', 'home5.gif', 'home6.gif', 'home7.gif'];
-  final List<String> imageDark = ['dome1.gif','dome1.gif', 'dome3.gif', 'dome4.gif', 'dome5.gif', 'dome6.gif', 'dome7.gif'];
+  final double screenHeight;
+  final List<String> imageNames = ['home1.gif','home2.gif', 'home3.gif', 'home4.gif'];
+  final List<String> imageDark = ['dome1.gif','dome1.gif', 'dome3.gif', 'dome4.gif'];
   
-  /*_StackLayoutHome ({
+  _StackLayoutHome ({
     super.key,
-  });*/
+    required this.screenHeight
+  });
   
   //MÉTODO PARA SELECCIONAR UNA IMÁGEN AL AZAR
   String getRandomImage(bool isDark) {
@@ -58,7 +60,6 @@ class _StackLayoutHome extends ConsumerWidget {
     //PROVIDER PARA MANEJAR EL DARKMODE
     final isDark = ref.watch(themeNotifierProvider).isDark;
     String randomImage =  getRandomImage(isDark);
-    final screenHeight = MediaQuery.of(context).size.height;
     final resumenes = ref.watch(resumenNotifierProvider);
     return StackLayout(
       screenHeight: screenHeight,

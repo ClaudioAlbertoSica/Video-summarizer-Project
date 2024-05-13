@@ -1,9 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
+import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_app_title_style.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_input_style.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
+import 'package:http/http.dart' as http;
 
 class AcconutScreen extends ConsumerWidget {
   static const String name = 'AcountScreen';
@@ -11,11 +16,15 @@ class AcconutScreen extends ConsumerWidget {
   final TextEditingController _inputCurrentPass = TextEditingController();
   final TextEditingController _inputPassController = TextEditingController();
   final TextEditingController _inputRepeatPassController = TextEditingController();
+  String errorMessage= '';
+  
 
   AcconutScreen({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
+    final idUser = ref.watch(userProvider.notifier).state;
+    
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
@@ -52,16 +61,17 @@ class AcconutScreen extends ConsumerWidget {
                       const SizedBox(height: 10),
                       //aca va el login button
                       ElevatedButton(
-                        onPressed: () {
-                          //COMENTO PARA BAJAR PROBLEMAS EN LA CONSOLA
-                          /*print(_inputCurrentPass.text);
-                          print(_inputPassController.text);
-                          print(_inputRepeatPassController.text);*/
-
+                        onPressed: ()async {
                           if (_inputRepeatPassController.text == _inputPassController.text) {
-                            //Send al back para ver si el email ya esta creado
-                            //print('Logeame capo');
-                            //context.goNamed(HomeScreen.name);
+                              bool changeOk = await changePass(_inputCurrentPass.text,_inputPassController.text, _inputRepeatPassController.text, idUser as String);
+                              if (changeOk) {
+                              context.goNamed(HomeScreen.name);
+                            } else {
+                              _showErrorMessage(context);
+                            }
+                          }else{
+                            errorMessage = 'Las contraseñas nuevas deben ser iguales.';
+                            _showErrorMessage(context);
                           }
 
                         },
@@ -84,34 +94,48 @@ class AcconutScreen extends ConsumerWidget {
     );
   }
 
-  /*Future<bool> sendLoginData(String username, String password) async {
-    bool loginOk = false;
-    final url = Uri.parse('http://localhost:8080/api/login'); // Reemplaza con la URL de tu servidor Node.js
-    final response = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username': username,
-        'password': password,
-      }),
-    );
-    //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
-    if (response.statusCode == 200) {
-      // Si la solicitud es exitosa, imprime la respuesta del servidor
-      print('Respuesta del servidor: ${response.body}');
 
-      loginOk = true;
-      
-      // Aquí puedes manejar la respuesta del servidor como desees
-      // Por ejemplo, puedes convertir la respuesta JSON en un objeto Dart
-      //final Map<String, dynamic> userData = jsonDecode(response.body);
-      // Y usar los datos del usuario en tu aplicación
-    } //else {
-      // Si la solicitud no es exitosa, imprime el mensaje de error
-      //print('Error al enviar los datos de inicio de sesión: ${response.statusCode}');
-      //}
-      return loginOk; 
-  }*/
+Future<bool> changePass(String passActual, String passNueva, String passNuevaBis, String idUser) async {
+    bool changeOk = false;
+    
+    // servidor Node.js
+    try {
+      //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
+      final url = Uri.parse('http://10.0.2.2:8080/api/cambiarpass/$idUser');
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+        'passActual': passActual,
+        'passNueva': passNueva,
+        'passNuevaBis': passNuevaBis,
+      }),
+      );
+      //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
+      if (response.statusCode == 200) {
+        // Si la solicitud es exitosa, imprime la respuesta del servidor
+        print('Respuesta del servidor: ${response.body}');
+
+        changeOk = true;
+      } else {
+        errorMessage = json.decode(response.body)['error'];
+      }
+    } catch (error) {
+      errorMessage = 'Error: Connection ERROR - Server not found';
+    }
+
+    return changeOk;
+  }
+
+
+  void _showErrorMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.orange[700],
+      ),
+    );
+  }
 }

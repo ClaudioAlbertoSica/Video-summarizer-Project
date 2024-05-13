@@ -436,7 +436,9 @@ class Servicio {
                 userName: email
                 passwr: contraseña
                 inProgress: boolean que indicará si el usuario tiene un resumen en proceso o no
-                isDark: boolean que indicará si el usuario configuró la app en Dark Mode.
+                config: {
+                    isDark: boolean que indicará si el usuario configuró la app en Dark Mode.
+                }
                 inventario: [
                     resumen: {
                         idres: id del resumen
@@ -459,7 +461,9 @@ class Servicio {
                 id:  
                 userName: 
                 inProgress: 
-                isDark: 
+                config: {
+                    isDark:
+                } 
                 inventario: [
                     resumen: {
                         idres: 

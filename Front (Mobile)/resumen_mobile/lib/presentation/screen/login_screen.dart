@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/main.dart';
+import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import '../uicoreStyles/uicore_input_style.dart';
@@ -96,21 +97,25 @@ class LoginScreen extends ConsumerWidget {
       ),
     );
   }
+  //Rocio@Rocio
+  //123
 
   Future<bool> sendLoginData(String username, String password, WidgetRef ref) async {
     bool loginOk = false;
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://localhost:8080/api/login');
+      final url = Uri.parse('http://10.0.2.2:8080/api/login');
       final response = await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String> {
-          'userName': username,
-          'passwd': password,
+          /*'userName': username,
+          'passwd': password,*/
+          'userName': 'Rocio@Rocio',
+          'passwd': '123',
         }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK

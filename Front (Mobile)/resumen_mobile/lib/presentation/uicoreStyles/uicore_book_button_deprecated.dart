@@ -27,7 +27,7 @@ class BookButton extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
 
             Container(
               height: 60, // Ajusta el tamaño de la imagen

@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print
-
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
@@ -32,7 +30,7 @@ class CreateAccountScreen extends StatelessWidget {
         title: const AppTitleStyle(text:'', color: Color.fromARGB(255, 29, 29, 29)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color:Colors.white),
+        iconTheme: const IconThemeData(color:Colors.white),
       ),
       body: Stack(
         children: [
@@ -49,7 +47,7 @@ class CreateAccountScreen extends StatelessWidget {
             child: ClipPath(
               clipper: MountainClipper(),
               child: Container(
-               color: Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
+               color: const Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
               ),
             ),
           ),

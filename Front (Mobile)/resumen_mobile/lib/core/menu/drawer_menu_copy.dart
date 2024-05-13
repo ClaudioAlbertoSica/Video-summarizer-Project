@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+//COMENTÉ ALGUNAS COSAS PARA BAJAR LOS PROBLEMAS EN LA CONSOLA
 class DrawMenu extends StatefulWidget {
   const DrawMenu({super.key});
 
@@ -9,6 +8,7 @@ class DrawMenu extends StatefulWidget {
 }
 
 class _DrawMenuState extends State<DrawMenu> {
+
 int selectedScreen = 0;
   @override
   Widget build(BuildContext context) {
@@ -17,17 +17,17 @@ int selectedScreen = 0;
       onDestinationSelected: (value) {
         selectedScreen = value;
         setState(() {});
-        context.push(menuItems[value].link);
+        //context.push(menuItems[value].link);
       },
-      children: [
-        ...menuItems
+      children: const [
+        /*...menuItems
         .sublist(0,3)
         .map((item) => NavigationDrawerDestination(
             icon: Icon(item.icon), 
             label: Text(item.title)
             )
           )
-        .toList(),
+        .toList(),*/
         Divider(),
       ],
     );

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
@@ -21,16 +20,16 @@ class _DrawerMenuState extends State<DrawerMenu> {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 245, 248, 251),
+            ),
             child: Image.asset(
               'assets/images/WriterRabbitLogo.png',
               height: 5,
             ),
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 245, 248, 251),
-            ),
           ),
           ListTile(
-            title: Text('Config'),
+            title: const Text('Config'),
             onTap: () {
               context.pushNamed(ConfigScreen.name);
               // Navega a la pantalla de configuración
@@ -38,7 +37,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             },
           ),
           ListTile(
-            title: Text('Account'),
+            title: const Text('Account'),
             onTap: () {
               context.pushNamed(AcconutScreen.name);
               // Navega a la pantalla de cuenta

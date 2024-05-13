@@ -3,7 +3,6 @@ import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
 import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import 'package:resumen_mobile/presentation/screen/login_screen.dart';
-
 import '../presentation/screen/config_screen.dart';
 import '../presentation/screen/create_account_screen.dart';
 import '../presentation/screen/form_video_screen.dart';

@@ -2,7 +2,7 @@ import CnxMongoDB from "../connection/mongodb.js"
 
 
 class ModelMongoDB {
-    
+    //VER EN SERVICES - USERS.JS LO QUE NECESITAMOS DEVOLVER DEL USUARIO!
     obtenerUsuariosLogin = async (userName) => {
         try {
             if (userName) {
@@ -25,9 +25,7 @@ class ModelMongoDB {
         }
     };
 
-
-
-
+    // REVISAR (creo que está OK)
     obtenerUsuarios = async (id) => {
 
         try {
@@ -43,6 +41,7 @@ class ModelMongoDB {
         }
     }
 
+// REVISAR (Creo que está ok, a lo sumo del lado del servicio redirigir a la pagina del login en vez de devolver el usuario)
     guardarUsuario = async (usuario) => {
         try {
             const existe = await CnxMongoDB.db.collection('usuarios').findOne({userName: usuario.userName})
@@ -67,6 +66,8 @@ class ModelMongoDB {
         }
     }
 
+    //ARREGLAR EL TEMA DE LA ACTUALIZACIÓN DE INVENTARIO, PARA AGREGAR UN RESUMEN NUEVO
+    //FUNCIONA OK PARA CAMBIAR CONTRASEÑA!
     actualizarUsuario = async (id, usuario) => {
         try {
             const usuarioActual = await CnxMongoDB.db.collection('usuarios').findOne({id:id})
@@ -89,6 +90,7 @@ class ModelMongoDB {
         }
     }
 
+    //REVISAR  (Creo que está ok)
     borrarUsuario = async (id) => {
         try {
             const usuarioEncontrado = await CnxMongoDB.db.collection('usuarios').findOne({id:id})
@@ -102,6 +104,8 @@ class ModelMongoDB {
         }
     }
 
+    //REVISAR (Creo que funciona ok pero no sé si lo estamos usando, antes lo usabamos en el login pero
+    // la diferencia es que este devuelve el usuario entero - Tal vez podemos usarlo dentro del método obtenerUsuariosLogin)
     obtenerUserPorNombre = async (userName) => {
         try {
             const usuarioEncontrado = await CnxMongoDB.db.collection('usuarios').findOne({userName:userName})
@@ -112,6 +116,9 @@ class ModelMongoDB {
         }
     }
 
+    //REVISAR (Creo que funciona OK pero acá devuelve el resumen completo, tal vez podemos hacer que no devuelva algunas cosas
+    // como los booleans del idioma o esBreve, tal vez el de transcripción e imágenes si por si llegamos a persistirlas en mongo
+    // y quieran descargarlas en un futuro).
     obtenerResumenes = async (id, idres) => {
         try {
             if (id) {
@@ -137,6 +144,7 @@ class ModelMongoDB {
         }
     }
 
+    //REVISAR (Creo que funciona OK)
     borrarResumen = async (id, idres) => {
         try {
             let resumenEliminado = {}
@@ -168,6 +176,7 @@ class ModelMongoDB {
         }
     }
 
+    //REVISAR (Creo que funciona OK, al menos para cambiar el puntaje)
     actualizarResumen = async (id, idres, nuevoResumen) => {
         try {
             if (id) {
@@ -200,6 +209,9 @@ class ModelMongoDB {
         }
     }
 
+    //FALTA RECIBIR PDF EN BINARIO Y AGREGAR LAS PROPIEDADES QUE NO SE 
+    //HAYAN AGREGADO EN EL SERVICIO PARA GUARDAR TODO EN LA BASE DE DATOS.
+    //ACTUALIZAR USUARIO GUARDA MAL LOS RESUMENES 
     crearResumenTexto = async (id, resumen) => {
         const usuario =  await this.obtenerUsuarios(id)
         const inventario = usuario.inventario

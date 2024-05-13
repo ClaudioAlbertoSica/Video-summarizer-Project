@@ -1,3 +1,4 @@
+/*COMENTO PARA BAJAR LOS PROBLEMAS EN LA CONSOLA
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -161,4 +162,4 @@ class HomeScreen extends ConsumerWidget {
           ),
     );
   }
-}
+}*/

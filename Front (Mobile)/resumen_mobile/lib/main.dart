@@ -7,13 +7,13 @@ final userProvider = StateProvider<String?>((ref) => null);
 
 
 void main() {
-  runApp(ProviderScope(
+  runApp(const ProviderScope(
     child: MainApp(),
   ));
 }
 
 class MainApp extends ConsumerWidget {
-  MainApp({super.key});
+  const MainApp({super.key});
   
 
   @override

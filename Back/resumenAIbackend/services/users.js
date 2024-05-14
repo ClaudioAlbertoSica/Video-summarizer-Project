@@ -122,18 +122,12 @@ class Servicio {
         }
     }
 
-    //FALTA COLOCARLE UN PARÁMETRO URL QUE RECIBA EL LINK DE YOUTUBE DESDE EL OTRO MÉTODO.
-    //FALTA RESOLVER TEMA LINKS DE YOUTBE CON CARACTER &
     //LLAMAMOS A LOS DOS SCRIPTS PY PARA PROCESAR VIDEO
     runPythonVideo = async (url) => {
-        //let urlVideo = 'https://www.youtube.com/watch?v=nJPQDyw9YXI'
 
-        console.log('entre al script')
+       
         const pythonScriptPath = './services/serviciosPython/procesarVideo.py';
-        console.log('url que paso por param: ', url)
-        const command = `python ${pythonScriptPath} ${url}`; //VIDEO 6 MIN
-        //const command = `python ${pythonScriptPath} ${urlVideo}`;
-
+        const command = `python ${pythonScriptPath} ${url}`;
         return new Promise((resolve, reject) => {
             console.log('ejecute el script python - primera parte video')
             exec(command, (error, stdout, stderr) => {
@@ -171,12 +165,17 @@ class Servicio {
         });
     }
 
-    //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.
     //LLAMAMOS AL SCRIPT PY PARA PROCESAR TEXTO
-    runPythonTexto = async () => {
-        console.log('entre al script')
+    runPythonTexto = async (esBreve) => {
+
+        if (esBreve) {
+            esBreve = 1
+        } else {
+            esBreve = 0
+        }
+
         const pythonScriptPath = './services/serviciosPython/procesarTexto.py';
-        const command = `python ${pythonScriptPath}`;
+        const command = `python ${pythonScriptPath} ${esBreve}`;
         console.log('ejecute el script python - texto')
         console.log('ejecute el script python')
         return new Promise((resolve, reject) => {
@@ -362,7 +361,7 @@ class Servicio {
                     }
                 })
 
-                await this.runPythonTexto()
+                await this.runPythonTexto(esBreve)
 
                 const textoResumido = await fs.promises.readFile(rutaSalida, 'utf-8', (err) => {
                     if (err) {
@@ -378,7 +377,7 @@ class Servicio {
 
 
 
-            const resumenNuevo = await this.model.crearResumenTexto(id, resumen)
+            //const resumenNuevo = await this.model.crearResumenTexto(id, resumen)
 
             return resumenNuevo
         } catch (error) {

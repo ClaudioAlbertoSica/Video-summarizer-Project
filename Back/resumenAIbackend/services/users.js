@@ -125,14 +125,14 @@ class Servicio {
     //FALTA COLOCARLE UN PARÁMETRO URL QUE RECIBA EL LINK DE YOUTUBE DESDE EL OTRO MÉTODO.
     //FALTA RESOLVER TEMA LINKS DE YOUTBE CON CARACTER &
     //LLAMAMOS A LOS DOS SCRIPTS PY PARA PROCESAR VIDEO
-    runPythonVideo = async () => {
+    runPythonVideo = async (url) => {
         //let urlVideo = 'https://www.youtube.com/watch?v=nJPQDyw9YXI'
 
         console.log('entre al script')
         const pythonScriptPath = './services/serviciosPython/procesarVideo.py';
-        const command = `python ${pythonScriptPath} ${'https://www.youtube.com/watch?v=2Xa3Y4xz8_s'}`; //VIDEO 6 MIN
+        console.log('url que paso por param: ', url)
+        const command = `python ${pythonScriptPath} ${url}`; //VIDEO 6 MIN
         //const command = `python ${pythonScriptPath} ${urlVideo}`;
-
 
         return new Promise((resolve, reject) => {
             console.log('ejecute el script python - primera parte video')
@@ -201,7 +201,7 @@ class Servicio {
         try {
             if (1 == 1) {
 
-                await this.runPythonVideo()
+                await this.runPythonVideo(url)
                 await this.runPythonVideo2();
                 const partes = await this.dividirTextoEnPartes()
                 console.log(partes)

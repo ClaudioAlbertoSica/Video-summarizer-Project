@@ -98,7 +98,13 @@ class Controlador {
         debugger;
         try {
             const { id } = req.params
-            const url = req.body
+            let url = req.body
+            url = String(url.url)
+
+            if (url.indexOf('&') !== -1) {
+                url = url.replace(/&/g, '"&"');
+            }
+
             const resumenCreado = this.servicio.crearResumenVideo(id, url)
             res.json(resumenCreado)
         } catch (error) {

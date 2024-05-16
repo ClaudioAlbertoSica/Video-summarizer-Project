@@ -1,10 +1,9 @@
 // ignore_for_file: avoid_print
-
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
+import 'package:resumen_mobile/presentation/screen/login_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgound.dart';
 import '../uicoreStyles/uicore_app_title_style.dart';
 import '../uicoreStyles/uicore_input_style.dart';
@@ -18,6 +17,7 @@ class CreateAccountScreen extends StatelessWidget {
   final TextEditingController _inputUsernameController = TextEditingController();
   final TextEditingController _inputPassController = TextEditingController();
   final TextEditingController _inputRepeatPassController = TextEditingController();
+  String errorMessage = '';
 
   CreateAccountScreen({super.key});
 
@@ -32,7 +32,7 @@ class CreateAccountScreen extends StatelessWidget {
         title: const AppTitleStyle(text:'', color: Color.fromARGB(255, 29, 29, 29)),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color:Colors.white),
+        iconTheme: const IconThemeData(color:Colors.white),
       ),
       body: Stack(
         children: [
@@ -49,7 +49,7 @@ class CreateAccountScreen extends StatelessWidget {
             child: ClipPath(
               clipper: MountainClipper(),
               child: Container(
-               color: Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
+               color: const Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
               ),
             ),
           ),
@@ -77,17 +77,24 @@ class CreateAccountScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 //aca va el login button
                 ElevatedButton(
-                  onPressed: () {
-                    print(_inputUsernameController.text);
-                    print(_inputPassController.text);
-                    print(_inputRepeatPassController.text);
-
-                    if (_inputRepeatPassController.text == _inputPassController.text) {
-                      //Send al back para ver si el email ya esta creado
-                      print('Logeame capo');
-                      context.goNamed(HomeScreen.name);
+                  onPressed: () async {
+                    bool completeInputs = _validateInputs(_inputUsernameController.text, _inputPassController.text, _inputRepeatPassController.text);
+                    if (completeInputs) {
+                      if (_inputRepeatPassController.text == _inputPassController.text) {
+                          bool created = await sendCreateUser(_inputUsernameController.text,_inputPassController.text);
+                          if (created) {
+                            context.goNamed(LoginScreen.name);
+                        } else {
+                          _showErrorMessage(context);
+                        }
+                      } else{
+                        errorMessage = 'Las contraseñas deben ser iguales.';
+                        _showErrorMessage(context);
+                      }
+                    } else {
+                        errorMessage = 'Los campos no deben estar vacios.';
+                        _showErrorMessage(context);
                     }
-
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
@@ -97,7 +104,7 @@ class CreateAccountScreen extends StatelessWidget {
                     
                   ),
                   child: const TitleStyle(
-                    text: 'Login',
+                    text: 'Create account',
                   ),
                 ),
               ],
@@ -108,34 +115,46 @@ class CreateAccountScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> sendLoginData(String username, String password) async {
-    bool loginOk = false;
-    final url = Uri.parse('http://localhost:8080/api/login'); // Reemplaza con la URL de tu servidor Node.js
-    final response = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username': username,
-        'password': password,
-      }),
-    );
-    //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
-    if (response.statusCode == 200) {
-      // Si la solicitud es exitosa, imprime la respuesta del servidor
-      print('Respuesta del servidor: ${response.body}');
+  Future<bool> sendCreateUser(String username, String password) async {
+    bool createOk = false;
+    try {
+      //Android emulator, then your server endpoint should be 10.0.2.2:8080 instead of localhost:8080
+      final url = Uri.parse('http://localhost:8080/api/');
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String> {
+          'userName': username,
+          'passwd': password,
+        }),
+      );
+      //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
+      if (response.statusCode == 200) {
+        // Si la solicitud es exitosa, imprime la respuesta del servidor
+        print('Respuesta del servidor: ${response.body}');
+        createOk = true;
+      } else {
+        errorMessage = json.decode(response.body)['error'];
+      }
+    } catch (error) {
+      errorMessage = 'Error: Connection ERROR - Server not found';
+    }
 
-      loginOk = true;
-      
-      // Aquí puedes manejar la respuesta del servidor como desees
-      // Por ejemplo, puedes convertir la respuesta JSON en un objeto Dart
-      //final Map<String, dynamic> userData = jsonDecode(response.body);
-      // Y usar los datos del usuario en tu aplicación
-    } //else {
-      // Si la solicitud no es exitosa, imprime el mensaje de error
-      //print('Error al enviar los datos de inicio de sesión: ${response.statusCode}');
-      //}
-      return loginOk; 
+    return createOk;
+  }
+
+  void _showErrorMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.orange[700],
+      ),
+    );
+  }
+  
+  bool _validateInputs(String value1, String value2, String value3) {
+    return !((value1 == '' || value1 == null) && (value2 == '' || value2 == null) && (value3 == '' || value3 == null));
   }
 }

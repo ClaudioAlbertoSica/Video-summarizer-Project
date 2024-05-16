@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:resumen_mobile/presentation/screen/resumen_detail_screen.dart';
 import '../../entity/preview_resumen.dart';
 import '../screen/login_screen.dart';
 
@@ -21,7 +21,7 @@ class BookButton extends StatelessWidget {
       ),
       child: ListTile(
         onTap: () {
-          context.pushNamed(LoginScreen.name, extra: resumen);
+          context.pushNamed(ResumenDetailScreen.name, extra: resumen);
         },
         leading: Container(
               width: 100,
@@ -35,7 +35,7 @@ class BookButton extends StatelessWidget {
               ),
             ),
         title:Text(resumen.title, 
-          style:TextStyle(fontSize: 14,
+          style:const TextStyle(fontSize: 14,
           fontWeight: FontWeight.bold),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
@@ -46,14 +46,13 @@ class BookButton extends StatelessWidget {
             Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.star,
                     color: Colors.orange,
                     size: 15,
                   ),
                   const SizedBox(width: 5),
-                  Text(
-                    '${resumen.range}',
+                  Text(resumen.range,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

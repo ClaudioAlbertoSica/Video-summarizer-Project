@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgound.dart';
 

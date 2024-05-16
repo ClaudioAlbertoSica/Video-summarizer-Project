@@ -5,10 +5,10 @@ class MountainBackground extends StatelessWidget {
   final String backgroundImage;
 
   const MountainBackground({
-    Key? key,
+    super.key,
     required this.child,
     required this.backgroundImage,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

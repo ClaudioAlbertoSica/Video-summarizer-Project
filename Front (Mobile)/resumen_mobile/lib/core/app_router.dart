@@ -1,12 +1,15 @@
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
+import 'package:resumen_mobile/presentation/screen/faqs_screen.dart';
 import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
+import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:resumen_mobile/presentation/screen/login_screen.dart';
-
 import '../presentation/screen/config_screen.dart';
 import '../presentation/screen/create_account_screen.dart';
 import '../presentation/screen/form_video_screen.dart';
+import '../presentation/screen/report_screen.dart';
+import '../presentation/screen/resumen_detail_screen.dart';
 
 // GoRouter configuration
 final appRouter = GoRouter(
@@ -46,6 +49,26 @@ final appRouter = GoRouter(
       path: '/account-screen',
       builder: (context, state) => AcconutScreen(),
       name: AcconutScreen.name
+    ),
+    GoRoute(
+      path: '/faqs-screen',
+      builder: (context, state) => const FAQScreen(),
+      name: FAQScreen.name
+    ),
+    GoRoute(
+      path: '/report-screen',
+      builder: (context, state) => const ReportScreen(),
+      name: ReportScreen.name
+    ),
+    GoRoute(
+      path: '/loading-screen',
+      builder: (context, state) => const LoadingScreen(),
+      name: LoadingScreen.name
+    ),
+    GoRoute(
+      path: '/resumen-detail-screen',
+      builder: (context, state) => const ResumenDetailScreen(),
+      name: ResumenDetailScreen.name
     ),
   ],
 );

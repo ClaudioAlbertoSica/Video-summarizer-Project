@@ -31,6 +31,7 @@ safety_settings = [
     },
 ]
 
+##PEDIR APIKEYS (FALTA RESOLVER ESTE TEMA)
 APIkey  = "AIzaSyAgMBH_nlI8pg7QTS1abBMWlh_9ZqFq7YY"
 APIurl = "https://ai.google.dev/api/rest#service:-generativelanguage.googleapis.com"
 

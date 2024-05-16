@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:resumen_mobile/main.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
@@ -8,9 +8,9 @@ import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart
 
 enum Idiomas{ english, spanish}
 
-class CoreFormText extends ConsumerWidget {
-  const CoreFormText({super.key});
-  static const String name = 'CoreFormText';
+class ReportScreen extends ConsumerWidget {
+  const ReportScreen({super.key});
+  static const String name = 'ReportScreen';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,8 +30,8 @@ class CoreFormText extends ConsumerWidget {
             screenHeight: MediaQuery.of(context).size.height,
             colorLight: const Color.fromARGB(255, 255, 241, 241), 
             colorDark: const Color.fromRGBO(30, 30, 30, 1) , 
-            imageLigth:'formTextResumenBackground.gif' , 
-            imageDark:'formTextResumenBackgroundD.gif' , 
+            imageLigth:'Reports.gif' ,
+            imageDark:'ReportsD.gif' ,
             content: [
               Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -62,8 +62,7 @@ class _FormTextState extends State<FormText> {
 
   bool shortValue = false;
 
-  final TextEditingController _inputTextController = TextEditingController();
-  final TextEditingController _inputTitleController = TextEditingController();
+  final TextEditingController _reportTextController = TextEditingController();
   
   Idiomas idiomaSeleccionado = Idiomas.spanish;
 
@@ -72,13 +71,21 @@ class _FormTextState extends State<FormText> {
     return Form(
       autovalidateMode: AutovalidateMode.always,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text('Tell as about your issue',
+            textAlign: TextAlign.start,
+            style: GoogleFonts.ubuntu(
+              fontWeight: FontWeight.w700
+            ),
+          ),
+          const SizedBox(height: 10,),
           TextFormField(
             maxLines: 4,
             keyboardType: TextInputType.multiline,
-            controller: _inputTextController,
+            controller: _reportTextController,
             decoration: const InputDecoration(
-              hintText: 'Apply your text',
+              hintText: 'Apply your Report',
               border: OutlineInputBorder(
                 borderRadius:  BorderRadius.all(Radius.circular(10)),
               )
@@ -87,56 +94,10 @@ class _FormTextState extends State<FormText> {
               return(value == '' || value == null) ? 'Este campo es requerido.' : null;
             },
           ),
-          SwitchListTile(
-            title: const Text('Resumen Breve'),
-            value: shortValue,
-            onChanged: (value) {
-              setState((){
-                shortValue = value;
-              });
-            },
-          ),
-                    
-          ExpansionTile(
-            title: const Text('Idioma'),
-            subtitle: const Text('Selecciona el idioma.'),
-            children:[
-              RadioListTile(
-                title: Text(Idiomas.english.name),
-                value: Idiomas.english, 
-                groupValue: idiomaSeleccionado, 
-                onChanged: (value){
-                  idiomaSeleccionado = value as Idiomas;
-                  setState(() {});
-                }
-                ),
-              RadioListTile(
-                title: Text(Idiomas.spanish.name),
-                value: Idiomas.spanish, 
-                groupValue: idiomaSeleccionado, 
-                onChanged: (value){
-                  idiomaSeleccionado = value as Idiomas;
-                  setState(() {});
-                }
-                )
-            ]),
-            TextFormField(
-              controller: _inputTitleController,
-              decoration: const InputDecoration(
-                hintText: 'Titulo (Opcional)',
-                border: OutlineInputBorder(
-                  borderRadius:  BorderRadius.all(Radius.circular(10)),
-                )
-              ),
-            ),
-            const SizedBox(height: 25,),
+          const SizedBox(height: 25,),
           ElevatedButton(
                 onPressed: () {
-                  /*print(_inputTextController.text);
-                  print(shortValue);
-                  print(idiomaSeleccionado);
-                  print(_inputTitleController.text);
-                  print(widget.id);*/
+                  
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
@@ -146,7 +107,7 @@ class _FormTextState extends State<FormText> {
                   
                 ),
                 child: const TitleStyle(
-                  text: 'Crear Resumen',
+                  text: 'Send Report',
                 ),
               ),
         ],

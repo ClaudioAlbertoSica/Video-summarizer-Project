@@ -1,32 +1,22 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:resumen_mobile/main.dart';
 import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
-import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgound.dart';
+import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_stack_layout.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
-import '../uicoreStyles/uicore_app_title_style.dart';
-
+//ENUM CON LOS IDIOMAS A ELEGIR 
 enum Idiomas{ english, spanish}
+
 
 class CoreFormVideo extends ConsumerWidget {
   const CoreFormVideo({super.key});
   static const String name = 'CoreFormVideo';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isDark = ref.watch(themeNotifierProvider).isDark;
-    final screenHeight = MediaQuery.of(context).size.height;
+  Widget build(BuildContext context, ref) {
     final idUser = ref.watch(userProvider.notifier).state;
-    final background = ref.watch(themeNotifierProvider)
-      .isDark 
-        ? 'formVideoResumenBackgroundD.gif' 
-        : 'formVideoResumenBackground.gif';
-    
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
@@ -35,23 +25,70 @@ class CoreFormVideo extends ConsumerWidget {
         //centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
-      body: StackLayout(
-        screenHeight: screenHeight,
-        backgroundImage: background,
-        backgroundColor: isDark ? Color.fromRGBO(30, 30, 30, 1) : Color.fromRGBO(235, 240, 241, 1),
-        content:[
-          SizedBox(height: 10,),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-              FormVideo(id: idUser as String),
-              ]
-            ),
+      //MODULARICÉ
+      body: StackLayoutCustomized(
+        screenHeight: MediaQuery.of(context).size.height,
+        colorLight:const Color.fromRGBO(235, 240, 241, 1) ,
+        colorDark:const Color.fromRGBO(30, 30, 30, 1),
+        imageLigth: 'formVideoResumenBackground.gif' ,
+        imageDark: 'formVideoResumenBackgroundD.gif' ,
+        content: [
+        const SizedBox(height: 10,),
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+            FormVideo(id: idUser as String),
+            ]
           ),
-        ],
-      ),
+        ),
+      ]
+        ),
+    );
+  }
+}
+
+//WIDGET QUE PERSONALIZA EL STACKLAYOUT
+
+class StackLayoutCustomized extends ConsumerWidget {
+
+  //Recibo los colores los gifs para el background tanto en su versión light como dark
+  //Recibo una lista de Widgets que será mi content
+  final Color colorLight;
+  final Color colorDark;
+  final String imageLigth;
+  final String imageDark;
+  final  List<Widget> content;
+  final double screenHeight;
+  
+  const StackLayoutCustomized({
+    super.key,
+    required this.screenHeight,
+    required this.colorLight,
+    required this.colorDark,
+    required this.imageLigth,
+    required this.imageDark,
+    required this.content
+    
+  });
+
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final isDark = ref.watch(themeNotifierProvider).isDark;
+    final background = ref.watch(themeNotifierProvider)
+      .isDark 
+        ? imageDark
+        : imageLigth;
+    
+    
+    
+    return StackLayout(
+      screenHeight: screenHeight,
+      backgroundImage: background,
+      backgroundColor: isDark ? colorDark  : colorLight,
+      content: content,
     );
   }
 }
@@ -62,9 +99,9 @@ class FormVideo extends StatefulWidget {
     super.key,
     required this.id,
   });
-
+  
   @override
-  State<FormVideo> createState() => _FormVideoState();
+  State<StatefulWidget> createState() => _FormVideoState();
 }
 
 class _FormVideoState extends State<FormVideo> {
@@ -80,7 +117,9 @@ class _FormVideoState extends State<FormVideo> {
 
   @override
   Widget build(BuildContext context) {
+  
     return Form(
+      autovalidateMode: AutovalidateMode.always,
       child: Column(
         children: [
           Column(
@@ -156,18 +195,18 @@ class _FormVideoState extends State<FormVideo> {
                     )
                   ),
                 ),
-                SizedBox(height: 25,),
+                const SizedBox(height: 25,),
             ],
           ),
           ElevatedButton(
                     onPressed: () {
-                      print(_inputURLController.text);
+                      /*print(_inputURLController.text);
                       print(shortValue);
                       print(transcrpit);
                       print(imagesObtain);
                       print(idiomaSeleccionado);
                       print(_inputTitleController.text);
-                      print(widget.id);
+                      print(widget.id);*/
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),

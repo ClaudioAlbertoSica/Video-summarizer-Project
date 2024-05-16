@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
 import 'package:resumen_mobile/presentation/screen/config_screen.dart';
+import 'package:resumen_mobile/presentation/screen/faqs_screen.dart';
+import 'package:resumen_mobile/presentation/screen/report_screen.dart';
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({
@@ -21,16 +22,16 @@ class _DrawerMenuState extends State<DrawerMenu> {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
+            decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 245, 248, 251),
+            ),
             child: Image.asset(
               'assets/images/WriterRabbitLogo.png',
               height: 5,
             ),
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 245, 248, 251),
-            ),
           ),
           ListTile(
-            title: Text('Config'),
+            title: const Text('Config'),
             onTap: () {
               context.pushNamed(ConfigScreen.name);
               // Navega a la pantalla de configuración
@@ -38,9 +39,26 @@ class _DrawerMenuState extends State<DrawerMenu> {
             },
           ),
           ListTile(
-            title: Text('Account'),
+            title: const Text('Account'),
             onTap: () {
               context.pushNamed(AcconutScreen.name);
+              // Navega a la pantalla de cuenta
+              // Reemplaza con la navegación adecuada
+            },
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('FAQs'),
+            onTap: () {
+              context.pushNamed(FAQScreen.name);
+              // Navega a la pantalla de cuenta
+              // Reemplaza con la navegación adecuada
+            },
+          ),
+          ListTile(
+            title: const Text('Report'),
+            onTap: () {
+              context.pushNamed(ReportScreen.name);
               // Navega a la pantalla de cuenta
               // Reemplaza con la navegación adecuada
             },

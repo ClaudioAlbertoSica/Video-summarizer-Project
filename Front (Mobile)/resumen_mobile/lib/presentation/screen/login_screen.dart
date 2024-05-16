@@ -1,15 +1,12 @@
 // ignore_for_file: avoid_print
-
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:resumen_mobile/main.dart';
+import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
-import '../uicoreStyles/uicore_app_title_style.dart';
 import '../uicoreStyles/uicore_input_style.dart';
 import '../uicoreStyles/uicore_montain_backgound.dart';
 import '../uicoreStyles/uicore_title_style.dart';
@@ -32,23 +29,10 @@ class LoginScreen extends ConsumerWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            height: screenHeight * 0.4,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/fondoConejo.gif'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned.fill(
-            child: ClipPath(
-              clipper: MountainClipper(),
-              child: Container(
-               color: Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
-              ),
-            ),
-          ),
+          //MODULARICÉ UN POCO
+          _ImagenContainer(screenHeight: screenHeight),
+          //MODULARICÉ UN POCO
+          _PositionedFill(),
           Padding(
             padding: const EdgeInsets.all(50.0),
             child: Column(
@@ -69,13 +53,12 @@ class LoginScreen extends ConsumerWidget {
                 //aca va el login button
                 ElevatedButton(
                   onPressed: () async {
-                  bool user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
-                    if(user) {
+                    bool user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
+                    if (user) {
                       context.goNamed(HomeScreen.name);
                     } else {
                       _showErrorMessage(context);
                     }
-                                    
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
@@ -95,25 +78,15 @@ class LoginScreen extends ConsumerWidget {
                       onPressed: (){
                         context.pushNamed(CreateAccountScreen.name);
                       }, 
-                      child: Text('Create account', 
-                        style: TextStyle(
-                          fontFamily: 'PoetsenOne',
-                          fontSize: 15,
-                          color: Color.fromARGB(255, 5, 5, 5)
-                        ),
-                      ),
+                      //MODULARICÉ UN POCO
+                      child: const _ButtonCreateForgot(text: 'Create account'),
                     ),
                     TextButton(
                       onPressed: (){
                         _showDialogForgotPass(context);
                       },
-                      child: Text('Forgot your pass?', 
-                        style: TextStyle(
-                          fontFamily: 'PoetsenOne',
-                          fontSize: 15,
-                          color: Color.fromARGB(255, 5, 5, 5)
-                        ),
-                      ),
+                      //MODULARICÉ UN POCO
+                      child:const _ButtonCreateForgot(text: 'Forgot your pass?'),
                     ),
                   ]
                 ),
@@ -124,6 +97,8 @@ class LoginScreen extends ConsumerWidget {
       ),
     );
   }
+  //Rocio@Rocio
+  //123
 
   Future<bool> sendLoginData(String username, String password, WidgetRef ref) async {
     bool loginOk = false;
@@ -139,6 +114,8 @@ class LoginScreen extends ConsumerWidget {
         body: jsonEncode(<String, String> {
           'userName': username,
           'passwd': password,
+          //'userName': 'Rocio@Rocio',
+          //'passwd': '123',
         }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
@@ -219,6 +196,65 @@ class LoginScreen extends ConsumerWidget {
       SnackBar(
         content: Text(errorMessage),
         backgroundColor: Colors.orange[700],
+      ),
+    );
+  }
+}
+//MODULARICÉ UN POCO
+class _ButtonCreateForgot extends StatelessWidget {
+  final String text;
+  const _ButtonCreateForgot({
+    //super.key,
+    required this.text
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text, 
+      style: const TextStyle(
+        fontFamily: 'PoetsenOne',
+        fontSize: 15,
+        color: Color.fromARGB(255, 5, 5, 5)
+      ),
+    );
+  }
+}
+
+class _PositionedFill extends StatelessWidget {
+  /*const _PositionedFill({
+    super.key,
+  });*/
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: ClipPath(
+        clipper: MountainClipper(),
+        child: Container(
+         color: const Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
+        ),
+      ),
+    );
+  }
+}
+
+class _ImagenContainer extends StatelessWidget {
+  const _ImagenContainer({
+    //super.key,
+    required this.screenHeight,
+  });
+
+  final double screenHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: screenHeight * 0.4,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/fondoConejo.gif'),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

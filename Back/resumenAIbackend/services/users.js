@@ -125,7 +125,7 @@ class Servicio {
     //LLAMAMOS A LOS DOS SCRIPTS PY PARA PROCESAR VIDEO
     runPythonVideo = async (url) => {
 
-       
+
         const pythonScriptPath = './services/serviciosPython/procesarVideo.py';
         const command = `python ${pythonScriptPath} ${url}`;
         return new Promise((resolve, reject) => {
@@ -444,10 +444,11 @@ class Servicio {
                         title: título del resumen (si no es ingresado por el usuario lo pondremos nosotros)
                         miniatura: imagen de youtube (puede ser null o en el caso de los resúmenes de texto podemos 
                             tener una imagen por defecto).
-                        esBreve: boolean que indicará si el usuario solicitó que sea breve o extenso (si o si debemos recibirlo).
-                        idioma: recibiremos un string con el idioma seleccionado (con esto haremos la traducción - si o si debemos recibirlo).
-                        conTranscripcion: boolean que nos indicará si quiere descargar la transcripción (solo en el de video - si o si debemos recibirlo).
-                        conImagenes: boolean que nos indicará si quiere descargar las imágenes (solo en el de video - si o si debemos recibirlo).
+                        isFavourite: boolean que nos sirve para filtrar los resúmenes y armar listas de favoritos.
+                        //esBreve: boolean que indicará si el usuario solicitó que sea breve o extenso (si o si debemos recibirlo).
+                        //idioma: recibiremos un string con el idioma seleccionado (con esto haremos la traducción - si o si debemos recibirlo).
+                        //conTranscripcion: boolean que nos indicará si quiere descargar la transcripción (solo en el de video - si o si debemos recibirlo).
+                        //conImagenes: boolean que nos indicará si quiere descargar las imágenes (solo en el de video - si o si debemos recibirlo).
                         pdf: un objeto con el binario del PDF.
                         point: un int del 0 al 5 con el puntaje del resumen (se inicializará en 0).
                     }

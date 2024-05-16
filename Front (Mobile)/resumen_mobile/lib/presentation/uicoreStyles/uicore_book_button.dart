@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:resumen_mobile/presentation/screen/resumen_detail_screen.dart';
 import '../../entity/preview_resumen.dart';
 import '../screen/login_screen.dart';
 
@@ -20,7 +21,7 @@ class BookButton extends StatelessWidget {
       ),
       child: ListTile(
         onTap: () {
-          context.pushNamed(LoginScreen.name, extra: resumen);
+          context.pushNamed(ResumenDetailScreen.name, extra: resumen);
         },
         leading: Container(
               width: 100,

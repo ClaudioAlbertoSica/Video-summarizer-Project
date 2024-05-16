@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
 import 'package:resumen_mobile/presentation/screen/config_screen.dart';
+import 'package:resumen_mobile/presentation/screen/faqs_screen.dart';
+import 'package:resumen_mobile/presentation/screen/report_screen.dart';
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({
@@ -40,6 +42,23 @@ class _DrawerMenuState extends State<DrawerMenu> {
             title: const Text('Account'),
             onTap: () {
               context.pushNamed(AcconutScreen.name);
+              // Navega a la pantalla de cuenta
+              // Reemplaza con la navegación adecuada
+            },
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('FAQs'),
+            onTap: () {
+              context.pushNamed(FAQScreen.name);
+              // Navega a la pantalla de cuenta
+              // Reemplaza con la navegación adecuada
+            },
+          ),
+          ListTile(
+            title: const Text('Report'),
+            onTap: () {
+              context.pushNamed(ReportScreen.name);
               // Navega a la pantalla de cuenta
               // Reemplaza con la navegación adecuada
             },

@@ -1,8 +1,9 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import StarIconActive from "./StarIconActive.tsx";
 import { Typography } from "@mui/material";
 import "./Stars.css";
 import StarIconPassive from "./StarIconPassive.tsx";
+import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 
 export interface CounterProps {
   starsToShow: number;
@@ -60,7 +61,7 @@ function StarCounter({ starsToShow, couterSize, starsToColour = 0, disabled = "n
     return objects;
   };
 
-  /*Next map, and next convertStringToNumber function are just to convert the string-based Size for star and counter, to numbers, 
+  /*Next map, and next convertStringToNumber() function are just to convert the string-based Size for star and counter, to numbers, 
   because the title only understands numbers, and not the string (understood by the icons)*/
   const stringToNumber: StringToNumberMap = {
     small: 15,

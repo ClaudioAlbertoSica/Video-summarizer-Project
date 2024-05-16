@@ -4,7 +4,7 @@ import { Container } from "@mui/material";
 import SidePanel from "./SidePanel/SidePanel.tsx";
 import AccountData from "./Views/AccountData.tsx";
 import ChangePassword from "./Views/ChangePassword.tsx";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ValidViewNames } from "./Views/ImTheActiveView.ts";
 import ImTheActiveView from "./Views/ImTheActiveView.ts";
 import FAQ from "./Views/FAQ.tsx";
@@ -15,6 +15,7 @@ import TextForm from "./Views/TextForm.tsx";
 import { ButtonViewContext } from "./ButtonViewContext.ts";
 import LoadingScreen from "./Views/LoadingScreen.tsx";
 import PDFviewer from "./Views/PDFviewer.tsx";
+import { LoggedUserContext } from "../../ActiveUserContext.ts";
 
 function GridLayout() {
   const [selectedCentralPanelView, setSelectedCentralPanelView] = useState<ValidViewNames>(ValidViewNames.noneSelected);
@@ -32,7 +33,7 @@ function GridLayout() {
 
         <Grid className="ContainerGrid" container spacing={0}>
           <Grid className="HeaderGrid" item xs={12}>
-            <h1>Header</h1>
+            <h1>{selectedCentralPanelView}</h1>
           </Grid>
           {/*
           Idea here is that, when clicked, Buttons in the SidePanel shoot a View-Name. That name is stored as a State

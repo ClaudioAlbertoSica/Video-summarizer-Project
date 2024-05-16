@@ -1,16 +1,16 @@
 
 
 export enum ValidViewNames  {
-  noneSelected = 'none',
-  VideoForm = 'VideoForm',
-  TextForm = 'TextForm',
-  AccountData = 'AccountData',
-  ChangePassword = 'ChangePassword',
-  FAQ = 'FAQ',
-  Help = 'Help',
+  noneSelected = '',
+  VideoForm = 'Formulairo de Video',
+  TextForm = 'Formulairo de Texto',
+  AccountData = 'Datos de tu cuenta',
+  ChangePassword = 'Cambiar contraseña',
+  FAQ = 'Preguntas Frecuentes',
+  Help = 'Ayuda',
   LogOut= 'LogOut',
-  Loading = 'LoadingScreen',
-  Summary = 'Summary'
+  Loading = 'Cargando...',
+  Summary = 'Resumen'
 }
 
 const ImTheActiveView = (nameToCompare: ValidViewNames, thisComponentsName: ValidViewNames) => {

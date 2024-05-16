@@ -19,6 +19,7 @@ function SummaryListItem({ thisItemRating = 0, image, title, idRes }: ListItemOb
   const userContext = useContext(LoggedUserContext);
 
   const handleClick = () => {
+    console.log(userContext.userState);
     userContext.userSteState({
       ...userContext.userState,
       selectedSummary: { idRes, title, point: thisItemRating, miniatura: image },

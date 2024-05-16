@@ -33,7 +33,7 @@
 
 .HeaderGrid{
     background-color: lightseagreen;
-    height: 6vh;
+    height: 6%;
     align-content: center;
 }
 
@@ -41,7 +41,7 @@
 .CentralPanel{
     background-color: lightblue;
     max-width:inherit;
-    height: 88vh; 
+    height: 88%; 
     padding: 0px;
     display: flex;
     flex-direction: column;
@@ -53,12 +53,11 @@
 }
 
 .MuiButton-root.CloseButton{
-    margin-top: 50px;
-
+    margin-top: 30px;
 }
 
 .FooterGrid{
     background-color: lightseagreen;
-    height: 6vh;
+    height: 6%;
     align-content: center;
 }

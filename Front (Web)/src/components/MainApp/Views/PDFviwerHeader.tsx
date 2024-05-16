@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { LoggedUserContext } from "../../../ActiveUserContext";
 import { Avatar, Container, Typography } from "@mui/material";
 import StarCounter from "../StarCounter/StarCounter";
@@ -10,7 +10,6 @@ function PDFviwerHeader() {
   return (
     <Container className="HeaderItemsConatiner">
       <Avatar src={userState.selectedSummary.miniatura} sx={{ width: 55, height: 55, marginRight: "15px" }}></Avatar>
-
       <Typography className="SummaryTitle" variant="h4" textAlign="left">
         {userState.selectedSummary.title}
       </Typography>

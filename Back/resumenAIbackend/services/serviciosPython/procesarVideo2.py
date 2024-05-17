@@ -32,8 +32,8 @@ safety_settings = [
 ]
 
 ##PEDIR APIKEYS (FALTA RESOLVER ESTE TEMA)
-APIkey  = "AIzaSyAgMBH_nlI8pg7QTS1abBMWlh_9ZqFq7YY"
-APIurl = "https://ai.google.dev/api/rest#service:-generativelanguage.googleapis.com"
+APIkey  = ""
+APIurl = ""
 
 
 
@@ -154,13 +154,13 @@ def seleccionarCapturasRankeadas(arrCap, arrEval):
 capturasDefinitivas = seleccionarCapturasRankeadas(rutasCapturas, arrInteger)
 
 
-print(capturasDefinitivas)
+##print(capturasDefinitivas)
 
 
 ##BORRO CAPTURAS QUE NO ME SIRVEN
 def delete_except(paths, ruta):
     folder_path = ruta
-    print(folder_path)
+    ##print(folder_path)
     # Get list of all PNG files in the folder
     png_files = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f)) and f.lower().endswith('.png')]
     # Convert paths to set for faster lookup

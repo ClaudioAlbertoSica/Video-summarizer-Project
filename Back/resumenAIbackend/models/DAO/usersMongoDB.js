@@ -1,3 +1,4 @@
+//import { resume } from "pdfkit";
 import CnxMongoDB from "../connection/mongodb.js"
 
 
@@ -66,29 +67,35 @@ class ModelMongoDB {
         }
     }
 
-    //ARREGLAR EL TEMA DE LA ACTUALIZACIÓN DE INVENTARIO, PARA AGREGAR UN RESUMEN NUEVO
     //FUNCIONA OK PARA CAMBIAR CONTRASEÑA!
     actualizarUsuario = async (id, usuario) => {
         try {
-            const usuarioActual = await CnxMongoDB.db.collection('usuarios').findOne({id:id})
-            let usuarioModificado
+            const usuarioActual = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
+            let usuarioModificado;
+    
             if (usuarioActual) {
                 if (usuario.inventario) {
-                    usuarioModificado = {...usuarioActual, ...usuario, inventario:[...usuarioActual.inventario,...usuario.inventario]}
 
+                    const inventarioSet = new Set(usuarioActual.inventario.map(item => JSON.stringify(item)));
+                    usuario.inventario.forEach(item => inventarioSet.add(JSON.stringify(item)));
+                    const inventarioMerged = Array.from(inventarioSet).map(item => JSON.parse(item));
+    
+                    usuarioModificado = { ...usuarioActual, ...usuario, inventario: inventarioMerged };
                 } else {
-                    usuarioModificado = {...usuarioActual, ...usuario}
+                    usuarioModificado = { ...usuarioActual, ...usuario };
                 }
-                await CnxMongoDB.db.collection('usuarios').replaceOne({id:id},({...usuarioModificado}))
-                return await CnxMongoDB.db.collection('usuarios').findOne({id:usuarioModificado.id})
+    
+                await CnxMongoDB.db.collection('usuarios').replaceOne({ id: id }, usuarioModificado);
+                return await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
             } else {
-                return {}
+                return {};
             }
+        } catch (error) {
+            console.error("Database connection error:", error);
+            throw new Error('conexion con la BD no establecida');
         }
-        catch {
-            throw new Error('conexion con la BD no establecida')
-        }
-    }
+    };
+
 
     //REVISAR  (Creo que está ok)
     borrarUsuario = async (id) => {
@@ -215,11 +222,49 @@ class ModelMongoDB {
     crearResumenTexto = async (id, resumen) => {
         const usuario =  await this.obtenerUsuarios(id)
         const inventario = usuario.inventario
-        resumen.idres = String(parseInt(inventario[inventario.length - 1]?.id || 0) + 1)
+        console.log(usuario.inventario)
+        resumen.idres = String(parseInt(inventario[inventario.length - 1]?.idres || 0) + 1)
+
+        //console.log(resumen)
+        
         inventario.push(resumen)
-        await this.actualizarUsuario(id, {inventario: inventario})
-        const resumenNuevo = await this.obtenerResumenes(id, idres)
+
+        await this.actualizarUsuario(id, {inventario: inventario}) //PROBLEMA
+        const resumenNuevo = await this.obtenerResumenes(id, resumen.idres)
         return resumenNuevo
+    }
+
+    //VER DE PASARLE LOS ATRIBUTOS
+    crearResumenVideo = async (id, resumenVid) => {
+
+        //console.log(resumenVid)
+
+        const title = 'cacaNueva'
+
+        const usuario =  await this.obtenerUsuarios(id)
+
+        
+
+        const inventario = usuario.inventario
+
+        //console.log(inventario)
+
+      
+
+        resumenVid.idres = String(parseInt(inventario[inventario.length - 1]?.idres || 0) + 1)
+        resumenVid.title = String(title)
+        
+        console.log(resumenVid)
+        console.log('####################################################')
+        inventario.push(resumenVid)
+        console.log(inventario)
+        
+        await this.actualizarUsuario(id, {inventario: inventario})
+    //  const resumenNuevo = await this.obtenerResumenes(id, idres)
+        return console.log('caca volvi del model')
+
+
+
     }
 
 

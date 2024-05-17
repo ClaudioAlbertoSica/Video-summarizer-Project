@@ -125,7 +125,7 @@ class Servicio {
     //LLAMAMOS A LOS DOS SCRIPTS PY PARA PROCESAR VIDEO
     runPythonVideo = async (url) => {
 
-
+        
         const pythonScriptPath = './services/serviciosPython/procesarVideo.py';
         const command = `python ${pythonScriptPath} ${url}`;
         return new Promise((resolve, reject) => {
@@ -195,16 +195,34 @@ class Servicio {
 
     //FALTA PREGUNTAR SI INGRESARON UN ID Y UNA URL (MANEJO DE ERRORES), FALTA ENCONTRAR EL USUARIO Y ACTUALIZARLO
     //FALTA AGREGARLE LAS PROPIEDADES AL RESUMEN, CONVERTIR EL PDF A BINARIO Y AGREGARLO COMO PROPIEDAD
+    //AGREGAR ATRIBUTOS - SACARLOS DE CREARRESUMENTEXTO
     //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.
+    //VER POR QUE TITLE ROMPE
     crearResumenVideo = async (id, url) => {
         try {
             if (1 == 1) {
-
+                //title = 'caca'
+                //await this.actualizarUsuario(id, { inProgress: true })
+                const resumenVid = {}
                 await this.runPythonVideo(url)
                 await this.runPythonVideo2();
-                const partes = await this.dividirTextoEnPartes()
-                console.log(partes)
-                return {}
+                await this.dividirTextoEnPartes()
+
+                const rutaSalidaBinario = './services/serviciosPython/jsonPDF.json'
+                
+                const binarioAPasar = await fs.promises.readFile(rutaSalidaBinario, 'utf-8', (err) => {
+                    if (err) {
+                        console.log('error leyendo archivo')
+                    } else {
+                        console.log('Leido')
+                    }
+                })
+                resumenVid.pdf = binarioAPasar
+
+
+                const caca = await this.model.crearResumenVideo(id,resumenVid)
+                //await this.actualizarUsuario(id, { inProgress: false })
+                return caca
             } else {
                 console.log('error de ingreso de datos')
             }
@@ -218,7 +236,7 @@ class Servicio {
         try {
             const textoResumido = await fs.promises.readFile('./services/serviciosPython/resumenSalida.txt', 'utf-8')
             console.log('Leído:')
-            console.log(textoResumido)
+            //console.log(textoResumido)
             return textoResumido
         } catch (error) {
             console.error('Error leyendo archivo:', error)
@@ -260,8 +278,29 @@ class Servicio {
             partes = texto
         }
         await this.generarPDF(partes, imagenes)
-        console.log(partes)
-        return partes
+        //console.log(partes)
+        await this.pasarABinario()
+
+        //return partes
+    }
+
+    pasarABinario = async() => {
+        
+        const pythonScriptPath2 = './services/serviciosPython/PDFaBinario.py';
+        const command = `python ${pythonScriptPath2}`;
+        
+        return new Promise((resolve, reject) => {
+            exec(command, (error, stdout, stderr) => {
+                console.log('ejecute el script python - pasando pdf a binario...')
+                if (error) {
+                    console.error(`Error executing Python script: ${error}`);
+                    reject(error)
+                }
+                console.log(`Output: ${stdout}`);
+                console.error(`Errors: ${stderr}`);
+                resolve()
+            })
+        });
     }
 
     //ESTE CREO QUE ESTÁ OK (NO CREO QUE HAGA FALTA MODULARIZAR PORQUE LA ÚNICA RUTA QUE NECESITAMOS REVISAR SIEMPRE
@@ -376,8 +415,8 @@ class Servicio {
             }
 
 
-
-            //const resumenNuevo = await this.model.crearResumenTexto(id, resumen)
+            //console.log(resumen)
+            const resumenNuevo = await this.model.crearResumenTexto(id, resumen)
 
             return resumenNuevo
         } catch (error) {

@@ -3,6 +3,7 @@ import { exec } from 'child_process'
 //import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg'; NO BORRAR, VER RUTAS DE FFMPEG
 import fs from 'fs'
 import PDFDocument from 'pdfkit';
+import path from 'path'
 class Servicio {
     constructor(persistencia) {
         this.model = Factory.get(persistencia)
@@ -226,6 +227,9 @@ class Servicio {
                 console.log('antes de entrar a model')
                 
                 const resumenNuevo = await this.model.crearResumenVideo(id, resumenVid) 
+                
+                await this.limpiarVideo()
+                
                 await this.actualizarUsuario(id, { inProgress: false })
     
                 
@@ -486,12 +490,76 @@ class Servicio {
             }
 
             const resumenNuevo = await this.model.crearResumenTexto(id, resumen)
+            
+            await this.limpiarTexto()
+            
             await this.actualizarUsuario(id, { inProgress: false })
             return resumenNuevo
         } catch (error) {
             await this.actualizarUsuario(id, { inProgress: false }) //PARA EL FUTURO
             console.log(error.message)
         }
+    }
+
+    limpiarTexto = async () => {
+        const directoryPath = './services/serviciosPython/';
+        const filesToDelete = ['textoEntrada.txt', 'documento.pdf', 'textoSalida.txt']; // Specify the exact files to delete here
+        
+        try {
+            for (const file of filesToDelete) {
+                const filePath = path.join(directoryPath, file);
+    
+                try {
+                    await fs.promises.unlink(filePath);
+                    console.log(`Deleted file: ${filePath}`);
+                } catch (err) {
+                    console.error(`Error deleting file ${filePath}:`, err);
+                }
+            }
+            console.log('Finished deleting specified files.');
+        } catch (err) {
+            console.error('Error:', err);
+        }
+    };
+
+    limpiarVideo = async () => {
+    const mainDirectoryPath = './services/serviciosPython/';
+    const imageDirectoryPath = './services/serviciosPython/capturas/';
+    const filesToDelete = ['resumenSalida.txt', 'transcripcion.txt', 'documento.pdf']; // Specify the exact video files to delete here
+
+    try {
+        // Deleting specific video files
+        for (const file of filesToDelete) {
+            const filePath = path.join(mainDirectoryPath, file);
+
+            try {
+                await fs.promises.unlink(filePath);
+                console.log(`Deleted file: ${filePath}`);
+            } catch (err) {
+                console.error(`Error deleting file ${filePath}:`, err);
+            }
+        }
+
+        // Deleting all .png files in the image directory
+        const imageFiles = await fs.promises.readdir(imageDirectoryPath);
+        for (const file of imageFiles) {
+            const filePath = path.join(imageDirectoryPath, file);
+
+            try {
+                const stats = await fs.promises.stat(filePath);
+                if (stats.isFile() && file.endsWith('.png')) {
+                    await fs.promises.unlink(filePath);
+                    console.log(`Deleted image file: ${filePath}`);
+                }
+            } catch (err) {
+                console.error(`Error deleting image file ${filePath}:`, err);
+            }
+        }
+
+        console.log('Finished deleting specified video files and all .png files.');
+    } catch (err) {
+        console.error('Error:', err);
+    }
     }
 
 

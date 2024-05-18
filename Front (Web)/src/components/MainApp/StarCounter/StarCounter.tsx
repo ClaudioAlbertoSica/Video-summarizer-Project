@@ -1,9 +1,10 @@
-import { ReactElement, useContext, useEffect, useState } from "react";
+import { ReactElement, useContext } from "react";
 import StarIconActive from "./StarIconActive.tsx";
 import { Typography } from "@mui/material";
 import "./Stars.css";
 import StarIconPassive from "./StarIconPassive.tsx";
-import { LoggedUserContext } from "../../../ActiveUserContext.ts";
+import { LoggedUser, LoggedUserContext } from "../../../ActiveUserContext.ts";
+import server from "../../../../src/Services/serverCall.ts";
 
 export interface CounterProps {
   starsToShow: number;
@@ -17,7 +18,26 @@ type StringToNumberMap = {
 };
 
 function StarCounter({ starsToShow, couterSize, starsToColour = 0, disabled = "none" }: CounterProps) {
-  const [paintedStars, setPaintedStars] = useState<number>(starsToColour);
+  const loggedUser = useContext(LoggedUserContext);
+
+  const handleClickedActiveStar = async (num: number) => {
+    const idresSelected = loggedUser.userState.selectedSummary.idres;
+
+    const selectedResDBindex = loggedUser.userState.inventario.findIndex((sum) => sum.idres === idresSelected);
+
+    await server
+      .put(`/${loggedUser.userState.id}/resumen/${loggedUser.userState.selectedSummary.idres}`, { point: num })
+      .then(() => {
+        const newUserContext: LoggedUser = { ...loggedUser.userState };
+        newUserContext.inventario[selectedResDBindex].point = num;
+        newUserContext.selectedSummary.point = num;
+        loggedUser.userSteState(newUserContext);
+      })
+      .catch((err) => {
+        console.log(err.error);
+        console.log("Error on update");
+      });
+  };
 
   const renderActiveStars = () => {
     //Draws the required amount of stars. Also colours the user-selected amount.
@@ -25,13 +45,13 @@ function StarCounter({ starsToShow, couterSize, starsToColour = 0, disabled = "n
     const objects: ReactElement[] = [];
 
     for (let index = 1; index <= starsToShow; index++) {
-      const paintThisOne: boolean = index <= paintedStars;
+      const paintThisOne: boolean = index <= starsToColour;
       objects.push(
         <StarIconActive
           key={index}
           num={index}
           paintThisStar={paintThisOne}
-          returnedNumber={setPaintedStars}
+          returnedNumber={handleClickedActiveStar}
           starSize={couterSize}
           starType={disabled === "usePlaceHolder" ? "PlaceHolder" : "normal"}
         />
@@ -47,7 +67,7 @@ function StarCounter({ starsToShow, couterSize, starsToColour = 0, disabled = "n
     const objects: ReactElement[] = [];
 
     for (let index = 1; index <= starsToShow; index++) {
-      const paintThisOne: boolean = index <= paintedStars;
+      const paintThisOne: boolean = index <= starsToColour;
       objects.push(
         <StarIconPassive
           key={index}

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { LoggedUserContext } from "../../../ActiveUserContext";
 import { Avatar, Container, Typography } from "@mui/material";
 import StarCounter from "../StarCounter/StarCounter";

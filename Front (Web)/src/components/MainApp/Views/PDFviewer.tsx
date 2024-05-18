@@ -3,7 +3,7 @@ import server from "../../../Services/serverCall.ts";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 import isloadingGif from "../../../assets/isLoading.gif";
 import "./View.css";
-import { Alert, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import PDFviwerHeader from "./PDFviwerHeader.tsx";
 
 type receivedResponse = {
@@ -36,7 +36,10 @@ function PDFviewer() {
           setIsLoading(false);
           setDocumentToShow(base64toBlob(res.data.pdf.data));
         })
-        .catch((err) => console.log(err.error));
+        .catch((err) => {
+          setDocumentToShow(new Blob()); // This is just to show nothing, if nothing arrives (otherwise, last PDF remains visible)
+          console.log(err.error);
+        });
     };
     setIsLoading(true);
     call();

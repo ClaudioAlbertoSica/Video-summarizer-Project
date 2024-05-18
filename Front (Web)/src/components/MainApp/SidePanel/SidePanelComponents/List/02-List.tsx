@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement, useContext, useEffect } from "react";
 import { List, ListItem, Paper } from "@mui/material";
 import SummaryListItem from "./04-ListItem.tsx";
 import ListItemPlaceholder from "./05-ListItemPlaceHolder.tsx";
@@ -8,6 +8,8 @@ import { LoggedUserContext } from "../../../../../ActiveUserContext.ts";
 
 function ListForAccordion() {
   const currentlyLoggedUsuer = useContext(LoggedUserContext).userState;
+
+  useEffect(() => {}, [currentlyLoggedUsuer.selectedSummary.point]);
 
   const listToShow = () => {
     let objetcToReturn: ReactElement[] = [

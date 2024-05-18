@@ -102,6 +102,7 @@ class ModelMongoDB {
     };*/
 
     actualizarUsuario = async (id, usuario) => {
+
         try {
             const usuarioActual = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
 
@@ -126,10 +127,40 @@ class ModelMongoDB {
             return usuarioActualizado
         } catch (error) {
             console.error("Database connection error:", error);
+            throw new Error('Database connection not established')
+            
+        }
+
+    };
+
+/*
+    actualizarUsuario = async (id, usuario) => {
+        try {
+            const usuarioActual = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
+    
+            if (!usuarioActual) {
+                console.error(`User with id ${id} not found`);
+                return {};
+            }
+    
+            const updateFields = {};
+            if (usuario.inProgress !== undefined) updateFields.inProgress = usuario.inProgress;
+            if (usuario.passwd !== undefined) updateFields.passwd = usuario.passwd;
+            if (usuario.config !== undefined) updateFields.config = usuario.config;
+    
+            await CnxMongoDB.db.collection('usuarios').updateOne(
+                { id: id },
+                { $set: updateFields }
+            );
+    
+            const usuarioActualizado = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
+            return usuarioActualizado;
+        } catch (error) {
+            console.error("Database connection error:", error);
             throw new Error('Database connection not established');
         }
     };
-
+*/
 
 
     //REVISAR  (Creo que está ok)
@@ -264,6 +295,7 @@ class ModelMongoDB {
                         { id: id },
                         { $set: { inventario: resumenesAux } }
                     );
+
                     return nuevoResumen;
                 } else {
                     console.log('No existe usuario con ese ID');
@@ -284,100 +316,26 @@ class ModelMongoDB {
     //HAYAN AGREGADO EN EL SERVICIO PARA GUARDAR TODO EN LA BASE DE DATOS.
     //ACTUALIZAR USUARIO GUARDA MAL LOS RESUMENES 
     crearResumenTexto = async (id, resumen) => {
-        const usuario =  await this.obtenerUsuarios(id)
-        const inventario = usuario.inventario
-        console.log(usuario.inventario)
-        resumen.idres = String(parseInt(inventario[inventario.length - 1]?.idres || 0) + 1)
-
-        //console.log(resumen)
         
-        inventario.push(resumen)
-
-        await this.actualizarUsuario(id, {inventario: inventario}) //PROBLEMA
-        const resumenNuevo = await this.obtenerResumenes(id, resumen.idres)
-        return resumenNuevo
-    }
-
-    //VER DE PASARLE LOS ATRIBUTOS
-    crearResumenVideoOLDLEESERVICIO = async (id, resumenVid) => {
-
-        //console.log(resumenVid)
-
-        const title = 'cacaNueva2'
-
-        const usuario =  await this.obtenerUsuarios(id)
-
-        const inventario = usuario.inventario
-
-        console.log('entro a model')
-
-      
-
-        resumenVid.idres = String(parseInt(inventario[inventario.length - 1]?.idres || 0) + 1)
-        resumenVid.title = String(title)
-        
-        console.log(resumenVid)
-        console.log('####################################################')
-        inventario.push(resumenVid) //agregue un await
-        console.log(inventario)
-        console.log('####################################################')
-        debugger;
-        const userAct = await this.actualizarUsuario(id, {inventario: inventario})
-
-        console.log(userAct)
-    //  const resumenNuevo = await this.obtenerResumenes(id, idres)
-        return 'caca volvi del model'
-
-
-
-    }
-
-    /*
-    crearResumenVideo = async (id) => {
-
-        console.log('entro a model')
-
-
-        let resumenVid = {}
-        const rutaSalidaBinario = './services/serviciosPython/jsonPDF.json'
-        console.log('antes de pasar a binario MODELO')
-                
-        const binarioAPasar = await fs.promises.readFile(rutaSalidaBinario, 'utf-8', (err) => {
-                if (err) {
-                    console.log('error leyendo archivo')
-                } else {
-                    console.log('Leido')
-                }
-                })          
-        resumenVid.pdf = binarioAPasar
-        
-        console.log('saque binario')
-
-        //console.log(resumenVid)
-        const title = 'cacaNueva2'
-        const usuario =  await this.obtenerUsuarios(id)
-        const inventario = usuario.inventario
-
-
-        console.log('saque inventario')
-      
-
-        resumenVid.idres = String(parseInt(inventario[inventario.length - 1]?.idres || 0) + 1)
-        resumenVid.title = String(title)
-
-        inventario.push(resumenVid) //agregue un await
-        console.log('pushie en inventario')
-        const userAct = await this.actualizarUsuario(id, {inventario: inventario})
-
+        try {
+                console.log('Entering model method');
             
+                const rutaSalidaBinario = './services/serviciosPython/jsonPDF.json';
+                console.log('Reading binary file');
 
-        console.log(userAct)
-    //  const resumenNuevo = await this.obtenerResumenes(id, idres)
-        return 'caca volvi del model'
+                let binarioAPasar = await fs.promises.readFile(rutaSalidaBinario, 'utf-8');
+                console.log('Binary file read successfully');
 
+                binarioAPasar = await JSON.parse(binarioAPasar)
 
+                resumen.pdf = binarioAPasar
 
-    }*/
+                const resumenNuevo = await this.guardarResumenNuevo(id, resumen)
+                return resumenNuevo
+        } catch(error) {
+
+        }
+    }
 
     crearResumenVideo = async (id, resumenVid) => {
             try {
@@ -392,16 +350,13 @@ class ModelMongoDB {
     
                 binarioAPasar = await JSON.parse(binarioAPasar)
 
-                console.log(binarioAPasar)
-                console.log('#####################################################')
                 resumenVid.pdf = binarioAPasar
-                console.log(resumenVid)
 
-                console.log('Pushed new summary into inventory');
-                  
                 const resumenNuevo = await this.guardarResumenNuevo(id, resumenVid);
-    
-                console.log('User updated:', resumenNuevo);
+
+                console.log('guarde el resumen :)');
+
+                
     
                 return resumenNuevo;
             } catch (error) {

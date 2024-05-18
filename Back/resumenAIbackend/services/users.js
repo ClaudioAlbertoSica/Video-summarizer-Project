@@ -33,7 +33,7 @@ class Servicio {
     //A REVISAR EN LA PARTE DE MODEL (CUANDO LE PASAMOS UN RESUMEN NOS AGREGABA MUCHOS IGUALES)
     actualizarUsuario = async (id, usuario) => {
         try {
-            const usuarioActualizado = this.model.actualizarUsuario(id, usuario)
+            const usuarioActualizado = await this.model.actualizarUsuario(id, usuario)
             return usuarioActualizado
         }
         catch (error) {
@@ -44,7 +44,7 @@ class Servicio {
     //Finalizado
     borrarUsuario = async (id) => {
         try {
-            const usuarioBorrado = this.model.borrarUsuario(id)
+            const usuarioBorrado = await this.model.borrarUsuario(id)
             return usuarioBorrado
         }
         catch (error) {
@@ -203,7 +203,7 @@ class Servicio {
         try {
             const resumenVid = {}
             if (id, url, esBreve, idioma) {
-                //await this.actualizarUsuario(id, { inProgress: true })
+                await this.actualizarUsuario(id, { inProgress: true })
                 resumenVid.thumbnail = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT7h1oqIwMtvT8R1VuR60jUiElORY8V0xcH3zfrSY-Qw&s'
                 resumenVid.isFavourite = false
                 resumenVid.points = 0
@@ -213,24 +213,28 @@ class Servicio {
                     resumenVid.title = "ResumenDeVideo"
                 }
 
-                await this.runPythonVideo(url)
+                await this.runPythonVideo(url);
+                console.log('CORRE PYTHON 1')
                 await this.runPythonVideo2(esBreve, idioma);
-                const partes = await this.dividirTextoEnPartes()
-                console.log('esto son las PARTES: ' + partes)
-
-
-                console.log('antes de llamar model')
-
+                console.log('CORRE PYTHON 2')
+                await this.runPythonArmado();
+                console.log('CORRE PYTHON 3 - arma pdf')
+                await this.pasarABinario() 
+                console.log('CORRE PYTHON 4 - pasa binario')
+                
+                console.log('antes de entrar a model')
+                
                 const resumenNuevo = await this.model.crearResumenVideo(id, resumenVid) 
-
-
-                console.log('termino del lado de services')
-                //await this.actualizarUsuario(id, { inProgress: false })
+                await this.actualizarUsuario(id, { inProgress: false })
+    
+                
+                console.log('volvi de meter el resumen!')
                 return resumenNuevo
             } else {
                 console.log('error de ingreso de datos')
             }
         } catch (error) {
+            await this.actualizarUsuario(id, { inProgress: false })
             console.log(error.message)
         }
     }
@@ -283,49 +287,42 @@ class Servicio {
             partes[0] = texto
         }
         await this.generarPDF(partes, imagenes)
-        //console.log(partes)
+
         await this.pasarABinario()
 
         //return partes
     }
 
-    dividirTextoEnPartes = async () => {
-        let texto = await this.leerTxtSalida()
-        texto = texto.replace(/\r?\n/g, '\n')
-    
-        // const imagenes = await this.contarArchivosEnCarpeta()
-        // const numPartes = imagenes.length
-        const numPartes = 0 //BORRAR
-    
-        const parrafos = texto.split('\n').filter(parrafo => parrafo.trim() !== '')
-    
-        let partes = []
-    
-        if (numPartes > 0) {
-            const parrafosPorParte = Math.ceil(parrafos.length / numPartes)
-            let inicio = 0
-    
-            for (let i = 0; i < numPartes; i++) {
-                const fin = Math.min(inicio + parrafosPorParte, parrafos.length)
-                let parte = parrafos.slice(inicio, fin).join('\n')
-    
-                if (parte.length < parrafosPorParte * 0.8 && i > 0) {
-                    partes[i - 1] += '\n' + parte
-                } else {
-                    partes.push(parte)
+    dividirTextoEnPartes = async (texto, numPartes) => {
+        
+        return new Promise((resolve, reject) => {
+            try {
+            const parrafos = texto.split('\n').filter(parrafo => parrafo.trim() !== '')
+            let partes = []
+            if (numPartes > 0) {
+                const parrafosPorParte = Math.ceil(parrafos.length / numPartes)
+                let inicio = 0
+        
+                for (let i = 0; i < numPartes; i++) {
+                    const fin = Math.min(inicio + parrafosPorParte, parrafos.length)
+                    let parte = parrafos.slice(inicio, fin).join('\n')
+        
+                    if (parte.length < parrafosPorParte * 0.8 && i > 0) {
+                        partes[i - 1] += '\n' + parte
+                    } else {
+                        partes.push(parte)
+                    }
+                    inicio = fin
                 }
-                inicio = fin
+            } else {
+                partes = [texto]
             }
-        } else {
-            partes = [texto]
-        }
-    
-        const imagenes = [] // Assuming no images
-    
-        await this.generarPDF(partes, imagenes)
-        await this.pasarABinario()
-    
-        return partes
+        resolve(partes)
+            } catch(error) {
+                reject(error)
+            }
+
+    })
     }
     
 
@@ -349,27 +346,50 @@ class Servicio {
         });
     }
 
+    runPythonArmado = async() => {
+        
+        const pythonScriptPath3 = './services/serviciosPython/armarPDF.py';
+        const command = `python ${pythonScriptPath3}`;
+        
+        return new Promise((resolve, reject) => {
+            exec(command, (error, stdout, stderr) => {
+                console.log('ejecute el script python - armando el PDF...')
+                if (error) {
+                    console.error(`Error executing Python script: ${error}`);
+                    reject(error)
+                }
+                console.log(`Output: ${stdout}`);
+                console.error(`Errors: ${stderr}`);
+                resolve()
+            })
+        });
+    }
+
+
     //ESTE CREO QUE ESTÁ OK (NO CREO QUE HAGA FALTA MODULARIZAR PORQUE LA ÚNICA RUTA QUE NECESITAMOS REVISAR SIEMPRE
     // VA A SER LA DE CAPTURAS). ESTA DEVUELVE UN ARRAY DE STRINGS CON LAS RUTAS DE LAS IMÁGENES.
     contarArchivosEnCarpeta = async () => {
-        try {
-            const carpeta = './services/serviciosPython/capturas'
-            const archivos = await fs.promises.readdir(carpeta);
-            // Ordenar los nombres de archivo como números
-            archivos.sort((a, b) => {
-                // Obtener los números de los nombres de archivo
-                const numA = parseInt(a.split('.')[0]);
-                const numB = parseInt(b.split('.')[0]);
-                // Comparar los números
-                return numA - numB;
-            });
 
-            console.log(archivos)
-            return archivos
-        } catch (error) {
-            console.error('Error al leer la carpeta:', error);
-            return 0;
-        }
+        const carpeta = './services/serviciosPython/capturas'
+        const archivos = await fs.promises.readdir(carpeta);
+
+        return new Promise((resolve, reject) => {    
+            try {
+  
+                
+                // Ordenar los nombres de archivo como números
+                archivos.sort((a, b) => {
+                    // Obtener los números de los nombres de archivo
+                    const numA = parseInt(a.split('.')[0]);
+                    const numB = parseInt(b.split('.')[0]);
+                    // Comparar los números
+                    return numA - numB;
+                });
+                resolve(archivos)
+            } catch (error) {
+                reject(error);
+            }
+        })
     }
 
     //MEJORAR PARA PODER UTILIZARLA TAMBIÉN EN EL RESUMEN QUE NO TIENE IMÁGENES.
@@ -430,11 +450,14 @@ class Servicio {
         const resumen = {}
         try {
             if (id, texto, esBreve, idioma) {
+                await this.actualizarUsuario(id, { inProgress: true })
                 if (titulo) {
                     resumen.titulo = titulo
                 } else {
                     resumen.titulo = "ResumenDeTexto"
                 }
+    
+                console.log('actualizo a true el progress... :)');
 
                 await fs.promises.writeFile(rutaEntrada, texto, (err) => {
                     if (err) {
@@ -453,20 +476,44 @@ class Servicio {
                         console.log('Leido')
                     }
                 })
-                resumen.text = textoResumido
+                await this.generarPDFTexto(textoResumido)
             } else {
                 console.log('error de ingreso de datos')
             }
 
-
-            //console.log(resumen)
             const resumenNuevo = await this.model.crearResumenTexto(id, resumen)
-
+            await this.actualizarUsuario(id, { inProgress: false })
             return resumenNuevo
         } catch (error) {
+            await this.actualizarUsuario(id, { inProgress: false }) //PARA EL FUTURO
             console.log(error.message)
         }
     }
+
+
+    //NO MODIFICAR, FUNCIONA PERFECTAMENTE
+    generarPDFTexto = async (texto) => {
+        return new Promise((resolve, reject) => {
+            const doc = new PDFDocument();
+            const pdfPath = './services/serviciosPython/documento.pdf';
+            const writeStream = fs.createWriteStream(pdfPath);
+            doc.pipe(writeStream);
+            doc.fontSize(12);
+            doc.text(texto)
+            doc.moveDown(0.5)
+            doc.end();
+            writeStream.on('finish', () => {
+                console.log('Documento PDF generado correctamente.');
+                resolve({ path: pdfPath, name: 'documento.pdf' });
+            });
+            writeStream.on('error', error => {
+                console.error('Error al generar documento PDF:', error);
+                reject(error);
+            });
+        });
+    }
+
+
 
     //TEMA TRY CATCH: TENEMOS QUE VOLVER A PROBAR PERO SI LO DEJAMOS LA EJECUCIÓN SIGUE
     cambiarPass = async (id, passActual, passNueva, passNuevaBis) => {

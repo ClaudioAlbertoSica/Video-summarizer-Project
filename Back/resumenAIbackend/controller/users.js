@@ -99,9 +99,9 @@ class Controlador {
             const { id } = req.params
             let  { url, title, esBreve, idioma }  = req.body
             url = String(url)
-            console.log(url)
+            
             title = String(title)
-            console.log(title)
+            
             if (url.indexOf('&') !== -1) {
                 url = url.replace(/&/g, '"&"');
             }

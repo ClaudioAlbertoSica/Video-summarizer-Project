@@ -329,7 +329,6 @@ class ModelMongoDB {
                 binarioAPasar = await JSON.parse(binarioAPasar)
 
                 resumen.pdf = binarioAPasar*/
-                debugger;
                 const resumenNuevo = await this.guardarResumenNuevo(id, resumen)
                 return resumenNuevo
         } catch(error) {

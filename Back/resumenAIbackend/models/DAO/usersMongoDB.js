@@ -320,7 +320,7 @@ class ModelMongoDB {
         try {
                 console.log('Entering model method');
             
-                const rutaSalidaBinario = './services/serviciosPython/jsonPDF.json';
+                /*const rutaSalidaBinario = './services/serviciosPython/jsonPDF.json';
                 console.log('Reading binary file');
 
                 let binarioAPasar = await fs.promises.readFile(rutaSalidaBinario, 'utf-8');
@@ -328,8 +328,8 @@ class ModelMongoDB {
 
                 binarioAPasar = await JSON.parse(binarioAPasar)
 
-                resumen.pdf = binarioAPasar
-
+                resumen.pdf = binarioAPasar*/
+                debugger;
                 const resumenNuevo = await this.guardarResumenNuevo(id, resumen)
                 return resumenNuevo
         } catch(error) {
@@ -341,7 +341,7 @@ class ModelMongoDB {
             try {
 
                 console.log('Entering model method');
-    
+                /*
                 const rutaSalidaBinario = './services/serviciosPython/jsonPDF.json';
                 console.log('Reading binary file');
     
@@ -350,7 +350,7 @@ class ModelMongoDB {
     
                 binarioAPasar = await JSON.parse(binarioAPasar)
 
-                resumenVid.pdf = binarioAPasar
+                resumenVid.pdf = binarioAPasar*/
 
                 const resumenNuevo = await this.guardarResumenNuevo(id, resumenVid);
 

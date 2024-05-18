@@ -136,6 +136,17 @@ class Controlador {
         }
 
     }
+
+    obtenerInProgress = async (req, res) => {
+        try {
+            const { id } = req.params
+            const inProgress = await this.servicio.obtenerInProgress(id)
+            res.json(inProgress)
+        }
+        catch(error) {
+            res.status(500).json({error:error.message})   
+        }
+    }
 }
 
 export default Controlador

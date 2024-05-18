@@ -9,6 +9,7 @@ class Router {
 
     start() {
         this.router.get('/:id?', this.controlador.obtenerUsuarios)
+        this.router.get('/inprogress/:id', this.controlador.obtenerInProgress)
         this.router.post('/:id/resumen/video', this.controlador.crearResumenVideo)
         this.router.post('/:id/resumen/texto', this.controlador.crearResumenTexto)
         this.router.get('/:id/resumen/:idres?', this.controlador.obtenerResumenes)

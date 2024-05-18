@@ -177,7 +177,7 @@ class Servicio {
         const pythonScriptPath = './services/serviciosPython/procesarTexto.py';
         const command = `python ${pythonScriptPath} ${esBreve}`;
         console.log('ejecute el script python - texto')
-        console.log('ejecute el script python')
+        //console.log('ejecute el script python')
         return new Promise((resolve, reject) => {
             exec(command, (error, stdout, stderr) => {
                 if (error) {
@@ -214,13 +214,14 @@ class Servicio {
                 }
 
                 await this.runPythonVideo(url);
-                console.log('CORRE PYTHON 1')
+                console.log('CORRÍ PYTHON 1')
                 await this.runPythonVideo2(esBreve, idioma);
-                console.log('CORRE PYTHON 2')
+                console.log('CORRÍ PYTHON 2')
                 await this.runPythonArmado();
-                console.log('CORRE PYTHON 3 - arma pdf')
-                await this.pasarABinario() 
-                console.log('CORRE PYTHON 4 - pasa binario')
+                console.log('CORRÍ PYTHON 3 - arma pdf')
+                //await this.pasarABinario() 
+                resumenVid.pdf = await this.pasarPDFABinario()
+                console.log('CORRÍ PYTHON 4 - pasa binario')
                 
                 console.log('antes de entrar a model')
                 
@@ -375,7 +376,7 @@ class Servicio {
 
         return new Promise((resolve, reject) => {    
             try {
-  
+
                 
                 // Ordenar los nombres de archivo como números
                 archivos.sort((a, b) => {
@@ -444,19 +445,20 @@ class Servicio {
 
     //FALTA AGREGAR LA PROPIEDAD POINT.
     //FALTA RESOLVER EN TODOS LOS RESÚMENES EL TEMA DE LA TRADUCCIÓN
-    crearResumenTexto = async (id, texto, esBreve, idioma, titulo) => {
+    crearResumenTexto = async (id, texto, esBreve, idioma, title) => {
         const rutaEntrada = './services/serviciosPython/textoEntrada.txt'
         const rutaSalida = './services/serviciosPython/textoSalida.txt'
         const resumen = {}
         try {
             if (id, texto, esBreve, idioma) {
                 await this.actualizarUsuario(id, { inProgress: true })
-                if (titulo) {
-                    resumen.titulo = titulo
+                if (title) {
+                    resumen.title = title
                 } else {
-                    resumen.titulo = "ResumenDeTexto"
+                    resumen.title = "ResumenDeTexto"
                 }
-    
+                resumen.isFavourite = false
+                resumen.points = 0
                 console.log('actualizo a true el progress... :)');
 
                 await fs.promises.writeFile(rutaEntrada, texto, (err) => {
@@ -477,6 +479,8 @@ class Servicio {
                     }
                 })
                 await this.generarPDFTexto(textoResumido)
+                //await this.pasarABinario() 
+                resumen.pdf = await this.pasarPDFABinario()
             } else {
                 console.log('error de ingreso de datos')
             }
@@ -548,16 +552,60 @@ class Servicio {
         //}
     }
 
+    obtenerInProgress = async (id) => {
+        try {
+            const usuario = await this.model.obtenerUsuarios(id)
+            const inProgress = usuario.inProgress
+            return inProgress
+        }
+        catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    pasarPDFABinario = async () => {
+        try {
+            debugger;
+            // Read the file
+            const fileBuffer = await fs.promises.readFile("./services/serviciosPython/documento.pdf");
+            
+            // Convert the file buffer to a base64 string
+            const base64String = fileBuffer.toString('base64');
+            
+            // Create the JSON object
+            const jsonObject = 
+                {
+                filename: "documento.pdf",
+                content_type: "application/pdf",
+                data: base64String
+                }
+            
+            
+            /*const jsonString = JSON.stringify(jsonObject, null, 2);
+            await fs.promises.writeFile("./services/serviciosPython/jsonPDF.json", jsonString, (err) => {
+                if (err) {
+                    console.log('error escribiendo archivo')
+                } else {
+                    console.log('se escribio')
+                }
+            })
+            // Convert the JSON object to a string
+            //const jsonString = JSON.stringify(jsonObject, null, 2);
+        */
+            return jsonObject
+        } catch (error) {
+            console.error('Error reading or processing the file:', error);
+        }
+    }
+    
 
     /* FALTAN LOS SIGUIENTES MÉTODOS:
-        * CREAR UN ENDPOINT PARA CONSULTAR SI EL PROCESO DE LA CREACIÓN DE RESUMEN TERMINÓ.
+        // CREAR UN ENDPOINT PARA CONSULTAR SI EL PROCESO DE LA CREACIÓN DE RESUMEN TERMINÓ.
         * PARA TRABAJAR LA TRADUCCIÓN DE LOS RESÚMENES.
         * NODEMAILER PARA LA RECUPERACIÓN DE LA CUENTA (¿Forgot your password?).
         * VALIDACIONES (EN GENERAL).
         * PARA OBTENER LA MINIATURA DEL VIDEO DE YOUTUBE Y VER CÓMO LA PERSISTIMOS EN LA BD
-        (SI LOGRAMOS DESCULAR ESTO PODEMOS LLEGAR A PERSISTIR EL TEXTO Y LAS CAPTURAS POR FUERA DEL PDF, TOTAL SERÍA SUMAR
-        4 IMÁGENES MÁS COMO MÁXIMO).
-        *SI LOGRAMOS ESTO ÚLTIMO UN MÉTODO QUE CREE UN DOCX CON ESTO, SINO UNO QUE CONVIERTA PDF A DOCX.
+        *UN MÉTODO QUE CONVIERTA PDF A DOCX.
         * EL USUARIO DEBERÁ TENER LAS SIGUIENTES PROPIEDADES:
             usuario:  {
                 _id: id de mongo

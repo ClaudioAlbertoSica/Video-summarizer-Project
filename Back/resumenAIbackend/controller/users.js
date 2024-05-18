@@ -27,6 +27,7 @@ class Controlador {
         }
     }
 
+    //EVITAR CAMBIO DE CONTRASEÑA POR ACA
     actualizarUsuario = async (req, res) => {
         try {
             const { id } = req.params
@@ -124,7 +125,7 @@ class Controlador {
     }
     
     cambiarPass = async (req, res) => {
-
+        debugger;
         try {
             const { id } = req.params
             const {passActual, passNueva, passNuevaBis} = req.body

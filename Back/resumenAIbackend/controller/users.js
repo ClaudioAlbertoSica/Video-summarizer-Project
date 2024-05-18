@@ -95,18 +95,18 @@ class Controlador {
     }
 
     crearResumenVideo = async (req, res) => {
-        debugger;
         try {
             const { id } = req.params
-            let url = req.body
-            url = String(url.url)
-
+            let  { url, title, esBreve, idioma }  = req.body
+            url = String(url)
+            console.log(url)
+            title = String(title)
+            console.log(title)
             if (url.indexOf('&') !== -1) {
                 url = url.replace(/&/g, '"&"');
             }
-
-            const resumenCreado = this.servicio.crearResumenVideo(id, url)
-            res.json(resumenCreado)
+            const resumenNuevo = await this.servicio.crearResumenVideo(id, url, title, esBreve, idioma)
+            res.json(resumenNuevo)
         } catch (error) {
             res.status(500).json({error:error.message})  
         }
@@ -115,8 +115,8 @@ class Controlador {
     crearResumenTexto = async (req, res) => {
         try {
             const { id } = req.params
-            const { texto, esBreve, idioma, titulo} = req.body
-            const resumenCreado = this.servicio.crearResumenTexto(id, texto, esBreve, idioma, titulo)
+            const { texto, esBreve, idioma, title} = req.body
+            const resumenCreado = await this.servicio.crearResumenTexto(id, texto, esBreve, idioma, title)
             res.json(resumenCreado)
         } catch (error) {
             res.status(500).json({error:error.message})  

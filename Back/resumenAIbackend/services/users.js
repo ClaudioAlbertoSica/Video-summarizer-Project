@@ -195,34 +195,38 @@ class Servicio {
 
     //FALTA PREGUNTAR SI INGRESARON UN ID Y UNA URL (MANEJO DE ERRORES), FALTA ENCONTRAR EL USUARIO Y ACTUALIZARLO
     //FALTA AGREGARLE LAS PROPIEDADES AL RESUMEN, CONVERTIR EL PDF A BINARIO Y AGREGARLO COMO PROPIEDAD
-    //AGREGAR ATRIBUTOS - SACARLOS DE CREARRESUMENTEXTO
+
     //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.
     //VER POR QUE TITLE ROMPE
-    crearResumenVideo = async (id, url) => {
+    crearResumenVideo = async (id, url, title, esBreve, idioma) => {
+        
         try {
-            if (1 == 1) {
-                //title = 'caca'
+            const resumenVid = {}
+            if (id, url, esBreve, idioma) {
                 //await this.actualizarUsuario(id, { inProgress: true })
-                const resumenVid = {}
+                resumenVid.thumbnail = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT7h1oqIwMtvT8R1VuR60jUiElORY8V0xcH3zfrSY-Qw&s'
+                resumenVid.isFavourite = false
+                resumenVid.points = 0
+                if (title) {
+                    resumenVid.title = title
+                } else {
+                    resumenVid.title = "ResumenDeVideo"
+                }
+
                 await this.runPythonVideo(url)
-                await this.runPythonVideo2();
-                await this.dividirTextoEnPartes()
-
-                const rutaSalidaBinario = './services/serviciosPython/jsonPDF.json'
-                
-                const binarioAPasar = await fs.promises.readFile(rutaSalidaBinario, 'utf-8', (err) => {
-                    if (err) {
-                        console.log('error leyendo archivo')
-                    } else {
-                        console.log('Leido')
-                    }
-                })
-                resumenVid.pdf = binarioAPasar
+                await this.runPythonVideo2(esBreve, idioma);
+                const partes = await this.dividirTextoEnPartes()
+                console.log('esto son las PARTES: ' + partes)
 
 
-                const caca = await this.model.crearResumenVideo(id,resumenVid)
+                console.log('antes de llamar model')
+
+                const resumenNuevo = await this.model.crearResumenVideo(id, resumenVid) 
+
+
+                console.log('termino del lado de services')
                 //await this.actualizarUsuario(id, { inProgress: false })
-                return caca
+                return resumenNuevo
             } else {
                 console.log('error de ingreso de datos')
             }
@@ -248,12 +252,12 @@ class Servicio {
     // CON EL TEXTO. SI TENEMOS QUE LLEVAR LA SIGUIENTE LÍNEA AL RESUMEN DE TEXTO: texto.replace(/\r?\n/g, '\n')
     //TAL VEZ SE PUEDE MEJORAR RECIBIENDO LOS PARÁMETROS NECESARIOS (TEXTO Y NUMPARTES) Y EL LEER EL TEXTO Y OBTENER
     //EL ARRAY DE ARCHIVOS LO HACEMOS EN EL MÉTODO DE CREAR RESUMEN VIDEO DIRECTAMENTE.
-    dividirTextoEnPartes = async () => {
+    dividirTextoEnPartesOLD = async () => {
         let texto = await this.leerTxtSalida()
         texto = texto.replace(/\r?\n/g, '\n')
-        const imagenes = await this.contarArchivosEnCarpeta()
-        const numPartes = imagenes.length
-
+        //const imagenes = await this.contarArchivosEnCarpeta()
+        //const numPartes = imagenes.length
+        const numPartes = 0 //BORRAR
         
         const parrafos = texto.split('\n').filter(parrafo => parrafo.trim() !== '')
 
@@ -261,6 +265,7 @@ class Servicio {
 
         const partes = []
         //TAL VEZ DEBERÍA PREGUNTAR SI TIENE UN SOLO ÍTEM?
+        const imagenes = []
         if(!imagenes.isEmpty){
             let inicio = 0
             for (let i = 0; i < numPartes; i++) {
@@ -275,7 +280,7 @@ class Servicio {
                 inicio = fin
             }
         }else{
-            partes = texto
+            partes[0] = texto
         }
         await this.generarPDF(partes, imagenes)
         //console.log(partes)
@@ -283,6 +288,47 @@ class Servicio {
 
         //return partes
     }
+
+    dividirTextoEnPartes = async () => {
+        let texto = await this.leerTxtSalida()
+        texto = texto.replace(/\r?\n/g, '\n')
+    
+        // const imagenes = await this.contarArchivosEnCarpeta()
+        // const numPartes = imagenes.length
+        const numPartes = 0 //BORRAR
+    
+        const parrafos = texto.split('\n').filter(parrafo => parrafo.trim() !== '')
+    
+        let partes = []
+    
+        if (numPartes > 0) {
+            const parrafosPorParte = Math.ceil(parrafos.length / numPartes)
+            let inicio = 0
+    
+            for (let i = 0; i < numPartes; i++) {
+                const fin = Math.min(inicio + parrafosPorParte, parrafos.length)
+                let parte = parrafos.slice(inicio, fin).join('\n')
+    
+                if (parte.length < parrafosPorParte * 0.8 && i > 0) {
+                    partes[i - 1] += '\n' + parte
+                } else {
+                    partes.push(parte)
+                }
+                inicio = fin
+            }
+        } else {
+            partes = [texto]
+        }
+    
+        const imagenes = [] // Assuming no images
+    
+        await this.generarPDF(partes, imagenes)
+        await this.pasarABinario()
+    
+        return partes
+    }
+    
+
 
     pasarABinario = async() => {
         
@@ -337,14 +383,14 @@ class Servicio {
 
             doc.pipe(writeStream);
             doc.fontSize(12);
-            if(!imagenes.isEmpty){
+            if(imagenes.length > 0){
                 for (let index = 0; index < textoArray.length; index++) {
 
                     let texto = textoArray[index];
 
                     doc.text(texto)
                     doc.moveDown(0.5)
-                
+                    
                     doc.image(`./services/serviciosPython/capturas/${imagenes[index]}`, {
                         fit: [250, 250],
                         align: 'center',
@@ -384,8 +430,6 @@ class Servicio {
         const resumen = {}
         try {
             if (id, texto, esBreve, idioma) {
-                resumen.esBreve = esBreve
-                resumen.idioma = idioma
                 if (titulo) {
                     resumen.titulo = titulo
                 } else {
@@ -400,7 +444,7 @@ class Servicio {
                     }
                 })
 
-                await this.runPythonTexto(esBreve)
+                await this.runPythonTexto(esBreve, idioma)
 
                 const textoResumido = await fs.promises.readFile(rutaSalida, 'utf-8', (err) => {
                     if (err) {

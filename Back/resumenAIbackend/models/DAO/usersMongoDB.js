@@ -1,6 +1,6 @@
 //import { resume } from "pdfkit";
 import CnxMongoDB from "../connection/mongodb.js"
-
+import fs from 'fs'
 
 class ModelMongoDB {
     //VER EN SERVICES - USERS.JS LO QUE NECESITAMOS DEVOLVER DEL USUARIO!
@@ -53,6 +53,10 @@ class ModelMongoDB {
                     usuario.userName = String(usuario.userName)
                     usuario.passwd = String(usuario.passwd)
                     usuario.inventario = []
+                    usuario.inProgress = false
+                    usuario.config = {
+                        isDark:false
+                    }
                     await CnxMongoDB.db.collection('usuarios').insertOne({...usuario})
                     return await CnxMongoDB.db.collection('usuarios').findOne({userName: usuario.userName})
                 } else {
@@ -68,6 +72,7 @@ class ModelMongoDB {
     }
 
     //FUNCIONA OK PARA CAMBIAR CONTRASEÑA!
+    /*
     actualizarUsuario = async (id, usuario) => {
         try {
             const usuarioActual = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
@@ -94,7 +99,37 @@ class ModelMongoDB {
             console.error("Database connection error:", error);
             throw new Error('conexion con la BD no establecida');
         }
+    };*/
+
+    actualizarUsuario = async (id, usuario) => {
+        try {
+            const usuarioActual = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
+
+            if (!usuarioActual) {
+                console.error(`User with id ${id} not found`);
+                return {};
+            }
+
+            let usuarioModificado;
+            if (usuario.inventario) {
+                const inventarioSet = new Set(usuarioActual.inventario.map(item => JSON.stringify(item)));
+                usuario.inventario.forEach(item => inventarioSet.add(JSON.stringify(item)));
+                const inventarioMerged = Array.from(inventarioSet).map(item => JSON.parse(item));
+
+                usuarioModificado = { ...usuarioActual, ...usuario, inventario: inventarioMerged };
+            } else {
+                usuarioModificado = { ...usuarioActual, ...usuario };
+            }
+
+            await CnxMongoDB.db.collection('usuarios').replaceOne({ id: id }, usuarioModificado);
+            const usuarioActualizado = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
+            return usuarioActualizado
+        } catch (error) {
+            console.error("Database connection error:", error);
+            throw new Error('Database connection not established');
+        }
     };
+
 
 
     //REVISAR  (Creo que está ok)
@@ -216,6 +251,35 @@ class ModelMongoDB {
         }
     }
 
+    guardarResumenNuevo = async (id, nuevoResumen) => {
+        try {
+            if (id) {
+                const usuarioEncontrado = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
+                if (usuarioEncontrado) {
+                    const resumenesAux = usuarioEncontrado.inventario || [];
+                    const idres = String(parseInt(resumenesAux[resumenesAux.length - 1]?.idres || 0) + 1);
+                    nuevoResumen.idres = idres
+                    resumenesAux.push(nuevoResumen);
+                    await CnxMongoDB.db.collection('usuarios').updateOne(
+                        { id: id },
+                        { $set: { inventario: resumenesAux } }
+                    );
+                    return nuevoResumen;
+                } else {
+                    console.log('No existe usuario con ese ID');
+                    return null;
+                }
+            } else {
+                console.log('No hay ID de usuario especificado');
+                return null;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            throw new Error('Conexión con la BD no establecida o error al guardar el nuevo resumen');
+        }
+    };
+
+
     //FALTA RECIBIR PDF EN BINARIO Y AGREGAR LAS PROPIEDADES QUE NO SE 
     //HAYAN AGREGADO EN EL SERVICIO PARA GUARDAR TODO EN LA BASE DE DATOS.
     //ACTUALIZAR USUARIO GUARDA MAL LOS RESUMENES 
@@ -235,19 +299,17 @@ class ModelMongoDB {
     }
 
     //VER DE PASARLE LOS ATRIBUTOS
-    crearResumenVideo = async (id, resumenVid) => {
+    crearResumenVideoOLDLEESERVICIO = async (id, resumenVid) => {
 
         //console.log(resumenVid)
 
-        const title = 'cacaNueva'
+        const title = 'cacaNueva2'
 
         const usuario =  await this.obtenerUsuarios(id)
 
-        
-
         const inventario = usuario.inventario
 
-        //console.log(inventario)
+        console.log('entro a model')
 
       
 
@@ -256,16 +318,97 @@ class ModelMongoDB {
         
         console.log(resumenVid)
         console.log('####################################################')
-        inventario.push(resumenVid)
+        inventario.push(resumenVid) //agregue un await
         console.log(inventario)
-        
-        await this.actualizarUsuario(id, {inventario: inventario})
+        console.log('####################################################')
+        debugger;
+        const userAct = await this.actualizarUsuario(id, {inventario: inventario})
+
+        console.log(userAct)
     //  const resumenNuevo = await this.obtenerResumenes(id, idres)
-        return console.log('caca volvi del model')
+        return 'caca volvi del model'
 
 
 
     }
+
+    /*
+    crearResumenVideo = async (id) => {
+
+        console.log('entro a model')
+
+
+        let resumenVid = {}
+        const rutaSalidaBinario = './services/serviciosPython/jsonPDF.json'
+        console.log('antes de pasar a binario MODELO')
+                
+        const binarioAPasar = await fs.promises.readFile(rutaSalidaBinario, 'utf-8', (err) => {
+                if (err) {
+                    console.log('error leyendo archivo')
+                } else {
+                    console.log('Leido')
+                }
+                })          
+        resumenVid.pdf = binarioAPasar
+        
+        console.log('saque binario')
+
+        //console.log(resumenVid)
+        const title = 'cacaNueva2'
+        const usuario =  await this.obtenerUsuarios(id)
+        const inventario = usuario.inventario
+
+
+        console.log('saque inventario')
+      
+
+        resumenVid.idres = String(parseInt(inventario[inventario.length - 1]?.idres || 0) + 1)
+        resumenVid.title = String(title)
+
+        inventario.push(resumenVid) //agregue un await
+        console.log('pushie en inventario')
+        const userAct = await this.actualizarUsuario(id, {inventario: inventario})
+
+            
+
+        console.log(userAct)
+    //  const resumenNuevo = await this.obtenerResumenes(id, idres)
+        return 'caca volvi del model'
+
+
+
+    }*/
+
+    crearResumenVideo = async (id, resumenVid) => {
+            try {
+
+                console.log('Entering model method');
+    
+                const rutaSalidaBinario = './services/serviciosPython/jsonPDF.json';
+                console.log('Reading binary file');
+    
+                let binarioAPasar = await fs.promises.readFile(rutaSalidaBinario, 'utf-8');
+                console.log('Binary file read successfully');
+    
+                binarioAPasar = await JSON.parse(binarioAPasar)
+
+                console.log(binarioAPasar)
+                console.log('#####################################################')
+                resumenVid.pdf = binarioAPasar
+                console.log(resumenVid)
+
+                console.log('Pushed new summary into inventory');
+                  
+                const resumenNuevo = await this.guardarResumenNuevo(id, resumenVid);
+    
+                console.log('User updated:', resumenNuevo);
+    
+                return resumenNuevo;
+            } catch (error) {
+                console.error('Error in crearResumenVideo:', error);
+                throw error;
+            }
+        }
 
 
 

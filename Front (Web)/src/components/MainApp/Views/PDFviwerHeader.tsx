@@ -14,7 +14,7 @@ function PDFviwerHeader() {
         {userState.selectedSummary.title}
       </Typography>
       <Container style={{ display: "inline-flex", maxWidth: "fit-content", margin: "0px" }}>
-        <StarCounter starsToShow={5} couterSize="large" starsToColour={userState.selectedSummary.point} />
+        <StarCounter starsToShow={5} couterSize="large" starsToColour={userState.selectedSummary.points} />
       </Container>
     </Container>
   );

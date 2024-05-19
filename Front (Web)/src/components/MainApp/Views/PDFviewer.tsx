@@ -31,7 +31,7 @@ function PDFviewer() {
   useEffect(() => {
     const call = async () => {
       await server
-        .get<receivedResponse>(`/${activeUSer.userState.id}/resumen/${activeUSer.userState.selectedSummary.idRes}`)
+        .get<receivedResponse>(`/${activeUSer.userState.id}/resumen/${activeUSer.userState.selectedSummary.idres}`)
         .then((res) => {
           setIsLoading(false);
           setDocumentToShow(base64toBlob(res.data.pdf.data));

@@ -22,15 +22,14 @@ function StarCounter({ starsToShow, couterSize, starsToColour = 0, disabled = "n
 
   const handleClickedActiveStar = async (num: number) => {
     const idresSelected = loggedUser.userState.selectedSummary.idres;
-
     const selectedResDBindex = loggedUser.userState.inventario.findIndex((sum) => sum.idres === idresSelected);
 
     await server
-      .put(`/${loggedUser.userState.id}/resumen/${loggedUser.userState.selectedSummary.idres}`, { point: num })
+      .put(`/${loggedUser.userState.id}/resumen/${loggedUser.userState.selectedSummary.idres}`, { points: num })
       .then(() => {
         const newUserContext: LoggedUser = { ...loggedUser.userState };
-        newUserContext.inventario[selectedResDBindex].point = num;
-        newUserContext.selectedSummary.point = num;
+        newUserContext.inventario[selectedResDBindex].points = num;
+        newUserContext.selectedSummary.points = num;
         loggedUser.userSteState(newUserContext);
       })
       .catch((err) => {

@@ -22,7 +22,7 @@ function SummaryListItem({ thisItemRating = 0, image, title, idRes }: ListItemOb
     console.log(userContext.userState);
     userContext.userSteState({
       ...userContext.userState,
-      selectedSummary: { idres: idRes, title, point: thisItemRating, miniatura: image },
+      selectedSummary: { idres: idRes, title, points: thisItemRating, miniatura: image },
     });
     setSelectedCentralPanelView(ValidViewNames.Summary);
   };

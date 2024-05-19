@@ -4,7 +4,7 @@ import { Container } from "@mui/material";
 import SidePanel from "./SidePanel/SidePanel.tsx";
 import AccountData from "./Views/AccountData.tsx";
 import ChangePassword from "./Views/ChangePassword.tsx";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { ValidViewNames } from "./Views/ImTheActiveView.ts";
 import ImTheActiveView from "./Views/ImTheActiveView.ts";
 import FAQ from "./Views/FAQ.tsx";
@@ -15,7 +15,6 @@ import TextForm from "./Views/TextForm.tsx";
 import { ButtonViewContext } from "./ButtonViewContext.ts";
 import LoadingScreen from "./Views/LoadingScreen.tsx";
 import PDFviewer from "./Views/PDFviewer.tsx";
-import { LoggedUserContext } from "../../ActiveUserContext.ts";
 
 function GridLayout() {
   const [selectedCentralPanelView, setSelectedCentralPanelView] = useState<ValidViewNames>(ValidViewNames.noneSelected);

@@ -9,7 +9,7 @@ class User {
 
 final String userName;
 final String id;
-final List inventario;
+final List<ResumenPreview> inventario;
 final bool inProgress;
 final bool isDark;
 

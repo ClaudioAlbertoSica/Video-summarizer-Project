@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:resumen_mobile/entity/preview_resumen.dart';
 import 'package:resumen_mobile/entity/user.dart';
 import 'package:resumen_mobile/main.dart';
+import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
@@ -105,7 +107,7 @@ class LoginScreen extends ConsumerWidget {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/login');
+      final url = Uri.parse('http://localhost:8080/api/login');
       final response = await http.post(
         url,
         headers: <String, String>{
@@ -114,8 +116,8 @@ class LoginScreen extends ConsumerWidget {
         body: jsonEncode(<String, String> {
           //'userName': username,
           //'passwd': password,
-          'userName': 'rocio.bani93@gmail.com',
-          'passwd': '123',
+          "userName": "rocio.bani93@gmail.com",
+          "passwd": "123",
         }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
@@ -126,12 +128,16 @@ class LoginScreen extends ConsumerWidget {
         final rsp = json.decode(response.body);
 
         User userLogueado = User(
-          userName: rsp['userName'],
-          id: rsp['id'],
-          inventario: rsp['inventario'] as List, 
-          inProgress: rsp['inProgress'],
-          isDark: rsp['config']['isDark']);
-          
+            userName: rsp['userName'],
+            id: rsp['id'],
+            inventario: (rsp['inventario'] as List)
+              .map((item) => ResumenPreview.fromJson(item))
+              .toList(), 
+            inProgress: rsp['inProgress'],
+            isDark: rsp['config']['isDark']
+          );
+
+          ref.read(resumenNotifierProvider.notifier).changeList(userLogueado.inventario);
           ref.read(userNotifierProvider.notifier).setUserLogin(userLogueado);
           ref.read(userNotifierProvider.notifier).togleDarkMode(userLogueado.isDark);
         loginOk = true;

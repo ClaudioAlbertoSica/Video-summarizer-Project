@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:resumen_mobile/entity/preview_resumen.dart';
 import 'package:resumen_mobile/entity/user.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
@@ -84,7 +85,9 @@ void changeConfig(String idUser, WidgetRef ref) async {
         User userModificado = User(
           userName: rsp['userName'],
           id: rsp['id'],
-          inventario: rsp['inventario'] as List, 
+          inventario: (rsp['inventario'] as List)
+              .map((item) => ResumenPreview.fromJson(item))
+              .toList(), 
           inProgress: rsp['inProgress'],
           isDark: rsp['config']['isDark']);
           

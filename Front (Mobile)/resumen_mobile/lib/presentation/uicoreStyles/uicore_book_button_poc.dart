@@ -37,7 +37,7 @@ class BookButtonPoc extends StatelessWidget {
                   AspectRatio(
                     aspectRatio: 2,
                     child: Image.asset(
-                      resumen.image!,
+                      resumen.thumbnail!,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -168,7 +168,7 @@ class CardVieja extends StatelessWidget {
                   AspectRatio(
                     aspectRatio: 2,
                     child: Image.asset(
-                      resumen.image!,
+                      resumen.thumbnail!,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -203,7 +203,7 @@ class CardVieja extends StatelessWidget {
                                       children: <Widget>[
                                         RatingBar(
                                           initialRating:
-                                              resumen.range as double,
+                                              resumen.points as double,
                                           direction: Axis.horizontal,
                                           allowHalfRating: true,
                                           itemCount: 5,

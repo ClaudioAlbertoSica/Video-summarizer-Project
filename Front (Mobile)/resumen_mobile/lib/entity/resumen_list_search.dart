@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:resumen_mobile/core/data/resume_datasource.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
-
 import '../presentation/uicoreStyles/uicore_book_button.dart';
 
 class ResumenListSearch {
@@ -26,7 +24,7 @@ class ResumenListSearch {
 
   ResumenListSearch copyWith({List<ResumenPreview> ? resumenFound}) {
     return ResumenListSearch(
-      resumenFound: resumenFound ?? resumenList
+      resumenFound: resumenFound ?? this.resumenFound
     );
   }
 }

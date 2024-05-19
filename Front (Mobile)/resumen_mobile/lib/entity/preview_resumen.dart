@@ -1,26 +1,26 @@
 class ResumenPreview {
-  final int id;
-  final String? image;
+  final String idres;
+  final String? thumbnail;
   final String title;
-  final String range;
+  final int points;
   final bool isFavourite;
 
   ResumenPreview(
     {
-      required this.id,
-      this.image,
+      required this.idres,
+      this.thumbnail,
       required this.title,
-      required this.range,
+      required this.points,
       required this.isFavourite,
     }
   );
 
   factory ResumenPreview.fromJson(Map<String, dynamic> json) {
     return ResumenPreview(
-      id: json['id'],
-      image: json['image'],
+      idres: json['idres'],
+      thumbnail: json['thumbnail'],
       title: json['title'],
-      range: json['range'],
+      points: json['points'],
       isFavourite: json['isFavourite']
     );
   }

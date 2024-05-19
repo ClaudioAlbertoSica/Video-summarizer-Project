@@ -127,7 +127,7 @@ class _BarraSearch extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     //esta es la lista del datasource
-    final resumenList = ref.watch(resumenListProvider);
+    final resumenList = ref.watch(userNotifierProvider).inventario;
     //este es el provider
     final resumenProvider = ref.watch(resumenNotifierProvider.notifier);
     final TextEditingController searchValue = TextEditingController();

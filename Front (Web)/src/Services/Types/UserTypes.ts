@@ -42,5 +42,6 @@ export type DBuser ={
         title: string;
         points: number;
         miniatura: string;
+        isFavourite: boolean
         }
 

@@ -41,14 +41,14 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function CustomizedAccordions() {
-  const [expanded, setExpanded] = useState<string | false>("panel1"); // possible string values are "panel1", "panel2", "panel3" or "panel4"
+  const [expanded, setExpanded] = useState<string | false>("panel1"); // possible string values are "panel1", "panel2", "panel3", etc...
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
     setExpanded(newExpanded ? panel : false);
   };
 
   return (
-    <div>
+    <>
       <Accordion expanded={expanded === "panel1"} onChange={handleChange("panel1")}>
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
           <Typography>Nuevo Resumen</Typography>
@@ -75,12 +75,20 @@ export default function CustomizedAccordions() {
       </Accordion>
       <Accordion expanded={expanded === "panel4"} onChange={handleChange("panel4")}>
         <AccordionSummary aria-controls="panel4d-content" id="panel4d-header">
+          <Typography>Favoritos</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <ListHandler isFavoritesList />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === "panel5"} onChange={handleChange("panel5")}>
+        <AccordionSummary aria-controls="panel5d-content" id="panel5d-header">
           <Typography>Historial</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <ListHandler />
         </AccordionDetails>
       </Accordion>
-    </div>
+    </>
   );
 }

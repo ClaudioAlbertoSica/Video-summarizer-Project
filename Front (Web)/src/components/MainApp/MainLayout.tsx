@@ -57,7 +57,7 @@ function GridLayout() {
             {selectedCentralPanelView != ValidViewNames.noneSelected && (
               <CloseButton
                 closeFunction={() => setSelectedCentralPanelView(ValidViewNames.noneSelected)}
-                context={selectedCentralPanelView}
+                additionalButtonsInformation={selectedCentralPanelView}
               />
             )}
           </Grid>

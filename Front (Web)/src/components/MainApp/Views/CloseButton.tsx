@@ -5,10 +5,10 @@ import SendIcon from "@mui/icons-material/Send";
 
 interface CloseInterface {
   closeFunction: (argument: ValidViewNames) => void;
-  context: ValidViewNames;
+  additionalButtonsInformation: ValidViewNames;
 }
 
-function CloseButton({ closeFunction, context }: CloseInterface) {
+function CloseButton({ closeFunction, additionalButtonsInformation }: CloseInterface) {
   return (
     <Container className="CloseButtonContainer">
       <Button
@@ -19,7 +19,7 @@ function CloseButton({ closeFunction, context }: CloseInterface) {
       >
         Cerrar
       </Button>
-      {context === ValidViewNames.Summary && (
+      {additionalButtonsInformation === ValidViewNames.Summary && (
         <>
           <Button className="CloseButton" variant="contained" color="info" endIcon={<SendIcon />}>
             Enviar

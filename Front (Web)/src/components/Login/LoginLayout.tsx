@@ -23,7 +23,9 @@ function LoginLayout({ setUser }: SetLoggedUser) {
       {ImTheActiveModal(selectedModalName, ModalNames.Login) && (
         <LoginModal selectorCallback={handleModalChange} setNewLoggedUser={setUser} />
       )}
-      {ImTheActiveModal(selectedModalName, ModalNames.Create) && <CreateAccountModal selectorCallback={handleModalChange} />}
+      {ImTheActiveModal(selectedModalName, ModalNames.Create) && (
+        <CreateAccountModal selectorCallback={handleModalChange} setNewLoggedUser={setUser} />
+      )}
       {ImTheActiveModal(selectedModalName, ModalNames.Password) && <PasswordResetModal selectorCallback={handleModalChange} />}
     </Container>
   );

@@ -1,25 +1,26 @@
-import { TextField, Box, Button, Container, Link, Typography, Alert } from "@mui/material";
+import { TextField, Box, Button, Container, Link, Typography, Alert, PaletteMode } from "@mui/material";
 import "./Modals.css";
 import { ModalNames } from "./ImTheActiveModal.ts";
-import { FormEvent, useContext, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import server from "../../../Services/serverCall.ts";
-import { LoggedUserContext } from "../../../ActiveUserContext.ts";
+
 import { alertMessagesHandler, AlertMessage, alertTypes } from "../../../Services/alertMessagesHandler.ts";
+import { DBuser, LoggedUser } from "../../../Services/Types/UserTypes.ts";
 
 interface LoginModalSelector {
   selectorCallback: (modalName: ModalNames) => void;
+  setNewLoggedUser: (user: LoggedUser) => void;
 }
 
-function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
-  const userContext = useContext(LoggedUserContext);
+function CreateAccountModal({ selectorCallback, setNewLoggedUser }: LoginModalSelector) {
   const formRef = useRef<HTMLFormElement>();
   const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
 
   /* const [showAlert, setShowAlert] = useState<boolean>(false);
   const [showDifferentPasswordslAlert, setShowDifferentPasswordsAlert] = useState<boolean>(false);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);*/
-  const AlertMessagePasswordsAreDifferent: string = "Las contraseñas provistas no son coincidentes";
-  const ConfirmationMessage: string = "El usuario fué creado satisfactoriamente";
+  const alertMessagePasswordsAreDifferent: string = "Las contraseñas provistas no son coincidentes";
+  const confirmationMessage: string = "El usuario fué creado satisfactoriamente";
   const defaultAlertMessage: string = "Hubo un problema...";
 
   const handleSumbit = async (event: FormEvent) => {
@@ -33,7 +34,7 @@ function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
     if (submittedPassword1 === submittedPassword2) {
       handleServerQuerry(submittedEmail as string, submittedPassword1 as string);
     } else {
-      alertMessagesHandler(setAlertToShow, AlertMessagePasswordsAreDifferent, alertTypes.warning);
+      alertMessagesHandler(setAlertToShow, alertMessagePasswordsAreDifferent, alertTypes.warning);
     }
   };
 
@@ -41,13 +42,24 @@ function CreateAccountModal({ selectorCallback }: LoginModalSelector) {
     await server
       .post("/", { userName: emailToBeSent, passwd: passwordToBeSent })
       .then((res) => {
-        alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success);
-        setTimeout(() => userContext.userSteState(res.data), 1500);
+        alertMessagesHandler(setAlertToShow, confirmationMessage, alertTypes.success, 500);
+        const adjustedUser: LoggedUser = newUserTypesCorrections(res.data);
+        setTimeout(() => setNewLoggedUser(adjustedUser), 500);
       })
       .catch((error) => {
         console.log;
         alertMessagesHandler(setAlertToShow, error.error || defaultAlertMessage, alertTypes.success);
       });
+  };
+
+  const newUserTypesCorrections = (newUSer: DBuser) => {
+    /*Some types need to be adjusted, because they differ in the fron-web, from the server. 
+    isDark is a boolean in the server, while it is a PaletteMode-string like in the front-web*/
+    const adjustedUser: LoggedUser = newUSer.config.isDark
+      ? { ...newUSer, config: { isDark: "dark" as PaletteMode } }
+      : { ...newUSer, config: { isDark: "light" as PaletteMode } };
+
+    return adjustedUser;
   };
 
   return (

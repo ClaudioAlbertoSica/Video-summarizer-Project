@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:resumen_mobile/entity/user.dart';
 import 'package:resumen_mobile/main.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
@@ -27,6 +28,7 @@ class LoginScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      //resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           //MODULARICÉ UN POCO
@@ -112,45 +114,33 @@ class LoginScreen extends ConsumerWidget {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String> {
-          'userName': username,
-          'passwd': password,
-          //'userName': 'Rocio@Rocio',
-          //'passwd': '123',
+          //'userName': username,
+          //'passwd': password,
+          'userName': 'rocio.bani93@gmail.com',
+          'passwd': '123',
         }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
       if (response.statusCode == 200) {
         // Si la solicitud es exitosa, imprime la respuesta del servidor
         print('Respuesta del servidor: ${response.body}');
-        // ver de no guardar el user porque esta el password!!
-        //{
-          //"_id":"663445cf0a08e557fa580265",
-          //"id":"1",
-          //"userName":"Rocio@Rocio",
-          //"passwd":"123",
-          //"inventario":
-          //[
-            //{
-              //"esBreve":"false",
-              //"idioma":"ES",
-              //"titulo":"RESUMEN PRUEBA",
-              //"idres":"1"
-            //},
-            //{
-              //"esBreve":"false",
-              //"idioma":"ES",
-              //"titulo":"RESUMEN PRUEBA",
-              //"text":null,
-              //"idres":"2"
-            //}
-          //]
-        //}
-        ref.read(userProvider.notifier).state = json.decode(response.body)['id'];
+        
+        final rsp = json.decode(response.body);
+
+        User userLogueado = User(
+          userName: rsp['userName'],
+          id: rsp['id'],
+          inventario: rsp['inventario'] as List, 
+          inProgress: rsp['inProgress'],
+          isDark: rsp['config']['isDark']);
+          
+          ref.read(userProvider.notifier).state = json.decode(response.body)['id'];
         loginOk = true;
       } else {
         errorMessage = json.decode(response.body)['error'];
       }
     } catch (error) {
+      print(error);
       errorMessage = 'Error: Connection ERROR - Server not found';
     }
 

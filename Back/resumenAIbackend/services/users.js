@@ -65,6 +65,8 @@ class Servicio {
                     throw new Error('Usuario incorrecto');
                 }
                 if (passwd !== undefined && usuario.passwd == passwd) {
+                    delete usuario._id
+                    delete usuario.passwd
                     console.log('LOGIN EXITOSO')
                     //comparamos con el encontrado
                 } else {

@@ -28,7 +28,7 @@ class BookButton extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(resumen.image),
+                  image: AssetImage(resumen.image!),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.circular(8), // Hace que la imagen sea circular

@@ -37,7 +37,7 @@ class BookButtonPoc extends StatelessWidget {
                   AspectRatio(
                     aspectRatio: 2,
                     child: Image.asset(
-                      resumen.image,
+                      resumen.image!,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -168,7 +168,7 @@ class CardVieja extends StatelessWidget {
                   AspectRatio(
                     aspectRatio: 2,
                     child: Image.asset(
-                      resumen.image,
+                      resumen.image!,
                       fit: BoxFit.cover,
                     ),
                   ),

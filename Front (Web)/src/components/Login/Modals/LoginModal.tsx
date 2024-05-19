@@ -1,10 +1,10 @@
-import { TextField, Box, Button, Container, Typography, Link, Alert } from "@mui/material";
+import { TextField, Box, Button, Container, Typography, Link, Alert, PaletteMode } from "@mui/material";
 import "./Modals.css";
 import { ModalNames } from "./ImTheActiveModal.ts";
 import server from "../../../Services/serverCall.ts";
 import { FormEvent, useRef, useState } from "react";
-import { LoggedUser } from "../../../ActiveUserContext.ts";
 import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../Services/alertMessagesHandler.ts";
+import { DBuser, LoggedUser } from "../../../Services/Types/UserTypes.ts";
 
 // Link as RouterLink,
 interface LoginModalInterface {
@@ -24,14 +24,25 @@ function LoginModal({ selectorCallback, setNewLoggedUser }: LoginModalInterface)
     const submittedEmail = formData?.get("yourEmail");
     const submittedPassword = formData?.get("yourPassword");
     await server
-      .post<LoggedUser>("/login", { userName: submittedEmail, passwd: submittedPassword })
+      .post<DBuser>("/login", { userName: submittedEmail, passwd: submittedPassword })
       .then((res) => {
         alertMessagesHandler(setAlertToShow, confirmationMessage, alertTypes.success, 500);
-        setTimeout(() => setNewLoggedUser(res.data), 500);
+        const adjustedUser: LoggedUser = newUserTypesCorrections(res.data);
+        setTimeout(() => setNewLoggedUser(adjustedUser), 500);
       })
       .catch((err) => {
         alertMessagesHandler(setAlertToShow, err.error || defaultAlertMessage, alertTypes.error);
       });
+  };
+
+  const newUserTypesCorrections = (newUSer: DBuser) => {
+    /*Some types need to be adjusted, because they differ in the fron-web, from the server. 
+    isDark is a boolean in the server, while it is a PaletteMode-string like in the front-web*/
+    const adjustedUser: LoggedUser = newUSer.config.isDark
+      ? { ...newUSer, config: { isDark: "dark" as PaletteMode } }
+      : { ...newUSer, config: { isDark: "light" as PaletteMode } };
+
+    return adjustedUser;
   };
 
   return (

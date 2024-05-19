@@ -24,6 +24,7 @@ function SummaryListItem({ thisItemRating = 0, image, title, idRes }: ListItemOb
       ...userContext.userState,
       selectedSummary: { idres: idRes, title, points: thisItemRating, miniatura: image },
     });
+    console.log(userContext.userState);
     setSelectedCentralPanelView(ValidViewNames.Summary);
   };
 

@@ -43,7 +43,7 @@ function PDFviewer() {
     };
     setIsLoading(true);
     call();
-  }, [activeUSer.userState]);
+  }, [activeUSer.userState.selectedSummary]);
 
   return (
     <Container className="ContainerForPDFViewr">

@@ -2,8 +2,8 @@
 
 export enum ValidViewNames  {
   noneSelected = '',
-  VideoForm = 'Formulairo de Video',
-  TextForm = 'Formulairo de Texto',
+  VideoForm = 'Formulario de Video',
+  TextForm = 'Formulario de Texto',
   AccountData = 'Datos de tu cuenta',
   ChangePassword = 'Cambiar contraseña',
   FAQ = 'Preguntas Frecuentes',

@@ -15,6 +15,7 @@ import TextForm from "./Views/TextForm.tsx";
 import { ButtonViewContext } from "./ButtonViewContext.ts";
 import LoadingScreen from "./Views/LoadingScreen.tsx";
 import PDFviewer from "./Views/PDFviewer.tsx";
+import WIPindicator from "./WorkInProgressIndicator/WIPindicator.tsx";
 
 function GridLayout() {
   const [selectedCentralPanelView, setSelectedCentralPanelView] = useState<ValidViewNames>(ValidViewNames.noneSelected);
@@ -31,8 +32,11 @@ function GridLayout() {
         </Container>
 
         <Grid className="ContainerGrid" container spacing={0}>
-          <Grid className="HeaderGrid" item xs={12}>
+          <Grid className="HeaderGridLeft" item xs={8}>
             <h1>{selectedCentralPanelView}</h1>
+          </Grid>
+          <Grid className="HeaderGridRight" item xs={4}>
+            <WIPindicator />
           </Grid>
           {/*
           Idea here is that, when clicked, Buttons in the SidePanel shoot a View-Name. That name is stored as a State

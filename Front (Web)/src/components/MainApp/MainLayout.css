@@ -31,10 +31,21 @@
 
 }
 
-.HeaderGrid{
+.HeaderGridLeft{
     background-color: lightseagreen;
     height: 6%;
     align-content: center;
+}
+
+.MuiGrid-root.HeaderGridRight{
+    background-color: lightseagreen;
+    height: 6%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 

@@ -12,9 +12,10 @@ export interface ListItemObject {
   image: string;
   title: string;
   thisItemRating?: number;
+  isFavourite: boolean;
 }
 
-function SummaryListItem({ thisItemRating = 0, image, title, idRes }: ListItemObject) {
+function SummaryListItem({ thisItemRating = 0, image, title, idRes, isFavourite }: ListItemObject) {
   const setSelectedCentralPanelView = useContext(ButtonViewContext);
   const userContext = useContext(LoggedUserContext);
 
@@ -22,7 +23,7 @@ function SummaryListItem({ thisItemRating = 0, image, title, idRes }: ListItemOb
     console.log(userContext.userState);
     userContext.userSteState({
       ...userContext.userState,
-      selectedSummary: { idres: idRes, title, points: thisItemRating, miniatura: image },
+      selectedSummary: { idres: idRes, title, points: thisItemRating, miniatura: image, isFavourite },
     });
     console.log(userContext.userState);
     setSelectedCentralPanelView(ValidViewNames.Summary);

@@ -18,6 +18,7 @@ function Dropdown({ id, name, label, placeHolderItem, required = false, children
   const handleChange = (event: SelectChangeEvent) => {
     setValue(event.target.value);
   };
+
   /*Notice when you provide a className to the Dropdown, you are actually not using it in the .css, but the 3 classNames derived here,
 whith the sufixes "Form", "Slect" and "Item"*/
   return (

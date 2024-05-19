@@ -1,119 +1,132 @@
 import { TextField, Box, Button, Container, Typography, Alert, Paper, FormControlLabel, Switch } from "@mui/material";
 import "./View.css";
-import { FormEvent, useContext, useRef, useState } from "react";
+import { FormEvent, ReactElement, useContext, useRef, useState } from "react";
 import Dropdown from "./Dropdown";
-import { ValidViewNames } from "./ImTheActiveView";
-import { ButtonViewContext } from "../ButtonViewContext";
 import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../Services/alertMessagesHandler";
+import { LoggedUserContext } from "../../../ActiveUserContext";
+import serverCall from "../../../Services/serverCall";
+import { ButtonViewContext } from "../ButtonViewContext";
+import { ValidViewNames } from "./ImTheActiveView";
+import LoadingScreen from "./LoadingScreen";
 
 //import server from "../../Services/serverCall.ts";
 
 function VideoForm() {
+  const activeUSer = useContext(LoggedUserContext);
   const setSelectedCentralPanelView = useContext(ButtonViewContext);
   const formRef = useRef<HTMLFormElement>();
   const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
-  const AlertMessagePasswordsAreDifferent: string = "Las contraseñas provistas no son coincidentes";
-  const ConfirmationMessage: string = "La contraseña fue modificada satisfactoriamente";
-  const alertMessage: string = "Hubo un problema...";
+  const ConfirmationMessage: string = "Solicitud enviada con éxito";
+  const ServerErrorMessage: string = "Hubo un problema con el envío";
+
+  const handleFormClear = () => formRef.current?.reset();
 
   const handleSumbit = async (event: FormEvent) => {
     event.preventDefault();
-
-    const formData = new FormData(formRef?.current);
-    const submittedPassword1 = formData?.get("yourPassword");
-    const submittedPassword2 = formData?.get("yourRepeatedPassword");
-
-    if (submittedPassword1 === submittedPassword2) {
-      handleServerQuerry(submittedPassword1 as string);
-    } else {
-      alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success);
-    }
+    const formData = new FormData(formRef.current);
+    const videoURL: string = formData.get("AddLink") as string;
+    const isCompact: boolean = formData.get("CompactSummarySwitch") === "on";
+    /*Not implemented!
+    const isTranscription: boolean = formData.get("TranscriptionSwitch") === "on";
+    const isImages: boolean = formData.get("ImagesSwitch") === "on";
+    */
+    const language: string = formData.get("language") as string;
+    const title: string = formData?.get("optionalTitle") as string;
+    handleServerQuerry(videoURL, title, isCompact, language);
   };
 
-  const handleServerQuerry = async (passwordToBeSent: string) => {
-    /* await server
-      .post("/", { userName: emailToBeSent, passwd: passwordToBeSent })
+  const handleServerQuerry = async (url: string, title: string, esBreve: boolean, idioma: string) => {
+    await serverCall
+      .post(`/${activeUSer.userState.id}/resumen/video`, { url, title, esBreve, idioma })
       .then(() => {
-        setTimeout(() => selectorCallback("LoginModal"), 1000);
-        setShowConfirmation(true);
+        alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success, 500);
+        activeUSer.userSteState({ ...activeUSer.userState, inProgress: true });
+        setTimeout(() => setSelectedCentralPanelView(ValidViewNames.Loading), 500);
       })
-      .catch(() => {
-        setShowAlert(true);
+      .catch((err) => {
+        alertMessagesHandler(setAlertToShow, err.error || ServerErrorMessage, alertTypes.success, 2000);
       });
-      */
-    console.log("submitted! " + passwordToBeSent);
   };
 
-  return (
-    <Paper className="ViewWrapper" elevation={5}>
-      <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>
-        <Typography className="ViewTitle" variant="h4" sx={{ margin: "0px", marginBottom: "0px" }}>
-          Generá tu resumen (Video)
-        </Typography>
-        <Container className="AlertsContainerViews">
-          {alertToShow.message !== "don't show" && <Alert severity={alertToShow.type}> {alertToShow.message} </Alert>}
-        </Container>
-        <Container className="InputsContainer">
-          <TextField
-            size="small"
-            className="FormInputsViews"
-            id="AddLink"
-            name="AddLink"
-            label="URL Youtube Link"
-            type="url"
-            variant="outlined"
-            required
-          />
-          <Container className="SwitchsContainer">
-            <FormControlLabel
-              className="FormSwitchInputs"
-              name="CompactSummarySwitch"
-              control={<Switch />}
-              label="Resumen Compacto"
-            />
-            <FormControlLabel
-              className="FormSwitchInputs"
-              name="TranscriptionSwitch"
-              control={<Switch />}
-              label="Obtener Transcripción"
-            />
-            <FormControlLabel className="FormSwitchInputs" name="ImagesSwitch" control={<Switch />} label="Obtener Imágenes" />
-          </Container>
-          <Dropdown
-            required={true}
-            id="language"
-            name="language"
-            placeHolderItem="Sleccione un idioma..."
-            label="Idioma del Resumen"
-          >
-            {["Español", "Inglés"]}
-          </Dropdown>
-          <TextField
-            size="small"
-            className="FormInputsViews"
-            id="optionalTitle"
-            name="optionalTitle"
-            label="Ingrese un título (opcional)"
-            type="text"
-            variant="outlined"
-          />
-          <Container className="FormButtonsContainer">
-            <Button
-              className="GenerateSummaryButton"
-              variant="contained"
-              type="submit"
-              onClick={() => setSelectedCentralPanelView(ValidViewNames.Loading)}
-            >
-              Generar
-            </Button>
-            <Button className="ClearSummaryButton" variant="text" color="error" type="reset">
-              Borrar
-            </Button>
-          </Container>
-        </Container>
-      </Box>
-    </Paper>
-  );
+  const evaluateReturn = () => {
+    let elementtoReturn: ReactElement = <LoadingScreen />;
+    console.log(activeUSer.userState.inProgress);
+    if (!activeUSer.userState.inProgress) {
+      elementtoReturn = (
+        <Paper className="ViewWrapper" elevation={5}>
+          <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>
+            <Typography className="ViewTitle" variant="h4" sx={{ margin: "0px", marginBottom: "0px" }}>
+              Generá tu resumen (Video)
+            </Typography>
+            <Container className="AlertsContainerViews">
+              {alertToShow.message !== "don't show" && <Alert severity={alertToShow.type}> {alertToShow.message} </Alert>}
+            </Container>
+            <Container className="InputsContainer">
+              <TextField
+                size="small"
+                className="FormInputsViews"
+                id="AddLink"
+                name="AddLink"
+                label="URL Youtube Link"
+                type="url"
+                variant="outlined"
+                required
+              />
+              <Container className="SwitchsContainer">
+                <FormControlLabel
+                  className="FormSwitchInputs"
+                  name="CompactSummarySwitch"
+                  control={<Switch />}
+                  label="Resumen Compacto"
+                />
+                <FormControlLabel
+                  className="FormSwitchInputs"
+                  name="TranscriptionSwitch"
+                  control={<Switch />}
+                  label="Obtener Transcripción"
+                />
+                <FormControlLabel
+                  className="FormSwitchInputs"
+                  name="ImagesSwitch"
+                  control={<Switch />}
+                  label="Obtener Imágenes"
+                />
+              </Container>
+              <Dropdown
+                required={true}
+                id="language"
+                name="language"
+                placeHolderItem="Sleccione un idioma..."
+                label="Idioma del Resumen"
+              >
+                {["Español", "Inglés"]}
+              </Dropdown>
+              <TextField
+                size="small"
+                className="FormInputsViews"
+                id="optionalTitle"
+                name="optionalTitle"
+                label="Ingrese un título (opcional)"
+                type="text"
+                variant="outlined"
+              />
+              <Container className="FormButtonsContainer">
+                <Button className="GenerateSummaryButton" variant="contained" type="submit" onClick={() => handleSumbit}>
+                  Generar
+                </Button>
+                <Button className="ClearSummaryButton" variant="text" color="error" type="reset" onClick={() => handleFormClear}>
+                  Borrar
+                </Button>
+              </Container>
+            </Container>
+          </Box>
+        </Paper>
+      );
+    }
+    return elementtoReturn;
+  };
+
+  return evaluateReturn();
 }
 
 export default VideoForm;

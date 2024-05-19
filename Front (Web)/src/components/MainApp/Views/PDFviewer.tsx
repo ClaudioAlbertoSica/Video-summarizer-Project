@@ -1,12 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import server from "../../../Services/serverCall.ts";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 import isloadingGif from "../../../assets/isLoading.gif";
 import "./View.css";
 import { Container } from "@mui/material";
 import PDFviwerHeader from "./PDFviwerHeader.tsx";
+import { Summary } from "../../../Services/Types/UserTypes.ts";
 
-type receivedResponse = {
+type pdfInResponse = {
   pdf: pdf;
 };
 
@@ -16,9 +17,12 @@ type pdf = {
   data: string;
 };
 
+export type ServerSummaryResponse = Summary & pdfInResponse;
+
 function PDFviewer() {
   const activeUSer = useContext(LoggedUserContext);
   const [documentToShow, setDocumentToShow] = useState<Blob>(new Blob());
+  const currentDocument = useRef<Summary>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const base64toBlob = (data: string) => {
@@ -31,8 +35,9 @@ function PDFviewer() {
   useEffect(() => {
     const call = async () => {
       await server
-        .get<receivedResponse>(`/${activeUSer.userState.id}/resumen/${activeUSer.userState.selectedSummary.idres}`)
+        .get<ServerSummaryResponse>(`/${activeUSer.userState.id}/resumen/${activeUSer.userState.selectedSummary?.idres}`)
         .then((res) => {
+          currentDocument.current = res.data;
           setIsLoading(false);
           setDocumentToShow(base64toBlob(res.data.pdf.data));
         })
@@ -47,7 +52,9 @@ function PDFviewer() {
 
   return (
     <Container className="ContainerForPDFViewr">
-      <Container className="ContainerForPDFViewrHeader">{!isLoading && <PDFviwerHeader />}</Container>
+      <Container className="ContainerForPDFViewrHeader">
+        {!isLoading && <PDFviwerHeader {...currentDocument.current} />}
+      </Container>
       <Container className="containerForPDFViewrEmbededs">
         {isLoading ? (
           <img className="embededPDFViewrLoader" src={isloadingGif} title="Titulo" />

@@ -85,8 +85,12 @@ class Servicio {
     obtenerResumenes = async (id, idres) => {
         try {
             //SI O SI TIENE QUE TENER UN ID
+            if (id) {
             const resumen = await this.model.obtenerResumenes(id, idres)
             return resumen
+            } else {
+                throw new Error('ID INDEFINIDO')
+            }
         }
         catch (error) {
             console.log(error.message)
@@ -194,11 +198,7 @@ class Servicio {
     }
 
 
-    //FALTA PREGUNTAR SI INGRESARON UN ID Y UNA URL (MANEJO DE ERRORES), FALTA ENCONTRAR EL USUARIO Y ACTUALIZARLO
-    //FALTA AGREGARLE LAS PROPIEDADES AL RESUMEN, CONVERTIR EL PDF A BINARIO Y AGREGARLO COMO PROPIEDAD
-
     //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.
-    //VER POR QUE TITLE ROMPE
     crearResumenVideo = async (id, url, title, esBreve, idioma) => {
         
         try {
@@ -220,7 +220,6 @@ class Servicio {
                 console.log('CORRÍ PYTHON 2')
                 await this.runPythonArmado();
                 console.log('CORRÍ PYTHON 3 - arma pdf')
-                //await this.pasarABinario() 
                 resumenVid.pdf = await this.pasarPDFABinario()
                 console.log('CORRÍ PYTHON 4 - pasa binario')
                 
@@ -244,113 +243,6 @@ class Servicio {
         }
     }
 
-    //PODEMOS REUTILIZARLO PARA TODOS LOS MÉTODOS QUE NECESITEN LEER UN ARCHIVO. SOLO DEBEMOS CREAR UN PARÁMETRO RUTA
-    leerTxtSalida = async () => {
-        try {
-            const textoResumido = await fs.promises.readFile('./services/serviciosPython/resumenSalida.txt', 'utf-8')
-            console.log('Leído:')
-            //console.log(textoResumido)
-            return textoResumido
-        } catch (error) {
-            console.error('Error leyendo archivo:', error)
-            throw error; 
-        }
-    }
-
-    // ESTE FUNCIONA OK, SOLO SERÍA NECESARIO EN EL DE VIDEO, QUE VA A TENER IMAGENES, PARA PODER INTERCALARLAS
-    // CON EL TEXTO. SI TENEMOS QUE LLEVAR LA SIGUIENTE LÍNEA AL RESUMEN DE TEXTO: texto.replace(/\r?\n/g, '\n')
-    //TAL VEZ SE PUEDE MEJORAR RECIBIENDO LOS PARÁMETROS NECESARIOS (TEXTO Y NUMPARTES) Y EL LEER EL TEXTO Y OBTENER
-    //EL ARRAY DE ARCHIVOS LO HACEMOS EN EL MÉTODO DE CREAR RESUMEN VIDEO DIRECTAMENTE.
-    dividirTextoEnPartesOLD = async () => {
-        let texto = await this.leerTxtSalida()
-        texto = texto.replace(/\r?\n/g, '\n')
-        //const imagenes = await this.contarArchivosEnCarpeta()
-        //const numPartes = imagenes.length
-        const numPartes = 0 //BORRAR
-        
-        const parrafos = texto.split('\n').filter(parrafo => parrafo.trim() !== '')
-
-        const parrafosPorParte = Math.ceil(parrafos.length / numPartes)
-
-        const partes = []
-        //TAL VEZ DEBERÍA PREGUNTAR SI TIENE UN SOLO ÍTEM?
-        const imagenes = []
-        if(!imagenes.isEmpty){
-            let inicio = 0
-            for (let i = 0; i < numPartes; i++) {
-                const fin = Math.min(inicio + parrafosPorParte, parrafos.length)
-                let parte = parrafos.slice(inicio, fin).join('\n')
-
-                if (parte.length < parrafosPorParte * 0.8 && i > 0) {
-                    partes[i - 1] += '\n' + parte
-                } else {
-                    partes.push(parte)
-                }
-                inicio = fin
-            }
-        }else{
-            partes[0] = texto
-        }
-        await this.generarPDF(partes, imagenes)
-
-        await this.pasarABinario()
-
-        //return partes
-    }
-
-    dividirTextoEnPartes = async (texto, numPartes) => {
-        
-        return new Promise((resolve, reject) => {
-            try {
-            const parrafos = texto.split('\n').filter(parrafo => parrafo.trim() !== '')
-            let partes = []
-            if (numPartes > 0) {
-                const parrafosPorParte = Math.ceil(parrafos.length / numPartes)
-                let inicio = 0
-        
-                for (let i = 0; i < numPartes; i++) {
-                    const fin = Math.min(inicio + parrafosPorParte, parrafos.length)
-                    let parte = parrafos.slice(inicio, fin).join('\n')
-        
-                    if (parte.length < parrafosPorParte * 0.8 && i > 0) {
-                        partes[i - 1] += '\n' + parte
-                    } else {
-                        partes.push(parte)
-                    }
-                    inicio = fin
-                }
-            } else {
-                partes = [texto]
-            }
-        resolve(partes)
-            } catch(error) {
-                reject(error)
-            }
-
-    })
-    }
-    
-
-
-    pasarABinario = async() => {
-        
-        const pythonScriptPath2 = './services/serviciosPython/PDFaBinario.py';
-        const command = `python ${pythonScriptPath2}`;
-        
-        return new Promise((resolve, reject) => {
-            exec(command, (error, stdout, stderr) => {
-                console.log('ejecute el script python - pasando pdf a binario...')
-                if (error) {
-                    console.error(`Error executing Python script: ${error}`);
-                    reject(error)
-                }
-                console.log(`Output: ${stdout}`);
-                console.error(`Errors: ${stderr}`);
-                resolve()
-            })
-        });
-    }
-
     runPythonArmado = async() => {
         
         const pythonScriptPath3 = './services/serviciosPython/armarPDF.py';
@@ -367,83 +259,6 @@ class Servicio {
                 console.error(`Errors: ${stderr}`);
                 resolve()
             })
-        });
-    }
-
-
-    //ESTE CREO QUE ESTÁ OK (NO CREO QUE HAGA FALTA MODULARIZAR PORQUE LA ÚNICA RUTA QUE NECESITAMOS REVISAR SIEMPRE
-    // VA A SER LA DE CAPTURAS). ESTA DEVUELVE UN ARRAY DE STRINGS CON LAS RUTAS DE LAS IMÁGENES.
-    contarArchivosEnCarpeta = async () => {
-
-        const carpeta = './services/serviciosPython/capturas'
-        const archivos = await fs.promises.readdir(carpeta);
-
-        return new Promise((resolve, reject) => {    
-            try {
-
-                
-                // Ordenar los nombres de archivo como números
-                archivos.sort((a, b) => {
-                    // Obtener los números de los nombres de archivo
-                    const numA = parseInt(a.split('.')[0]);
-                    const numB = parseInt(b.split('.')[0]);
-                    // Comparar los números
-                    return numA - numB;
-                });
-                resolve(archivos)
-            } catch (error) {
-                reject(error);
-            }
-        })
-    }
-
-    //MEJORAR PARA PODER UTILIZARLA TAMBIÉN EN EL RESUMEN QUE NO TIENE IMÁGENES.
-    // HACER UN IF QUE NOS PREGUNTE SI RECIBIMOS UN ARRAY DE IMÁGENES PARA HACER EL FOR, SINO
-    //ARMAMOS EL DOC CON EL TEXTO QUE NOS VIENE.
-    generarPDF = async (textoArray, imagenes) => {
-        return new Promise((resolve, reject) => {
-            const doc = new PDFDocument();
-            const pdfPath = './services/serviciosPython/documento.pdf';
-            const writeStream = fs.createWriteStream(pdfPath);
-
-            doc.pipe(writeStream);
-            doc.fontSize(12);
-            if(imagenes.length > 0){
-                for (let index = 0; index < textoArray.length; index++) {
-
-                    let texto = textoArray[index];
-
-                    doc.text(texto)
-                    doc.moveDown(0.5)
-                    
-                    doc.image(`./services/serviciosPython/capturas/${imagenes[index]}`, {
-                        fit: [250, 250],
-                        align: 'center',
-                        valign: 'center',
-                })
-                    doc.moveDown(0.5)
-
-                    if (index < textoArray.length - 1) {
-                        doc.addPage()
-                    }
-
-                }
-            }else{
-                doc.text(textoArray[0])
-            }
-
-
-            doc.end();
-
-            writeStream.on('finish', () => {
-                console.log('Documento PDF generado correctamente.');
-                resolve({ path: pdfPath, name: 'documento.pdf' });
-            });
-
-            writeStream.on('error', error => {
-                console.error('Error al generar documento PDF:', error);
-                reject(error);
-            });
         });
     }
 
@@ -482,8 +297,7 @@ class Servicio {
                         console.log('Leido')
                     }
                 })
-                await this.generarPDFTexto(textoResumido)
-                //await this.pasarABinario() 
+                await this.generarPDFTexto(textoResumido) 
                 resumen.pdf = await this.pasarPDFABinario()
             } else {
                 console.log('error de ingreso de datos')
@@ -496,7 +310,7 @@ class Servicio {
             await this.actualizarUsuario(id, { inProgress: false })
             return resumenNuevo
         } catch (error) {
-            await this.actualizarUsuario(id, { inProgress: false }) //PARA EL FUTURO
+            await this.actualizarUsuario(id, { inProgress: false })
             console.log(error.message)
         }
     }
@@ -525,10 +339,9 @@ class Servicio {
     limpiarVideo = async () => {
     const mainDirectoryPath = './services/serviciosPython/';
     const imageDirectoryPath = './services/serviciosPython/capturas/';
-    const filesToDelete = ['resumenSalida.txt', 'transcripcion.txt', 'documento.pdf']; // Specify the exact video files to delete here
+    const filesToDelete = ['resumenSalida.txt', 'transcripcion.txt', 'documento.pdf']; 
 
     try {
-        // Deleting specific video files
         for (const file of filesToDelete) {
             const filePath = path.join(mainDirectoryPath, file);
 
@@ -539,8 +352,6 @@ class Servicio {
                 console.error(`Error deleting file ${filePath}:`, err);
             }
         }
-
-        // Deleting all .png files in the image directory
         const imageFiles = await fs.promises.readdir(imageDirectoryPath);
         for (const file of imageFiles) {
             const filePath = path.join(imageDirectoryPath, file);
@@ -633,33 +444,17 @@ class Servicio {
 
     pasarPDFABinario = async () => {
         try {
-            debugger;
-            // Read the file
+
             const fileBuffer = await fs.promises.readFile("./services/serviciosPython/documento.pdf");
-            
-            // Convert the file buffer to a base64 string
+
             const base64String = fileBuffer.toString('base64');
             
-            // Create the JSON object
             const jsonObject = 
                 {
                 filename: "documento.pdf",
                 content_type: "application/pdf",
                 data: base64String
                 }
-            
-            
-            /*const jsonString = JSON.stringify(jsonObject, null, 2);
-            await fs.promises.writeFile("./services/serviciosPython/jsonPDF.json", jsonString, (err) => {
-                if (err) {
-                    console.log('error escribiendo archivo')
-                } else {
-                    console.log('se escribio')
-                }
-            })
-            // Convert the JSON object to a string
-            //const jsonString = JSON.stringify(jsonObject, null, 2);
-        */
             return jsonObject
         } catch (error) {
             console.error('Error reading or processing the file:', error);
@@ -671,7 +466,7 @@ class Servicio {
         // CREAR UN ENDPOINT PARA CONSULTAR SI EL PROCESO DE LA CREACIÓN DE RESUMEN TERMINÓ.
         * PARA TRABAJAR LA TRADUCCIÓN DE LOS RESÚMENES.
         * NODEMAILER PARA LA RECUPERACIÓN DE LA CUENTA (¿Forgot your password?).
-        * VALIDACIONES (EN GENERAL).
+        * VALIDACIONES (EN GENERAL) - MANEJO DE ERRORES.
         * PARA OBTENER LA MINIATURA DEL VIDEO DE YOUTUBE Y VER CÓMO LA PERSISTIMOS EN LA BD
         *UN MÉTODO QUE CONVIERTA PDF A DOCX.
         * EL USUARIO DEBERÁ TENER LAS SIGUIENTES PROPIEDADES:

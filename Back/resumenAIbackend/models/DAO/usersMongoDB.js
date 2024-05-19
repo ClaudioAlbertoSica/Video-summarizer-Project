@@ -1,6 +1,6 @@
 //import { resume } from "pdfkit";
 import CnxMongoDB from "../connection/mongodb.js"
-import fs from 'fs'
+
 
 class ModelMongoDB {
     //VER EN SERVICES - USERS.JS LO QUE NECESITAMOS DEVOLVER DEL USUARIO!
@@ -9,13 +9,13 @@ class ModelMongoDB {
             if (userName) {
                 const usuarioEncontrado = await CnxMongoDB.db.collection('usuarios').findOne({userName: userName});
                 if (usuarioEncontrado) {
-                    // Remove the paragraph array from each item in the inventario array
+
                     usuarioEncontrado.inventario.forEach(item => delete item.pdf);
                 }
                 return usuarioEncontrado || {};
             } else {
                 const usuariosEncontrados = await CnxMongoDB.db.collection('usuarios').find({}).toArray();
-                // Remove the paragraph array from each item in the inventario array
+
                 usuariosEncontrados.forEach(usuario => {
                     usuario.inventario.forEach(item => delete item.pdf);
                 });
@@ -72,35 +72,6 @@ class ModelMongoDB {
     }
 
     //FUNCIONA OK PARA CAMBIAR CONTRASEÑA!
-    /*
-    actualizarUsuario = async (id, usuario) => {
-        try {
-            const usuarioActual = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
-            let usuarioModificado;
-    
-            if (usuarioActual) {
-                if (usuario.inventario) {
-
-                    const inventarioSet = new Set(usuarioActual.inventario.map(item => JSON.stringify(item)));
-                    usuario.inventario.forEach(item => inventarioSet.add(JSON.stringify(item)));
-                    const inventarioMerged = Array.from(inventarioSet).map(item => JSON.parse(item));
-    
-                    usuarioModificado = { ...usuarioActual, ...usuario, inventario: inventarioMerged };
-                } else {
-                    usuarioModificado = { ...usuarioActual, ...usuario };
-                }
-    
-                await CnxMongoDB.db.collection('usuarios').replaceOne({ id: id }, usuarioModificado);
-                return await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
-            } else {
-                return {};
-            }
-        } catch (error) {
-            console.error("Database connection error:", error);
-            throw new Error('conexion con la BD no establecida');
-        }
-    };*/
-
     actualizarUsuario = async (id, usuario) => {
 
         try {
@@ -132,36 +103,6 @@ class ModelMongoDB {
         }
 
     };
-
-/*
-    actualizarUsuario = async (id, usuario) => {
-        try {
-            const usuarioActual = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
-    
-            if (!usuarioActual) {
-                console.error(`User with id ${id} not found`);
-                return {};
-            }
-    
-            const updateFields = {};
-            if (usuario.inProgress !== undefined) updateFields.inProgress = usuario.inProgress;
-            if (usuario.passwd !== undefined) updateFields.passwd = usuario.passwd;
-            if (usuario.config !== undefined) updateFields.config = usuario.config;
-    
-            await CnxMongoDB.db.collection('usuarios').updateOne(
-                { id: id },
-                { $set: updateFields }
-            );
-    
-            const usuarioActualizado = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
-            return usuarioActualizado;
-        } catch (error) {
-            console.error("Database connection error:", error);
-            throw new Error('Database connection not established');
-        }
-    };
-*/
-
 
     //REVISAR  (Creo que está ok)
     borrarUsuario = async (id) => {
@@ -320,16 +261,6 @@ class ModelMongoDB {
         try {
                 console.log('Entering model method');
             
-                /*const rutaSalidaBinario = './services/serviciosPython/jsonPDF.json';
-                console.log('Reading binary file');
-
-                let binarioAPasar = await fs.promises.readFile(rutaSalidaBinario, 'utf-8');
-                console.log('Binary file read successfully');
-
-                binarioAPasar = await JSON.parse(binarioAPasar)
-
-                resumen.pdf = binarioAPasar*/
-                debugger;
                 const resumenNuevo = await this.guardarResumenNuevo(id, resumen)
                 return resumenNuevo
         } catch(error) {
@@ -341,17 +272,6 @@ class ModelMongoDB {
             try {
 
                 console.log('Entering model method');
-                /*
-                const rutaSalidaBinario = './services/serviciosPython/jsonPDF.json';
-                console.log('Reading binary file');
-    
-                let binarioAPasar = await fs.promises.readFile(rutaSalidaBinario, 'utf-8');
-                console.log('Binary file read successfully');
-    
-                binarioAPasar = await JSON.parse(binarioAPasar)
-
-                resumenVid.pdf = binarioAPasar*/
-
                 const resumenNuevo = await this.guardarResumenNuevo(id, resumenVid);
 
                 console.log('guarde el resumen :)');

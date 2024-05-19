@@ -99,9 +99,7 @@ class LoginScreen extends ConsumerWidget {
       ),
     );
   }
-  //Rocio@Rocio
-  //123
-
+  
   Future<bool> sendLoginData(String username, String password, WidgetRef ref) async {
     bool loginOk = false;
     // servidor Node.js
@@ -134,7 +132,8 @@ class LoginScreen extends ConsumerWidget {
           inProgress: rsp['inProgress'],
           isDark: rsp['config']['isDark']);
           
-          ref.read(userProvider.notifier).state = json.decode(response.body)['id'];
+          ref.read(userNotifierProvider.notifier).setUserLogin(userLogueado);
+          ref.read(userNotifierProvider.notifier).togleDarkMode(userLogueado.isDark);
         loginOk = true;
       } else {
         errorMessage = json.decode(response.body)['error'];

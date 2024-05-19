@@ -1,6 +1,9 @@
 import { PaletteMode, hexToRgb } from "@mui/material";
 import {  blue, deepOrange, grey } from "@mui/material/colors";
+//Imports for context
+import { Dispatch, SetStateAction, createContext } from "react";
 
+//Theme Object declaration, whith types it will contain
 declare module "@mui/material/styles" {
     interface Theme {
       palette: {
@@ -25,6 +28,7 @@ declare module "@mui/material/styles" {
   }
 
 
+  //Implementation of two Theme Objects (one for "dark"and one for "light") with personalized colors 
  export const getDesignTokens = (mode: PaletteMode) => ({
     palette: {
       mode,
@@ -70,3 +74,7 @@ declare module "@mui/material/styles" {
     },
   });
 
+
+
+  //Context para poder cambiar el Theme
+  export const ColorContext = createContext<Dispatch<SetStateAction<PaletteMode>>>(() => {});

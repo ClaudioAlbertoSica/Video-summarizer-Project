@@ -1,28 +1,6 @@
+import { PaletteMode } from "@mui/material";
 import { createContext } from "react";
-
-
-export type LoggedUser = {
-id: string;
-userName: string;
-passwd: string;
-inProgress: boolean;
-config: Config;
-inventario: Summary[]; // Data to create the List of previous summaries
-selectedSummary: Summary; // Data to display a full summary, when List is clicked
-}
-
-
-export type Config ={
-    isDark: boolean;
-}
-
-
-export type Summary = {
-    idres: string;
-    title: string;
-    points: number;
-    miniatura: string;
-    }
+import { LoggedUser } from "./Services/Types/UserTypes";
 
 export const placeholderUser: LoggedUser = Object.freeze({
     id: "-1",
@@ -30,7 +8,7 @@ export const placeholderUser: LoggedUser = Object.freeze({
     passwd: "placeholder",
     inProgress: false,
     config:{
-        isDark: false
+        isDark: 'light' as PaletteMode
     },
     inventario: [{
         idres: "1",

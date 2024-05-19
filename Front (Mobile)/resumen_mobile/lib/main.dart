@@ -17,12 +17,12 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final user = ref.read(userProvider.notifier).state;
-    final theme = ref.watch(themeNotifierProvider);
+    //final user = ref.read(userProvider.notifier).state;
+    final user = ref.watch(userNotifierProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
-      theme: theme.getTheme(),
+      theme: user.getTheme(),
     );
   }
 }

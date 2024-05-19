@@ -15,7 +15,7 @@ class ReportScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final idUser = ref.watch(userProvider.notifier).state;
+    final idUser = ref.watch(userNotifierProvider).id;
 
     return Scaffold(
       drawerEnableOpenDragGesture: false,
@@ -37,7 +37,7 @@ class ReportScreen extends ConsumerWidget {
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
                   children: [
-                    FormText(id: idUser as String),
+                    FormText(id: idUser),
               ]
             ),
           ),

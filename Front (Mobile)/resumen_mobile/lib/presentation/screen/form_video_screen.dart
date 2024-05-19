@@ -76,8 +76,8 @@ class StackLayoutCustomized extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final isDark = ref.watch(themeNotifierProvider).isDark;
-    final background = ref.watch(themeNotifierProvider)
+    final isDark = ref.watch(userNotifierProvider).isDark;
+    final background = ref.watch(userNotifierProvider)
       .isDark 
         ? imageDark
         : imageLigth;

@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-//COMENTO PORQUE AHORA NO USAMOS EL PROVIDER
-//import 'package:resumen_mobile/main.dart';
-import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
+import 'package:resumen_mobile/entity/user.dart';
+import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,9 +15,8 @@ class ConfigScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //COMENTO PORQUE AHORA NO LO USAMOS
-    //final idUser = ref.watch(userProvider.notifier).state;
-    final isDark = ref.watch(themeNotifierProvider).isDark;
+    final isDarkUser = ref.watch(userNotifierProvider).isDark;
+    final idUser = ref.watch(userNotifierProvider).id;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       drawerEnableOpenDragGesture: false,
@@ -41,14 +38,15 @@ class ConfigScreen extends ConsumerWidget {
                     children: [
                       Row(
                         children: [
-                          Text(isDark ? 'Light mode' : 'Dark mode'),
+                          Text(isDarkUser ? 'Light mode' : 'Dark mode'),
                           IconButton(
                             onPressed: () {
-                              ref.read(themeNotifierProvider.notifier).togleDarkMode();
+                              changeConfig(idUser, ref);
                               
 
+
                             },
-                            icon: isDark ? const Icon(Icons.light_mode) : const Icon(Icons.dark_mode))
+                            icon: isDarkUser ? const Icon(Icons.light_mode) : const Icon(Icons.dark_mode))
                         ],
                       ),
                     ],
@@ -60,7 +58,7 @@ class ConfigScreen extends ConsumerWidget {
   }
 
 
-Future<bool> changeConfig(WidgetRef ref, String idUser) async {
+void changeConfig(String idUser, WidgetRef ref) async {
     bool changeOk = false;
     
     // servidor Node.js
@@ -74,7 +72,7 @@ Future<bool> changeConfig(WidgetRef ref, String idUser) async {
         },
         body: jsonEncode(<String, void>{
           'config': {
-            'darkMode': ref.read(themeNotifierProvider).isDark
+            'isDark': !(ref.read(userNotifierProvider).isDark)
           }}
         ),
       );
@@ -82,7 +80,16 @@ Future<bool> changeConfig(WidgetRef ref, String idUser) async {
       if (response.statusCode == 200) {
         // Si la solicitud es exitosa, imprime la respuesta del servidor
         print('Respuesta del servidor: ${response.body}');
-
+        final rsp = json.decode(response.body);
+        User userModificado = User(
+          userName: rsp['userName'],
+          id: rsp['id'],
+          inventario: rsp['inventario'] as List, 
+          inProgress: rsp['inProgress'],
+          isDark: rsp['config']['isDark']);
+          
+          ref.read(userNotifierProvider.notifier).setUserLogin(userModificado);
+          ref.read(userNotifierProvider.notifier).togleDarkMode(userModificado.isDark);
         changeOk = true;
       } else {
         errorMessage = json.decode(response.body)['error'];
@@ -90,8 +97,6 @@ Future<bool> changeConfig(WidgetRef ref, String idUser) async {
     } catch (error) {
       errorMessage = 'Error: Connection ERROR - Server not found';
     }
-
-    return changeOk;
   }
 
 }

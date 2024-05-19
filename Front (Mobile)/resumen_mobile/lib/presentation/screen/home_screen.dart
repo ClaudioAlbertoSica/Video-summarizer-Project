@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
 import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
+import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_stack_layout.dart';
@@ -58,7 +59,7 @@ class _StackLayoutHome extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     //PROVIDER PARA MANEJAR EL DARKMODE
-    final isDark = ref.watch(themeNotifierProvider).isDark;
+    final isDark = ref.watch(userNotifierProvider).isDark;
     String randomImage =  getRandomImage(isDark);
     final resumenes = ref.watch(resumenNotifierProvider);
     return StackLayout(

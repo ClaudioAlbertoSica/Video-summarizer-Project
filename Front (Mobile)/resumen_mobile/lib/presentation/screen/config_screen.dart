@@ -1,14 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //COMENTO PORQUE AHORA NO USAMOS EL PROVIDER
 //import 'package:resumen_mobile/main.dart';
 import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
+import 'package:http/http.dart' as http;
 
 
 class ConfigScreen extends ConsumerWidget {
-  const ConfigScreen({super.key});
+  ConfigScreen({super.key});
   static const String name = 'ConfigScreen';
+  String errorMessage = '';
+  
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +21,6 @@ class ConfigScreen extends ConsumerWidget {
     //final idUser = ref.watch(userProvider.notifier).state;
     final isDark = ref.watch(themeNotifierProvider).isDark;
     final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
@@ -41,6 +45,8 @@ class ConfigScreen extends ConsumerWidget {
                           IconButton(
                             onPressed: () {
                               ref.read(themeNotifierProvider.notifier).togleDarkMode();
+                              
+
                             },
                             icon: isDark ? const Icon(Icons.light_mode) : const Icon(Icons.dark_mode))
                         ],
@@ -52,4 +58,40 @@ class ConfigScreen extends ConsumerWidget {
       ),
     );
   }
+
+
+Future<bool> changeConfig(WidgetRef ref, String idUser) async {
+    bool changeOk = false;
+    
+    // servidor Node.js
+    try {
+      //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
+      final response = await http.put(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, void>{
+          'config': {
+            'darkMode': ref.read(themeNotifierProvider).isDark
+          }}
+        ),
+      );
+      //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
+      if (response.statusCode == 200) {
+        // Si la solicitud es exitosa, imprime la respuesta del servidor
+        print('Respuesta del servidor: ${response.body}');
+
+        changeOk = true;
+      } else {
+        errorMessage = json.decode(response.body)['error'];
+      }
+    } catch (error) {
+      errorMessage = 'Error: Connection ERROR - Server not found';
+    }
+
+    return changeOk;
+  }
+
 }

@@ -1,14 +1,20 @@
-import {  Dispatch, SetStateAction, createContext } from "react";
+import {   createContext } from "react";
+import { Summary } from "../../Services/Types/UserTypes";
 
-export type selectedSummary ={
-    idRes: string,
-    title: string,
+
+export const defaultSummary: Summary = {
+    idres: "-1",
+    title: "",
+    points: 0,
+    miniatura: "",
+    isFavourite: false,
 }
 
-const placeHolderSummary: selectedSummary ={
-    idRes: "-1",
-    title: "Placeholder"
+type SummaryStateElements = {
+    State: Summary;
+    SetState: React.Dispatch<React.SetStateAction<Summary>>;
 }
 
 
-export const SelectedSummaryContext = createContext<[selectedSummary,Dispatch<SetStateAction<selectedSummary>>]>([placeHolderSummary, () => {}]);
+
+export const SelectedSummaryContext = createContext<SummaryStateElements>({State: defaultSummary, SetState: ()=>{}});

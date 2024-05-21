@@ -9,7 +9,7 @@ export type LoggedUser = {
     inProgress: boolean;
     config: Config;
     inventario: Summary[]; // Data to create the List of previous summaries
-    selectedSummary?: Summary; // Data to display a full summary, when List is clicked
+   // selectedSummary?: Summary; // Data to display a full summary, when List is clicked
     }
 
 

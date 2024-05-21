@@ -16,11 +16,11 @@ function VideoForm() {
   const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
   const ConfirmationMessage: string = "Solicitud enviada con éxito";
   const ServerErrorMessage: string = "Hubo un problema con el envío";
-  const [isShowingform, setIsShowingFrom] = useState<boolean>(activeUSer.userState.inProgress);
+  //const [isShowingform, setIsShowingFrom] = useState<boolean>(!activeUSer.userState.inProgress);
 
   useEffect(() => {
-    setIsShowingFrom(!activeUSer.userState.inProgress);
-  }, [activeUSer.userState.inProgress, isShowingform]);
+    // setIsShowingFrom(!activeUSer.userState.inProgress);
+  }, [activeUSer.userState.inProgress]);
 
   const handleFormClear = () => formRef.current?.reset();
 
@@ -51,10 +51,10 @@ function VideoForm() {
       });
   };
 
-  const evaluateReturn = () => {
+  const evaluateReturn = (bol: boolean) => {
     let elementtoReturn: ReactElement = <LoadingScreen />;
 
-    if (isShowingform) {
+    if (bol) {
       elementtoReturn = (
         <Paper className="ViewWrapper" elevation={5}>
           <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>
@@ -129,7 +129,7 @@ function VideoForm() {
     return elementtoReturn;
   };
 
-  return evaluateReturn();
+  return evaluateReturn(!activeUSer.userState.inProgress);
 }
 
 export default VideoForm;

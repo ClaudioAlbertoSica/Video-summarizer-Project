@@ -24,7 +24,7 @@ function WIPindicator() {
         if (!res.data /*meanning "server has no work in progress"*/) {
           clearIntervals(); //If server is not working anymore, all setInterval() are stopped
           checkServerStatus.current = false;
-          const newActiveUser: LoggedUser = activeUSer.userState;
+          const newActiveUser: LoggedUser = { ...activeUSer.userState };
           newActiveUser.inProgress = false;
           activeUSer.userSteState(newActiveUser);
         }
@@ -34,20 +34,6 @@ function WIPindicator() {
       .catch((err) => console.log(err.error));
   };
 
-  useEffect(() => {
-    if (checkServerStatus.current) {
-      setShowIsWorking(true);
-      intervalID.current.push(setInterval(() => checkInProgress(), 3000));
-      console.log("I was here (true)");
-    } else {
-      const newActiveUser: LoggedUser = activeUSer.userState;
-      newActiveUser.inProgress = false;
-      activeUSer.userSteState(newActiveUser);
-      checkServerStatus.current = true;
-      console.log("I was here (false)");
-    }
-  }, [activeUSer.userState.inProgress]);
-
   const clearIntervals = () => {
     while (intervalID.current.length != 0) {
       const removedElement = intervalID.current.pop();
@@ -55,6 +41,17 @@ function WIPindicator() {
       console.log("all intervals cleared");
     }
   };
+
+  useEffect(() => {
+    if (checkServerStatus.current) {
+      setShowIsWorking(true);
+      intervalID.current.push(setInterval(() => checkInProgress(), 3000));
+      console.log("I was here (true)" + activeUSer.userState.inProgress);
+    } else {
+      checkServerStatus.current = true;
+      console.log("I was here (false)" + activeUSer.userState.inProgress);
+    }
+  }, [activeUSer.userState.inProgress]);
 
   return <>{showIsWorking ? <ActiveWorkIndicator /> : <ReadyWorkIndicator />}</>;
 }

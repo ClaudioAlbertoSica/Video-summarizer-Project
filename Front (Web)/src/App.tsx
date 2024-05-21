@@ -27,10 +27,6 @@ function App() {
       </ColorContext.Provider>
     </>
   );
-  /*
-    <GridLayout />
-  );
-  */
 }
 
 export default App;

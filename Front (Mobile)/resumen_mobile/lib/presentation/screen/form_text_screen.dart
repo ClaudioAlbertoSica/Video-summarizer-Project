@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:resumen_mobile/main.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
@@ -15,7 +14,7 @@ class CoreFormText extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final idUser = ref.watch(userProvider.notifier).state;
+    final idUser = ref.watch(userNotifierProvider).id;
 
     return Scaffold(
       drawerEnableOpenDragGesture: false,
@@ -37,7 +36,7 @@ class CoreFormText extends ConsumerWidget {
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
                   children: [
-                    FormText(id: idUser as String),
+                    FormText(id: idUser),
               ]
             ),
           ),

@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
 import 'package:resumen_mobile/entity/user.dart';
-import 'package:resumen_mobile/main.dart';
 import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
@@ -114,8 +113,8 @@ class LoginScreen extends ConsumerWidget {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String> {
-          //'userName': username,
-          //'passwd': password,
+/*           'userName': username,
+          'passwd': password, */
           "userName": "rocio.bani93@gmail.com",
           "passwd": "123",
         }),

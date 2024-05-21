@@ -5,7 +5,7 @@ import "./ListItem.css";
 import { useContext } from "react";
 import { ButtonViewContext } from "../../../ButtonViewContext.ts";
 import { ValidViewNames } from "../../../Views/ImTheActiveView.ts";
-import { LoggedUserContext } from "../../../../../ActiveUserContext.ts";
+import { SelectedSummaryContext } from "../../../SelectedSummaryContext.ts";
 
 export interface ListItemObject {
   idRes: string;
@@ -17,15 +17,14 @@ export interface ListItemObject {
 
 function SummaryListItem({ thisItemRating = 0, image, title, idRes, isFavourite }: ListItemObject) {
   const setSelectedCentralPanelView = useContext(ButtonViewContext);
-  const userContext = useContext(LoggedUserContext);
+  const summaryContext = useContext(SelectedSummaryContext);
 
   const handleClick = () => {
-    console.log(userContext.userState);
-    userContext.userSteState({
-      ...userContext.userState,
-      selectedSummary: { idres: idRes, title, points: thisItemRating, miniatura: image, isFavourite },
+    summaryContext.SetState({
+      ...summaryContext.State,
+      ...{ idres: idRes, title, points: thisItemRating, miniatura: image, isFavourite },
     });
-    console.log(userContext.userState);
+
     setSelectedCentralPanelView(ValidViewNames.Summary);
   };
 

@@ -1,6 +1,6 @@
 import { TextField, Box, Button, Container, Typography, Alert, Paper, FormControlLabel, Switch } from "@mui/material";
 import "./View.css";
-import { FormEvent, ReactElement, useContext, useRef, useState } from "react";
+import { FormEvent, ReactElement, useContext, useEffect, useRef, useState } from "react";
 import Dropdown from "./Dropdown";
 import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../Services/alertMessagesHandler";
 import { LoggedUserContext } from "../../../ActiveUserContext";
@@ -9,8 +9,6 @@ import { ButtonViewContext } from "../ButtonViewContext";
 import { ValidViewNames } from "./ImTheActiveView";
 import LoadingScreen from "./LoadingScreen";
 
-//import server from "../../Services/serverCall.ts";
-
 function VideoForm() {
   const activeUSer = useContext(LoggedUserContext);
   const setSelectedCentralPanelView = useContext(ButtonViewContext);
@@ -18,6 +16,11 @@ function VideoForm() {
   const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
   const ConfirmationMessage: string = "Solicitud enviada con éxito";
   const ServerErrorMessage: string = "Hubo un problema con el envío";
+  const [isShowingform, setIsShowingFrom] = useState<boolean>(activeUSer.userState.inProgress);
+
+  useEffect(() => {
+    setIsShowingFrom(!activeUSer.userState.inProgress);
+  }, [activeUSer.userState.inProgress, isShowingform]);
 
   const handleFormClear = () => formRef.current?.reset();
 
@@ -40,7 +43,7 @@ function VideoForm() {
       .post(`/${activeUSer.userState.id}/resumen/video`, { url, title, esBreve, idioma })
       .then(() => {
         alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success, 500);
-        activeUSer.userSteState({ ...activeUSer.userState, inProgress: true });
+        setTimeout(() => activeUSer.userSteState({ ...activeUSer.userState, inProgress: true }), 500);
         setTimeout(() => setSelectedCentralPanelView(ValidViewNames.Loading), 500);
       })
       .catch((err) => {
@@ -50,8 +53,8 @@ function VideoForm() {
 
   const evaluateReturn = () => {
     let elementtoReturn: ReactElement = <LoadingScreen />;
-    console.log(activeUSer.userState.inProgress);
-    if (!activeUSer.userState.inProgress) {
+
+    if (isShowingform) {
       elementtoReturn = (
         <Paper className="ViewWrapper" elevation={5}>
           <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>

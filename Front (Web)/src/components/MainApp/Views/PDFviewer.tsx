@@ -6,6 +6,7 @@ import "./View.css";
 import { Container } from "@mui/material";
 import PDFviwerHeader from "./PDFviwerHeader.tsx";
 import { Summary } from "../../../Services/Types/UserTypes.ts";
+import { SelectedSummaryContext } from "../SelectedSummaryContext.ts";
 
 type pdfInResponse = {
   pdf: pdf;
@@ -24,6 +25,7 @@ function PDFviewer() {
   const [documentToShow, setDocumentToShow] = useState<Blob>(new Blob());
   const currentDocument = useRef<Summary>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const summaryContext = useContext(SelectedSummaryContext);
 
   const base64toBlob = (data: string) => {
     // Remove the prefix 'data:application/pdf;base64' from the raw base64
@@ -35,7 +37,7 @@ function PDFviewer() {
   useEffect(() => {
     const call = async () => {
       await server
-        .get<ServerSummaryResponse>(`/${activeUSer.userState.id}/resumen/${activeUSer.userState.selectedSummary?.idres}`)
+        .get<ServerSummaryResponse>(`/${activeUSer.userState.id}/resumen/${summaryContext.State.idres}`)
         .then((res) => {
           currentDocument.current = res.data;
           setIsLoading(false);
@@ -48,13 +50,11 @@ function PDFviewer() {
     };
     setIsLoading(true);
     call();
-  }, [activeUSer.userState.selectedSummary]);
+  }, [summaryContext.State]);
 
   return (
     <Container className="ContainerForPDFViewr">
-      <Container className="ContainerForPDFViewrHeader">
-        {!isLoading && <PDFviwerHeader {...currentDocument.current} />}
-      </Container>
+      <Container className="ContainerForPDFViewrHeader">{!isLoading && <PDFviwerHeader {...summaryContext.State} />}</Container>
       <Container className="containerForPDFViewrEmbededs">
         {isLoading ? (
           <img className="embededPDFViewrLoader" src={isloadingGif} title="Titulo" />

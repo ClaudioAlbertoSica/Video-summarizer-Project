@@ -9,7 +9,7 @@ import { LoggedUserContext } from "../../../../../ActiveUserContext.ts";
 function ListForAccordion() {
   const currentlyLoggedUsuer = useContext(LoggedUserContext).userState;
 
-  useEffect(() => {}, [currentlyLoggedUsuer.selectedSummary?.points]);
+  useEffect(() => {}, [currentlyLoggedUsuer.inventario]);
 
   const listToShow = () => {
     let objetcToReturn: ReactElement[] = [
@@ -21,7 +21,13 @@ function ListForAccordion() {
     if (currentlyLoggedUsuer.inventario.length !== 0) {
       objetcToReturn = currentlyLoggedUsuer.inventario.map((itm) => (
         <ListItem key={itm.idres}>
-          <SummaryListItem thisItemRating={itm.points} image={itm.miniatura} title={itm.title} idRes={itm.idres} />
+          <SummaryListItem
+            thisItemRating={itm.points}
+            image={itm.miniatura}
+            title={itm.title}
+            idRes={itm.idres}
+            isFavourite={itm.isFavourite}
+          />
         </ListItem>
       ));
     }

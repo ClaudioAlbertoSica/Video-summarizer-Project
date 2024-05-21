@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:resumen_mobile/core/app_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 
 
@@ -17,7 +16,6 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    //final user = ref.read(userProvider.notifier).state;
     final user = ref.watch(userNotifierProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,

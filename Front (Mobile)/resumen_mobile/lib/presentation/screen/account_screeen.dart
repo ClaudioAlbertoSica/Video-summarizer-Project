@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
-import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_app_title_style.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_input_style.dart';
@@ -24,7 +23,7 @@ class AcconutScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final idUser = ref.watch(userProvider.notifier).state;
+    final idUser = ref.watch(userNotifierProvider).id;
     
     return Scaffold(
       drawerEnableOpenDragGesture: false,

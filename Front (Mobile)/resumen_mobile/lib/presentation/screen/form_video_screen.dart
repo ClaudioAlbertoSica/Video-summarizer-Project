@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:resumen_mobile/main.dart';
-import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_stack_layout.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
@@ -16,7 +14,7 @@ class CoreFormVideo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final idUser = ref.watch(userProvider.notifier).state;
+    final idUser = ref.watch(userNotifierProvider).id;
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
@@ -39,7 +37,7 @@ class CoreFormVideo extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-            FormVideo(id: idUser as String),
+            FormVideo(id: idUser),
             ]
           ),
         ),

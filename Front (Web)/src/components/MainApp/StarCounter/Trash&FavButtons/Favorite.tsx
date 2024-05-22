@@ -29,7 +29,6 @@ function Favorite({ isLiked }: Props) {
         summaryContext.State.isFavourite = res.data.isFavourite;
         summaryContext.SetState(summaryContext.State);
         setLiked(res.data.isFavourite);
-        console.log(res.data.isFavourite);
       })
       .catch((err) => {
         console.log(err.error);

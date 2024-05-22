@@ -5,18 +5,14 @@ import Dropdown from "./Dropdown";
 import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../Services/alertMessagesHandler";
 import { LoggedUserContext } from "../../../ActiveUserContext";
 import serverCall from "../../../Services/serverCall";
-import { ButtonViewContext } from "../ButtonViewContext";
-import { ValidViewNames } from "./ImTheActiveView";
 import LoadingScreen from "./LoadingScreen";
 
 function VideoForm() {
   const activeUSer = useContext(LoggedUserContext);
-  const setSelectedCentralPanelView = useContext(ButtonViewContext);
   const formRef = useRef<HTMLFormElement>();
   const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
   const ConfirmationMessage: string = "Solicitud enviada con éxito";
   const ServerErrorMessage: string = "Hubo un problema con el envío";
-  //const [isShowingform, setIsShowingFrom] = useState<boolean>(!activeUSer.userState.inProgress);
 
   useEffect(() => {
     // setIsShowingFrom(!activeUSer.userState.inProgress);
@@ -44,10 +40,9 @@ function VideoForm() {
       .then(() => {
         alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success, 500);
         setTimeout(() => activeUSer.userSteState({ ...activeUSer.userState, inProgress: true }), 500);
-        // setTimeout(() => setSelectedCentralPanelView(ValidViewNames.Loading), 500);
       })
       .catch((err) => {
-        alertMessagesHandler(setAlertToShow, err.error || ServerErrorMessage, alertTypes.success, 2000);
+        alertMessagesHandler(setAlertToShow, err.error || ServerErrorMessage, alertTypes.error, 2000);
       });
   };
 
@@ -78,6 +73,7 @@ function VideoForm() {
               <Container className="SwitchsContainer">
                 <FormControlLabel
                   className="FormSwitchInputs"
+                  id="CompactSummarySwitch"
                   name="CompactSummarySwitch"
                   control={<Switch />}
                   label="Resumen Compacto"

@@ -3,8 +3,10 @@ import StarIconActive from "./StarIconActive.tsx";
 import { Typography } from "@mui/material";
 import "./Stars.css";
 import StarIconPassive from "./StarIconPassive.tsx";
-import { LoggedUser, LoggedUserContext } from "../../../ActiveUserContext.ts";
+import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 import server from "../../../../src/Services/serverCall.ts";
+import { SelectedSummaryContext } from "../SelectedSummaryContext.ts";
+import { LoggedUser } from "../../../Services/Types/UserTypes.ts";
 
 export interface CounterProps {
   starsToShow: number;
@@ -19,18 +21,20 @@ type StringToNumberMap = {
 
 function StarCounter({ starsToShow, couterSize, starsToColour = 0, disabled = "none" }: CounterProps) {
   const loggedUser = useContext(LoggedUserContext);
+  const summaryContext = useContext(SelectedSummaryContext);
 
   const handleClickedActiveStar = async (num: number) => {
-    const idresSelected = loggedUser.userState.selectedSummary.idres;
+    const idresSelected = summaryContext.State.idres;
     const selectedResDBindex = loggedUser.userState.inventario.findIndex((sum) => sum.idres === idresSelected);
 
     await server
-      .put(`/${loggedUser.userState.id}/resumen/${loggedUser.userState.selectedSummary.idres}`, { points: num })
+      .put(`/${loggedUser.userState.id}/resumen/${summaryContext.State.idres}`, { points: num })
       .then(() => {
         const newUserContext: LoggedUser = { ...loggedUser.userState };
         newUserContext.inventario[selectedResDBindex].points = num;
-        newUserContext.selectedSummary.points = num;
         loggedUser.userSteState(newUserContext);
+        summaryContext.State.points = num;
+        summaryContext.SetState(summaryContext.State);
       })
       .catch((err) => {
         console.log(err.error);

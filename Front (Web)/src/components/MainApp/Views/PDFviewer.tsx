@@ -50,7 +50,7 @@ function PDFviewer() {
     };
     setIsLoading(true);
     call();
-  }, [summaryContext.State]);
+  }, [summaryContext.State.idres]);
 
   return (
     <Container className="ContainerForPDFViewr">

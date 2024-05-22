@@ -3,7 +3,7 @@ import StarCounter from "../StarCounter/StarCounter";
 import "./View.css";
 import { Summary } from "../../../Services/Types/UserTypes";
 
-function PDFviwerHeader({ miniatura, title, points }: Summary) {
+function PDFviwerHeader({ miniatura, title, points, isFavourite }: Summary) {
   return (
     <Container className="HeaderItemsConatiner">
       <Avatar src={miniatura} sx={{ width: 55, height: 55, marginRight: "15px" }}></Avatar>
@@ -11,7 +11,7 @@ function PDFviwerHeader({ miniatura, title, points }: Summary) {
         {title}
       </Typography>
       <Container style={{ display: "inline-flex", maxWidth: "fit-content", margin: "0px" }}>
-        <StarCounter starsToShow={5} couterSize="large" starsToColour={points} />
+        <StarCounter starsToShow={5} couterSize="large" starsToColour={points} isLiked={isFavourite} showTrashAndFavs={"both"} />
       </Container>
     </Container>
   );

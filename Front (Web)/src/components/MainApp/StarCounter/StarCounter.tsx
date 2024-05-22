@@ -14,13 +14,22 @@ export interface CounterProps {
   starsToColour?: number;
   couterSize: "small" | "large" | "medium";
   disabled?: "none" | "counter" | "usePlaceHolder"; //Explanaition: "none" for normal Counter behaviour; "counter" displays starts as usual, but doesn't change upon clicking a star (counter has a fixed value); "usePlaceHolder" displays grey-colored PlaceHolder stars.
+  isLiked: boolean;
+  showTrashAndFavs?: "trash" | "favs" | "both" | "none";
 }
 
 type StringToNumberMap = {
   [key: string]: number;
 };
 
-function StarCounter({ starsToShow, couterSize, starsToColour = 0, disabled = "none" }: CounterProps) {
+function StarCounter({
+  starsToShow,
+  couterSize,
+  starsToColour = 0,
+  disabled = "none",
+  isLiked,
+  showTrashAndFavs = "none",
+}: CounterProps) {
   const loggedUser = useContext(LoggedUserContext);
   const summaryContext = useContext(SelectedSummaryContext);
 
@@ -104,7 +113,7 @@ function StarCounter({ starsToShow, couterSize, starsToColour = 0, disabled = "n
       </Typography>
       <Stack direction={"row"}>
         {disabled !== "none" ? renderPasiveStars() : renderActiveStars()}
-        <TrashAndFav />
+        <TrashAndFav isLiked={isLiked} whatToShow={showTrashAndFavs} />
       </Stack>
     </>
   );

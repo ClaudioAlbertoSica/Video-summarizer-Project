@@ -56,7 +56,7 @@ function GridLayout() {
               {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Help) && <Help />}
               {ImTheActiveView(selectedCentralPanelView, ValidViewNames.VideoForm) && <VideoForm />}
               {ImTheActiveView(selectedCentralPanelView, ValidViewNames.TextForm) && <TextForm />}
-              {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Loading) && <LoadingScreen />}
+              {/*{ImTheActiveView(selectedCentralPanelView, ValidViewNames.Loading) && <LoadingScreen />}*/}
               {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Summary) && <PDFviewer />}
               {selectedCentralPanelView != ValidViewNames.noneSelected && (
                 <CloseButton

@@ -67,9 +67,29 @@ class Controlador {
         try {
             const { id, idres } = req.params
             const resumenes = await this.servicio.obtenerResumenes(id,idres)
-            res.json(resumenes)
+            res.sendFile(resumenes)
         } catch (error) {
             res.status(500).json({error:error.message})
+        }
+    }
+
+    crearYobtenerResumenEnPdf = async (req, res) => {
+        try {
+            const { id, idres } = req.params;
+            const pdf = await this.servicio.crearYobtenerResumenEnPdf(id,idres);
+            res.sendFile(pdf);
+        } catch (error) {
+            res.status(500).json({error:error.message});
+        }
+    }
+    
+    EliminarPdf = async (req, res) => {
+        try {
+            const {filePath} = req.params
+            const resumenEliminado = await this.servicio.borrarResumen(filePath)
+            res.json(resumenEliminado)
+        } catch (error) {
+            res.status(500).json({error:error.message})   
         }
     }
 

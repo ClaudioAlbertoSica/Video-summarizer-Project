@@ -4,6 +4,8 @@ import { exec } from 'child_process'
 import fs from 'fs'
 import PDFDocument from 'pdfkit';
 import path from 'path'
+import { fileURLToPath } from 'url';
+
 class Servicio {
     constructor(persistencia) {
         this.model = Factory.get(persistencia)
@@ -96,6 +98,74 @@ class Servicio {
         }
         catch (error) {
             console.log(error.message)
+        }
+    }
+
+    crearYobtenerResumenEnPdf = async (id, idres) => {
+        try {
+            if (id) {
+                // Obtener la ruta del directorio de archivos PDF
+                const __filename = fileURLToPath(import.meta.url);
+                const __dirname = path.dirname(__filename);
+                const pdfsDir = path.join(__dirname, 'pdfs');
+    
+                // Asegúrate de que el directorio exista, creándolo si es necesario
+                fs.mkdirSync(pdfsDir, { recursive: true });
+    
+                // Obtener la lista de archivos en el directorio
+                const files = fs.readdirSync(pdfsDir);
+    
+                // Eliminar todos los archivos en el directorio
+                files.forEach(file => {
+                    const filePath = path.join(pdfsDir, file);
+                    fs.unlinkSync(filePath);
+                    console.log('Archivo eliminado:', filePath);
+                });
+    
+                // Obtener el resumen y convertirlo a PDF
+                const resumen = await this.model.obtenerResumenes(id, idres);
+                const pdfBase64 = resumen.pdf.data;
+                const pdfBuffer = Buffer.from(pdfBase64, 'base64');
+    
+                // Obtener el nombre del archivo y la ruta absoluta
+                const fileName = `resumen_${id}_${idres}.pdf`;
+                const filePath = path.join(pdfsDir, fileName);
+    
+                // Guardar el archivo PDF en el servidor
+                fs.writeFileSync(filePath, pdfBuffer);
+                console.log('Archivo creado:', filePath);
+    
+                return filePath; // Devuelve la ruta del archivo
+            } else {
+                throw new Error('ID INDEFINIDO');
+            }
+        } catch (error) {
+            console.error('Error al crear el archivo PDF:', error.message);
+        }
+    }
+
+    EliminarPdf = async (filePath) => {
+        try {
+            if (!filePath) {
+                throw new Error('Ruta de archivo indefinida');
+            }
+            
+            // Convierte la ruta a una ruta absoluta
+            const absolutePath = path.resolve(filePath);
+            
+            // Verifica si el archivo existe antes de intentar eliminarlo
+            if (fs.existsSync(absolutePath)) {
+                // Elimina el archivo de forma sincrónica
+                fs.unlinkSync(absolutePath);
+                console.log('Archivo eliminado:', absolutePath);
+                return true;
+            } else {
+                console.log('El archivo no existe:', absolutePath);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error al eliminar el archivo:', error.message);
+            return false;
         }
     }
 

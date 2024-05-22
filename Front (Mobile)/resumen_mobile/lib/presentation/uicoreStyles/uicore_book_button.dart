@@ -20,8 +20,8 @@ class BookButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-/*     final idUser = ref.watch(userNotifierProvider).id;
-    final idRes = resumen.idres; */
+    final idUser = ref.watch(userNotifierProvider).id;
+    final idRes = resumen.idres;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -37,7 +37,10 @@ class BookButton extends ConsumerWidget {
             // Manejar el error aquí
             print('Error al obtener el PDF');
           } */
-          context.pushNamed(ResumenDetailScreen.name);
+          context.pushNamed(
+            ResumenDetailScreen.name,
+            extra: {'idUser': idUser, 'resumen': resumen},
+          );
         },
         leading: Container(
           width: 100,

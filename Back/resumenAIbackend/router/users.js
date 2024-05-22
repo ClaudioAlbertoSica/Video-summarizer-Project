@@ -13,6 +13,8 @@ class Router {
         this.router.post('/:id/resumen/video', this.controlador.crearResumenVideo)
         this.router.post('/:id/resumen/texto', this.controlador.crearResumenTexto)
         this.router.get('/:id/resumen/:idres?', this.controlador.obtenerResumenes)
+        this.router.get('/:id/pdf/:idres?', this.controlador.crearYobtenerResumenEnPdf)
+        this.router.delete('/:id/pdf/:pathFile', this.controlador.EliminarPdf)
         this.router.delete('/:id/resumen/:idres', this.controlador.borrarResumen)
         this.router.put('/:id/resumen/:idres', this.controlador.actualizarResumen)
         this.router.post('/login', this.controlador.loguearse)

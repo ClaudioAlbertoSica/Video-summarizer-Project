@@ -29,7 +29,7 @@ function VideoForm() {
     const formData = new FormData(formRef.current);
     const videoURL: string = formData.get("AddLink") as string;
     const isCompact: boolean = formData.get("CompactSummarySwitch") === "on";
-    /*Not implemented!
+    /* Not implemented!
     const isTranscription: boolean = formData.get("TranscriptionSwitch") === "on";
     const isImages: boolean = formData.get("ImagesSwitch") === "on";
     */
@@ -82,7 +82,7 @@ function VideoForm() {
                   control={<Switch />}
                   label="Resumen Compacto"
                 />
-                <FormControlLabel
+                {/*<FormControlLabel
                   className="FormSwitchInputs"
                   name="TranscriptionSwitch"
                   control={<Switch />}
@@ -93,7 +93,7 @@ function VideoForm() {
                   name="ImagesSwitch"
                   control={<Switch />}
                   label="Obtener Imágenes"
-                />
+      />*/}
               </Container>
               <Dropdown
                 required={true}

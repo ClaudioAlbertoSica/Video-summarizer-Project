@@ -44,7 +44,7 @@ function VideoForm() {
       .then(() => {
         alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success, 500);
         setTimeout(() => activeUSer.userSteState({ ...activeUSer.userState, inProgress: true }), 500);
-        setTimeout(() => setSelectedCentralPanelView(ValidViewNames.Loading), 500);
+        // setTimeout(() => setSelectedCentralPanelView(ValidViewNames.Loading), 500);
       })
       .catch((err) => {
         alertMessagesHandler(setAlertToShow, err.error || ServerErrorMessage, alertTypes.success, 2000);

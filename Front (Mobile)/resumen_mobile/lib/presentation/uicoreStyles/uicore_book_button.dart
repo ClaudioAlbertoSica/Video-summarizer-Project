@@ -30,17 +30,7 @@ class BookButton extends ConsumerWidget {
       ),
       child: ListTile(
         onTap: () async {
-/*           final resumenBinary = await completeResumen(idUser, idRes, ref);
-          if (resumenBinary != null) {
-            context.pushNamed(ResumenDetailScreen.name, extra: resumenBinary);
-          } else {
-            // Manejar el error aquí
-            print('Error al obtener el PDF');
-          } */
-          context.pushNamed(
-            ResumenDetailScreen.name,
-            extra: {'idUser': idUser, 'resumen': resumen},
-          );
+          await completeResumen(idUser, idRes, context);
         },
         leading: Container(
           width: 100,
@@ -86,22 +76,34 @@ class BookButton extends ConsumerWidget {
     );
   }
 
-  Future<Uint8List?> completeResumen(String idUser, String idRes, WidgetRef ref) async {
+Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
     try {
-      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
 
       if (response.statusCode == 200) {
-        return response.bodyBytes;
+        // Desestructura el JSON para obtener el campo "data"
+        final jsonData = json.decode(response.body);
+        final pdfData = jsonData['pdf']['data'];
+
+        // Decodifica los datos base64 del PDF
+        final pdfBytes = base64Decode(pdfData);
+
+        // Muestra el documento PDF en un Scaffold
+        context.pushNamed(ResumenDetailScreen.name, extra: {'resumen': resumen, 'pdfBytes': pdfBytes});
+
       } else {
-        errorMessage = json.decode(response.body)['error'];
+        
+          errorMessage = json.decode(response.body)['error'];
+        
       }
     } catch (error) {
-      //print(error);
-      errorMessage = 'Error: Connection ERROR - Server not found';
+      
+        errorMessage = 'Error: Connection ERROR - Server not found';
+    
     }
-    return null;
   }
+
 }

@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
 import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
@@ -68,12 +69,12 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/resumen-detail-screen',
-      builder: (context, state) {
-        final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
-        final String idUser = extra['idUser'];
+      builder: (context, state){
+        final Map<dynamic, dynamic> extra = state.extra as Map<dynamic, dynamic>;
         final ResumenPreview resumen = extra['resumen'];
-        return ResumenDetailScreen(idUser: idUser, resumen: resumen);
-      },
+        final Uint8List pdfBytes = extra['pdfBytes'];
+        return ResumenDetailScreen(resumen: resumen, pdfBytes: pdfBytes);
+      } ,
       name: ResumenDetailScreen.name
     ),
   ],

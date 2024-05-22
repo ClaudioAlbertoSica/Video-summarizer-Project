@@ -67,7 +67,7 @@ class Controlador {
         try {
             const { id, idres } = req.params
             const resumenes = await this.servicio.obtenerResumenes(id,idres)
-            res.sendFile(resumenes)
+            res.json(resumenes)
         } catch (error) {
             res.status(500).json({error:error.message})
         }

@@ -1,12 +1,13 @@
 import { ReactElement, useContext } from "react";
 import StarIconActive from "./StarIconActive.tsx";
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import "./Stars.css";
 import StarIconPassive from "./StarIconPassive.tsx";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 import server from "../../../../src/Services/serverCall.ts";
 import { SelectedSummaryContext } from "../SelectedSummaryContext.ts";
 import { LoggedUser } from "../../../Services/Types/UserTypes.ts";
+import TrashAndFav from "./Trash&FavButtons/TrashAndFav.tsx";
 
 export interface CounterProps {
   starsToShow: number;
@@ -101,7 +102,10 @@ function StarCounter({ starsToShow, couterSize, starsToColour = 0, disabled = "n
       <Typography className="CounterTitle" variant="subtitle2" textAlign="left" fontSize={convertStringToNumber(couterSize)}>
         Rating
       </Typography>
-      {disabled !== "none" ? renderPasiveStars() : renderActiveStars()}
+      <Stack direction={"row"}>
+        {disabled !== "none" ? renderPasiveStars() : renderActiveStars()}
+        <TrashAndFav />
+      </Stack>
     </>
   );
 }

@@ -30,16 +30,20 @@ function SummaryListItem({ thisItemRating = 0, image, title, idRes, isFavourite 
 
   return (
     <Container className="ListItemContainer">
-      <Avatar src={image}></Avatar>
-      <Container>
-        <Typography className="ListItemTitle" variant="h6" textAlign="left">
-          {title}
-        </Typography>
-        <StarCounter starsToShow={5} couterSize="small" starsToColour={thisItemRating} disabled="counter" />
+      <Container className="ItemAndTitleContainer">
+        <Avatar src={image}></Avatar>
+        <Container className="TitleAndCounterContainer">
+          <Typography className="ListItemTitle" variant="h6" textAlign="left">
+            {title}
+          </Typography>
+          <StarCounter starsToShow={5} couterSize="small" starsToColour={thisItemRating} disabled="counter" />
+        </Container>
       </Container>
-      <IconButton onClick={() => handleClick()}>
-        <ArrowForwardIosIcon />
-      </IconButton>
+      <Container className="IconButtonContainer">
+        <IconButton onClick={() => handleClick()}>
+          <ArrowForwardIosIcon />
+        </IconButton>
+      </Container>
     </Container>
   );
 }

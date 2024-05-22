@@ -36,7 +36,7 @@ function ListForAccordion() {
 
   return (
     <>
-      <Paper className="ListWrapper" elevation={1}>
+      <Paper className="ListWrapper" elevation={3}>
         <List>{listToShow()}</List>
       </Paper>
     </>

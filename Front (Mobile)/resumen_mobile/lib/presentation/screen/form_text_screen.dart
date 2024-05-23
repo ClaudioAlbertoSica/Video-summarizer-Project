@@ -1,19 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
+import '../uicoreStyles/uicore_navigation_bar.dart';
+import 'home_screen.dart';
 
-enum Idiomas{ english, spanish}
+enum Idiomas { english, spanish }
 
-class CoreFormText extends ConsumerWidget {
+class CoreFormText extends ConsumerStatefulWidget {
   const CoreFormText({super.key});
   static const String name = 'CoreFormText';
+  @override
+  _CoreFormTextState createState() => _CoreFormTextState();
+}
+
+class _CoreFormTextState extends ConsumerState<CoreFormText> {
+  final int _selectedIndex = 2;
+
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      context.pushNamed(CoreFormVideo.name);
+    } else if (index == 1) {
+      context.pushNamed(HomeScreen.name);
+    } else if (index == 2) {
+      context.pushNamed(CoreFormText.name);
+    }
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-
+  Widget build(BuildContext context) {
     final idUser = ref.watch(userNotifierProvider).id;
 
     return Scaffold(
@@ -26,22 +44,26 @@ class CoreFormText extends ConsumerWidget {
       ),
       //MODULARICÉ REUTILIZANDO EL WIDGET QUE ESTÁ EN FORM_VIDEO_SCREEN
       body: StackLayoutCustomized(
-            screenHeight: MediaQuery.of(context).size.height,
-            colorLight: const Color.fromARGB(255, 255, 241, 241), 
-            colorDark: const Color.fromRGBO(30, 30, 30, 1) , 
-            imageLigth:'formTextResumenBackground.gif' , 
-            imageDark:'formTextResumenBackgroundD.gif' , 
-            content: [
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  children: [
-                    FormText(id: idUser),
-              ]
+        screenHeight: MediaQuery.of(context).size.height,
+        colorLight: const Color.fromARGB(255, 255, 241, 241),
+        colorDark: const Color.fromRGBO(30, 30, 30, 1),
+        imageLigth: 'formTextResumenBackground.gif',
+        imageDark: 'formTextResumenBackgroundD.gif',
+        content: [
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              children: [
+                FormText(id: idUser),
+              ],
             ),
           ),
         ],
-        ),
+      ),
+      bottomNavigationBar: UicoreNavigationBar(
+        onTap: _onItemTapped,
+        initialIndex: _selectedIndex, // Index for 'text_snippet' icon
+      ),
     );
   }
 }
@@ -58,12 +80,11 @@ class FormText extends StatefulWidget {
 }
 
 class _FormTextState extends State<FormText> {
-
   bool shortValue = false;
 
   final TextEditingController _inputTextController = TextEditingController();
   final TextEditingController _inputTitleController = TextEditingController();
-  
+
   Idiomas idiomaSeleccionado = Idiomas.spanish;
 
   @override
@@ -79,75 +100,74 @@ class _FormTextState extends State<FormText> {
             decoration: const InputDecoration(
               hintText: 'Apply your text',
               border: OutlineInputBorder(
-                borderRadius:  BorderRadius.all(Radius.circular(10)),
-              )
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
             ),
             validator: (String? value) {
-              return(value == '' || value == null) ? 'Este campo es requerido.' : null;
+              return (value == '' || value == null) ? 'Este campo es requerido.' : null;
             },
           ),
           SwitchListTile(
             title: const Text('Resumen Breve'),
             value: shortValue,
             onChanged: (value) {
-              setState((){
+              setState(() {
                 shortValue = value;
               });
             },
           ),
-                    
           ExpansionTile(
             title: const Text('Idioma'),
             subtitle: const Text('Selecciona el idioma.'),
-            children:[
+            children: [
               RadioListTile(
                 title: Text(Idiomas.english.name),
-                value: Idiomas.english, 
-                groupValue: idiomaSeleccionado, 
-                onChanged: (value){
+                value: Idiomas.english,
+                groupValue: idiomaSeleccionado,
+                onChanged: (value) {
                   idiomaSeleccionado = value as Idiomas;
                   setState(() {});
-                }
-                ),
+                },
+              ),
               RadioListTile(
                 title: Text(Idiomas.spanish.name),
-                value: Idiomas.spanish, 
-                groupValue: idiomaSeleccionado, 
-                onChanged: (value){
+                value: Idiomas.spanish,
+                groupValue: idiomaSeleccionado,
+                onChanged: (value) {
                   idiomaSeleccionado = value as Idiomas;
                   setState(() {});
-                }
-                )
-            ]),
-            TextFormField(
-              controller: _inputTitleController,
-              decoration: const InputDecoration(
-                hintText: 'Titulo (Opcional)',
-                border: OutlineInputBorder(
-                  borderRadius:  BorderRadius.all(Radius.circular(10)),
-                )
+                },
+              )
+            ],
+          ),
+          TextFormField(
+            controller: _inputTitleController,
+            decoration: const InputDecoration(
+              hintText: 'Titulo (Opcional)',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
             ),
-            const SizedBox(height: 25,),
+          ),
+          const SizedBox(height: 25),
           ElevatedButton(
-                onPressed: () {
-                  /*print(_inputTextController.text);
-                  print(shortValue);
-                  print(idiomaSeleccionado);
-                  print(_inputTitleController.text);
-                  print(widget.id);*/
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
-                  elevation: MaterialStateProperty.all<double>(20), // Ajusta la elevación para la sombra exterior
-                  overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(0, 3, 3, 3)), // Elimina el color de superposición para un efecto más suave
-                  shadowColor: MaterialStateProperty.all<Color>(const Color.fromARGB(177, 3, 3, 3).withOpacity(0.4)), // Color de la sombra
-                  
-                ),
-                child: const TitleStyle(
-                  text: 'Crear Resumen',
-                ),
-              ),
+            onPressed: () {
+              /*print(_inputTextController.text);
+              print(shortValue);
+              print(idiomaSeleccionado);
+              print(_inputTitleController.text);
+              print(widget.id);*/
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
+              elevation: MaterialStateProperty.all<double>(20), // Ajusta la elevación para la sombra exterior
+              overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(0, 3, 3, 3)), // Elimina el color de superposición para un efecto más suave
+              shadowColor: MaterialStateProperty.all<Color>(const Color.fromARGB(177, 3, 3, 3).withOpacity(0.4)), // Color de la sombra
+            ),
+            child: const TitleStyle(
+              text: 'Crear Resumen',
+            ),
+          ),
         ],
       ),
     );

@@ -1,19 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
+import 'package:resumen_mobile/presentation/uicoreStyles/uicore_navigation_bar.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_stack_layout.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
+
+import 'form_text_screen.dart';
+import 'home_screen.dart';
 
 //ENUM CON LOS IDIOMAS A ELEGIR 
 enum Idiomas{ english, spanish}
 
 
-class CoreFormVideo extends ConsumerWidget {
+class CoreFormVideo extends ConsumerStatefulWidget {
   const CoreFormVideo({super.key});
   static const String name = 'CoreFormVideo';
 
   @override
-  Widget build(BuildContext context, ref) {
+  _CoreFormVideoState createState() => _CoreFormVideoState();
+}
+class _CoreFormVideoState extends ConsumerState<CoreFormVideo> {
+  final int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      context.pushNamed(CoreFormVideo.name);
+    } else if (index == 1) {
+      context.pushNamed(HomeScreen.name);
+    } else if (index == 2) {
+      context.pushNamed(CoreFormText.name);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final idUser = ref.watch(userNotifierProvider).id;
     return Scaffold(
       drawerEnableOpenDragGesture: false,
@@ -31,18 +52,22 @@ class CoreFormVideo extends ConsumerWidget {
         imageLigth: 'formVideoResumenBackground.gif' ,
         imageDark: 'formVideoResumenBackgroundD.gif' ,
         content: [
-        const SizedBox(height: 10,),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-            FormVideo(id: idUser),
-            ]
+          const SizedBox(height: 10,),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+              FormVideo(id: idUser),
+              ]
+            ),
           ),
-        ),
-      ]
-        ),
+        ]
+      ),
+      bottomNavigationBar: UicoreNavigationBar(
+        onTap: _onItemTapped,
+        initialIndex: _selectedIndex, // Index for 'text_snippet' icon
+      ),
     );
   }
 }

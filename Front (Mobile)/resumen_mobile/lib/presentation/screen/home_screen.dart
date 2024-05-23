@@ -18,7 +18,6 @@ class HomeScreen extends StatelessWidget {
 
   HomeScreen({super.key});
   
-
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -72,23 +71,20 @@ class _StackLayoutHome extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //MODULARICÉ 
               _BarraSearch(),
               const Divider(),
             ],
           ),
         ),
         Expanded(
-          child: resumenes.getResumenFound()//ResumenListSearch(resumenFound: resumenList).getResumenFound()
+          child: resumenes.getResumenFound()
         ),
-        //MODULARICÉ
         _RowBotonesResumenes(),
       ],
     );
   }
 }
 
-//WIDGET ROW CON LOS BOTONES DE ABAJO
 class _RowBotonesResumenes extends StatelessWidget {
   /*const _RowBotonesResumenes({
     super.key,

@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -22,63 +20,114 @@ class BookButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final idUser = ref.watch(userNotifierProvider).id;
     final idRes = resumen.idres;
-
+    
     return Card(
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(9.0), // Ajusta el radio de los bordes de la tarjeta
+        borderRadius: BorderRadius.circular(9.0),
       ),
-      child: ListTile(
+      child: InkWell(
         onTap: () async {
           await completeResumen(idUser, idRes, context);
         },
-        leading: Container(
-          width: 100,
+        child: Container(
           height: 100,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(resumen.thumbnail ?? 'assets/images/thumball.jpeg'),
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.circular(8), // Hace que la imagen sea circular
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(9),
+                child: getImage(),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      resumen.title,
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    getPill(),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.star,
+                        color: Colors.orange,
+                        size: 15,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        '${resumen.points}',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
-        title: Text(
-          resumen.title,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.star,
-                  color: Colors.orange,
-                  size: 15,
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  '${resumen.points}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ), // TextButton.icon(onPressed: (){}, icon: Icon(Icons.star), label: Text(resumen.range),),
       ),
     );
   }
 
-Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
+  Container getPill() {
+    if (resumen.isFavourite) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+        decoration: BoxDecoration(
+          color: Colors.orange.shade400,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: const Text(
+          'favorite',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 8,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+    return Container();
+  }
+
+  Image getImage() {
+    if (resumen.thumbnail != null) {
+      return Image.network(
+        resumen.thumbnail!,
+        width: 70,
+        height: 70,
+        fit: BoxFit.cover,
+      );
+    }
+    return Image.asset(
+      'assets/images/thumball.jpeg',
+      width: 70,
+      height: 70,
+      fit: BoxFit.cover,
+    );
+  }
+
+  Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -93,17 +142,11 @@ Future<void> completeResumen(String idUser, String idRes, BuildContext context) 
 
         // Muestra el documento PDF en un Scaffold
         context.pushNamed(ResumenDetailScreen.name, extra: {'resumen': resumen, 'pdfBytes': pdfBytes});
-
       } else {
-        
-          errorMessage = json.decode(response.body)['error'];
-        
+        errorMessage = json.decode(response.body)['error'];
       }
     } catch (error) {
-      
-        errorMessage = 'Error: Connection ERROR - Server not found';
-    
+      errorMessage = 'Error: Connection ERROR - Server not found';
     }
   }
-
 }

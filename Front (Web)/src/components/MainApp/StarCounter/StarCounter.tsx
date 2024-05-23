@@ -1,25 +1,35 @@
 import { ReactElement, useContext } from "react";
 import StarIconActive from "./StarIconActive.tsx";
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import "./Stars.css";
 import StarIconPassive from "./StarIconPassive.tsx";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 import server from "../../../../src/Services/serverCall.ts";
 import { SelectedSummaryContext } from "../SelectedSummaryContext.ts";
 import { LoggedUser } from "../../../Services/Types/UserTypes.ts";
+import TrashAndFav from "./Trash&FavButtons/TrashAndFav.tsx";
 
 export interface CounterProps {
   starsToShow: number;
   starsToColour?: number;
   couterSize: "small" | "large" | "medium";
   disabled?: "none" | "counter" | "usePlaceHolder"; //Explanaition: "none" for normal Counter behaviour; "counter" displays starts as usual, but doesn't change upon clicking a star (counter has a fixed value); "usePlaceHolder" displays grey-colored PlaceHolder stars.
+  isLiked: boolean;
+  showTrashAndFavs?: "trash" | "favs" | "both" | "none";
 }
 
 type StringToNumberMap = {
   [key: string]: number;
 };
 
-function StarCounter({ starsToShow, couterSize, starsToColour = 0, disabled = "none" }: CounterProps) {
+function StarCounter({
+  starsToShow,
+  couterSize,
+  starsToColour = 0,
+  disabled = "none",
+  isLiked,
+  showTrashAndFavs = "none",
+}: CounterProps) {
   const loggedUser = useContext(LoggedUserContext);
   const summaryContext = useContext(SelectedSummaryContext);
 
@@ -101,7 +111,10 @@ function StarCounter({ starsToShow, couterSize, starsToColour = 0, disabled = "n
       <Typography className="CounterTitle" variant="subtitle2" textAlign="left" fontSize={convertStringToNumber(couterSize)}>
         Rating
       </Typography>
-      {disabled !== "none" ? renderPasiveStars() : renderActiveStars()}
+      <Stack direction={"row"}>
+        {disabled !== "none" ? renderPasiveStars() : renderActiveStars()}
+        <TrashAndFav isLiked={isLiked} whatToShow={showTrashAndFavs} />
+      </Stack>
     </>
   );
 }

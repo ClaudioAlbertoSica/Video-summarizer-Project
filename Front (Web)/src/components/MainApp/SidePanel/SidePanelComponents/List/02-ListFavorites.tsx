@@ -13,7 +13,7 @@ function ListFavorites() {
 
   useEffect(() => {
     favoritesList.current = currentlyLoggedUsuer.inventario.filter((thisSumm) => thisSumm.isFavourite === true);
-  }, [currentlyLoggedUsuer.inventario, currentlyLoggedUsuer.selectedSummary]);
+  }, [currentlyLoggedUsuer.inventario, favoritesList]);
 
   const listToShow = () => {
     let objetcToReturn: ReactElement[] = [
@@ -23,7 +23,7 @@ function ListFavorites() {
     ];
 
     if (favoritesList.current.length !== 0) {
-      objetcToReturn = currentlyLoggedUsuer.inventario.map((itm) => (
+      objetcToReturn = favoritesList.current.map((itm) => (
         <ListItem key={itm.idres}>
           <SummaryListItem
             thisItemRating={itm.points}

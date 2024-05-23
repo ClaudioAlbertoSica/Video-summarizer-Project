@@ -36,7 +36,13 @@ function SummaryListItem({ thisItemRating = 0, image, title, idRes, isFavourite 
           <Typography className="ListItemTitle" variant="h6" textAlign="left">
             {title}
           </Typography>
-          <StarCounter starsToShow={5} couterSize="small" starsToColour={thisItemRating} disabled="counter" />
+          <StarCounter
+            starsToShow={5}
+            couterSize="small"
+            starsToColour={thisItemRating}
+            disabled="counter"
+            isLiked={isFavourite}
+          />
         </Container>
       </Container>
       <Container className="IconButtonContainer">

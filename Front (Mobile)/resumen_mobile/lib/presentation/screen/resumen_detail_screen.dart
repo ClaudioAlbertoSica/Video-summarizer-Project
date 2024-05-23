@@ -2,16 +2,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
-//COMENTO PORQUE AHORA NO USAMOS EL PROVIDER
-//import 'package:resumen_mobile/main.dart';
-import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 
 class ResumenDetailScreen extends ConsumerWidget {
@@ -88,7 +84,7 @@ class ResumenDetailScreen extends ConsumerWidget {
 
   Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -105,11 +101,7 @@ class ResumenDetailScreen extends ConsumerWidget {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Scaffold(
             appBar: AppBar(title: Text('PDF Viewer')),
-            body: PDFView(
-              pdfData: Uint8List.fromList(pdfBytes),
-              pageSnap: false,
-              pageFling: false,
-            ),
+            body: SfPdfViewer.memory(Uint8List.fromList(pdfBytes)),
           ),
         ));
         //context.pushNamed(ResumenDetailScreen.name, extra: {'resumen': resumen, 'pdfBytes': pdfBytes});

@@ -15,7 +15,7 @@ class ResumenListSearch {
       itemBuilder: (context, index) {
         final resumen = resumenFound[index];
         return Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(7.0),
           child: BookButton(resumen: resumen),
         );
       },

@@ -12,6 +12,7 @@ function TextForm() {
   const formRef = useRef<HTMLFormElement>();
   const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
   const ConfirmationMessage: string = "Solicitud enviada con éxito";
+  const SendingPetitionToServer: string = "Esperando respuesta del servidor...";
   const ServerErrorMessage: string = "Hubo un problema con el envío";
 
   useEffect(() => {
@@ -27,12 +28,16 @@ function TextForm() {
     const isCompact: boolean = formData.get("CompactSummarySwitch") === "on";
     const language: string = formData.get("language") as string;
     const title: string = formData?.get("optionalTitle") as string;
+    alertMessagesHandler(setAlertToShow, SendingPetitionToServer, alertTypes.info);
     handleServerQuerry(text, title, isCompact, language);
   };
 
   const handleServerQuerry = async (texto: string, title: string, esBreve: boolean, idioma: string) => {
     await serverCall
       .post(`/${activeUSer.userState.id}/resumen/texto`, { texto, esBreve, idioma, title })
+      .then(() => {
+        setAlertToShow({ message: "don't show", type: alertTypes.info });
+      })
       .then(() => {
         alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success, 500);
         setTimeout(() => activeUSer.userSteState({ ...activeUSer.userState, inProgress: true }), 500);

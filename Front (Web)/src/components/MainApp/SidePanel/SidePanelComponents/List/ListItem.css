@@ -24,6 +24,10 @@ margin-left: 10px;
 
 .MuiTypography-root.ListItemTitle{
     text-wrap:balance;
+    -webkit-line-clamp: 2; /*Cantidad de líneas limitada a 2*/
+    display: -webkit-inline-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
 }
 
 .MuiContainer-root.TitleAndCounterContainer{

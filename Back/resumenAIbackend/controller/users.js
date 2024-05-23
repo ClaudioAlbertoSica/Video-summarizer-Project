@@ -1,7 +1,7 @@
 import Servicio from '../services/users.js'
 
 class Controlador {
-    constructor (persistencia) {
+    constructor(persistencia) {
         this.servicio = new Servicio(persistencia)
     }
 
@@ -11,8 +11,8 @@ class Controlador {
             const usuarios = await this.servicio.obtenerUsuarios(id)
             res.json(usuarios)
         }
-        catch(error) {
-            res.status(500).json({error:error.message})   
+        catch (error) {
+            res.status(500).json({ error: error.message })
         }
     }
 
@@ -22,8 +22,8 @@ class Controlador {
             const usuarioGuardado = await this.servicio.guardarUsuario(usuario)
             res.json(usuarioGuardado)
         }
-        catch(error) {
-            res.status(500).json({error:error.message})   
+        catch (error) {
+            res.status(500).json({ error: error.message })
         }
     }
 
@@ -35,8 +35,8 @@ class Controlador {
             const usuarioActualizado = await this.servicio.actualizarUsuario(id, usuario)
             res.json(usuarioActualizado)
         }
-        catch(error) {
-            res.status(500).json({error:error.message})   
+        catch (error) {
+            res.status(500).json({ error: error.message })
         }
     }
 
@@ -46,9 +46,9 @@ class Controlador {
             const usuarioBorrado = await this.servicio.borrarUsuario(id)
             res.json(usuarioBorrado)
         }
-        catch(error) {
+        catch (error) {
             console.log(`Error en controller ${error.message}`)
-            res.status(500).json({error:error.message})   
+            res.status(500).json({ error: error.message })
         }
     }
 
@@ -59,47 +59,47 @@ class Controlador {
             const userLogueado = await this.servicio.loguearse(userName, passwd)
             res.json(userLogueado)
         } catch (error) {
-            res.status(500).json({error:error.message})
+            res.status(500).json({ error: error.message })
         }
     }
 
     obtenerResumenes = async (req, res) => {
         try {
             const { id, idres } = req.params
-            const resumenes = await this.servicio.obtenerResumenes(id,idres)
+            const resumenes = await this.servicio.obtenerResumenes(id, idres)
             res.json(resumenes)
         } catch (error) {
-            res.status(500).json({error:error.message})
+            res.status(500).json({ error: error.message })
         }
     }
 
     crearYobtenerResumenEnPdf = async (req, res) => {
         try {
             const { id, idres } = req.params;
-            const pdf = await this.servicio.crearYobtenerResumenEnPdf(id,idres);
+            const pdf = await this.servicio.crearYobtenerResumenEnPdf(id, idres);
             res.sendFile(pdf);
         } catch (error) {
-            res.status(500).json({error:error.message});
+            res.status(500).json({ error: error.message });
         }
     }
-    
+
     EliminarPdf = async (req, res) => {
         try {
-            const {filePath} = req.params
+            const { filePath } = req.params
             const resumenEliminado = await this.servicio.borrarResumen(filePath)
             res.json(resumenEliminado)
         } catch (error) {
-            res.status(500).json({error:error.message})   
+            res.status(500).json({ error: error.message })
         }
     }
 
     borrarResumen = async (req, res) => {
         try {
             const { id, idres } = req.params
-            const resumenEliminado = await this.servicio.borrarResumen(id,idres)
+            const resumenEliminado = await this.servicio.borrarResumen(id, idres)
             res.json(resumenEliminado)
         } catch (error) {
-            res.status(500).json({error:error.message})   
+            res.status(500).json({ error: error.message })
         }
     }
 
@@ -110,50 +110,54 @@ class Controlador {
             const resumenActualizado = await this.servicio.actualizarResumen(id, idres, resumenNuevo)
             res.json(resumenActualizado)
         }
-        catch(error) {
-            res.status(500).json({error:error.message})   
+        catch (error) {
+            res.status(500).json({ error: error.message })
         }
     }
 
     crearResumenVideo = async (req, res) => {
         try {
             const { id } = req.params
-            let  { url, title, esBreve, idioma }  = req.body
+            let { url, title, esBreve, idioma } = req.body
             url = String(url)
-            
+
             title = String(title)
-            
+
             if (url.indexOf('&') !== -1) {
                 url = url.replace(/&/g, '"&"');
             }
-            const resumenNuevo = await this.servicio.crearResumenVideo(id, url, title, esBreve, idioma)
-            res.json(resumenNuevo)
+            const resumenNuevo = () => this.servicio.crearResumenVideo(id, url, title, esBreve, idioma)
+            resumenNuevo()
+            res.status(200).json(false)
+            //res.json(resumenNuevo)
         } catch (error) {
-            res.status(500).json({error:error.message})  
+            res.status(500).json({ error: error.message })
         }
     }
 
     crearResumenTexto = async (req, res) => {
         try {
             const { id } = req.params
-            const { texto, esBreve, idioma, title} = req.body
-            const resumenCreado = await this.servicio.crearResumenTexto(id, texto, esBreve, idioma, title)
-            res.json(resumenCreado)
+            const { texto, esBreve, idioma, title } = req.body
+            const resumenCreado = () => this.servicio.crearResumenTexto(id, texto, esBreve, idioma, title)
+            resumenCreado()
+            res.status(200).json(false)
+            //res.json(resumenCreado)
         } catch (error) {
-            res.status(500).json({error:error.message})  
+            res.status(500).json({ error: error.message })
         }
     }
-    
+
     cambiarPass = async (req, res) => {
         debugger;
         try {
             const { id } = req.params
-            const {passActual, passNueva, passNuevaBis} = req.body
+            const { passActual, passNueva, passNuevaBis } = req.body
             const usuarioActualizado = await this.servicio.cambiarPass(id, passActual, passNueva, passNuevaBis)
             res.json(usuarioActualizado)
 
         } catch (error) {
-            res.status(500).json({error:error.message})
+            res.status(500).json({ error: error.message })
         }
 
     }
@@ -164,8 +168,8 @@ class Controlador {
             const inProgress = await this.servicio.obtenerInProgress(id)
             res.json(inProgress)
         }
-        catch(error) {
-            res.status(500).json({error:error.message})   
+        catch (error) {
+            res.status(500).json({ error: error.message })
         }
     }
 }

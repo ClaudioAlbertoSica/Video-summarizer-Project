@@ -11,11 +11,10 @@ function ListFavorites() {
   const currentlyLoggedUsuer = useContext(LoggedUserContext).userState;
   const favoritesList = useRef<Summary[]>([]);
 
-  useEffect(() => {
-    favoritesList.current = currentlyLoggedUsuer.inventario.filter((thisSumm) => thisSumm.isFavourite === true);
-  }, [currentlyLoggedUsuer.inventario, favoritesList]);
+  useEffect(() => {}, [currentlyLoggedUsuer.inventario]);
 
   const listToShow = () => {
+    favoritesList.current = currentlyLoggedUsuer.inventario.filter((thisSumm) => thisSumm.isFavourite === true);
     let objetcToReturn: ReactElement[] = [
       <ListItem key={"Nothing to show"}>
         <ListItemPlaceholder image={placeholderImage} title="Sin favoritos" />

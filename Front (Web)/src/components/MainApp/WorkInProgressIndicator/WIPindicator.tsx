@@ -4,7 +4,8 @@ import server from "../../../Services/serverCall";
 import "./WIP.css";
 import ActiveWorkIndicator from "./ActiveWorkIndicator";
 import ReadyWorkIndicator from "./ReadyWorkIndicator";
-import { LoggedUser } from "../../../Services/Types/UserTypes";
+import { DBuser, LoggedUser } from "../../../Services/Types/UserTypes";
+import { PaletteMode } from "@mui/material";
 
 function WIPindicator() {
   const activeUSer = useContext(LoggedUserContext);
@@ -20,10 +21,21 @@ function WIPindicator() {
     await server
       .get<boolean>(`/inprogress/${activeUSer.userState.id}`)
       .then((res) => {
+        console.log(res.data);
+        if (!res.data) {
+          const update = async () => {
+            await UpdateLoggedUserFromDB();
+          };
+          update();
+        }
+        return res;
+      })
+      .then((res) => {
         console.log("response: " + res.data);
         if (!res.data /*meanning "server has no work in progress"*/) {
           clearIntervals(); //If server is not working anymore, all setInterval() are stopped
           checkServerStatus.current = false;
+
           const newActiveUser: LoggedUser = { ...activeUSer.userState };
           newActiveUser.inProgress = false;
           activeUSer.userSteState(newActiveUser);
@@ -40,6 +52,28 @@ function WIPindicator() {
       clearInterval(removedElement);
       console.log("all intervals cleared");
     }
+  };
+
+  const UpdateLoggedUserFromDB = async () => {
+    await server
+      .get<DBuser>(`/${activeUSer.userState.id}`)
+      .then((res) => {
+        const adjustedUser: LoggedUser = newUserTypesCorrections(res.data);
+        activeUSer.userSteState(adjustedUser);
+      })
+      .catch((err) => {
+        throw new Error(err.error);
+      });
+  };
+
+  const newUserTypesCorrections = (newUSer: DBuser) => {
+    /*Some types need to be adjusted, because they differ in the fron-web, from the server. 
+  isDark is a boolean in the server, while it is a PaletteMode-string like in the front-web*/
+    const adjustedUser: LoggedUser = newUSer.config.isDark
+      ? { ...newUSer, config: { isDark: "dark" as PaletteMode } }
+      : { ...newUSer, config: { isDark: "light" as PaletteMode } };
+
+    return adjustedUser;
   };
 
   useEffect(() => {

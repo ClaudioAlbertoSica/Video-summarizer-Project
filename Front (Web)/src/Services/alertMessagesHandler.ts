@@ -16,9 +16,13 @@ export const  alertMessagesHandler = (
   stateSetter: (arg: AlertMessage) => void,
   message: string,
   type: alertTypes,
-  delay: number = 1800 ) => {
+  delay?: number ) => {
+    if(delay){
         stateSetter({message, type})
         setTimeout(()=>stateSetter({message: "don't show", type: alertTypes.info}), delay)
+      } else{ //If no delay is set, then message will remain there until caller Component's State is set to "don't show" 
+        stateSetter({message, type})
+      }
     }
 
 /*

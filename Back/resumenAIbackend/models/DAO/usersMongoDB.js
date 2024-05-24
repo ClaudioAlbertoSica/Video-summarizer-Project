@@ -97,7 +97,6 @@ class ModelMongoDB {
             //const usuarioActualizado = await CnxMongoDB.db.collection('usuarios').findOne({ id: id });
             const usuarioActualizado = await this.obtenerUsuariosLogin(usuarioModificado.userName);
             delete usuarioActualizado._id
-            delete usuarioActualizado.passwd
             usuarioActualizado.inventario.forEach(item => delete item.pdf)
             return usuarioActualizado
         } catch (error) {

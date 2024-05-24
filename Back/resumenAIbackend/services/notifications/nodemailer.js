@@ -4,12 +4,12 @@ class NodeMailer {
 
     constructor(){
         this.msg = {
-            "subject": "MENSAJE IMPORTANTE SOBRE SU SEGURO",
-            "msg": "AGUANTE BOCA"
+            "subject": "Writer Rabbit",
+            "msg": "Hola: vengo a resetear tu contraseña! Por favor, utilizá esta password provisoria: "
         }
     }
     
-    sendMail = async (destinatario) => {  
+    sendMail = async (destinatario, passwd) => {  
 
         const config =  {
         host : 'smtp.gmail.com',
@@ -24,10 +24,10 @@ class NodeMailer {
         }
         }
         const mensaje = {
-            from : 'Resumenes AI',
+            from : 'Writer Rabbit',
             to: destinatario,
             subject : this.msg.subject,
-            text : `${this.msg.msg}`
+            text : `${this.msg.msg + passwd}`
 
         }
 

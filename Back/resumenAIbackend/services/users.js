@@ -39,6 +39,7 @@ class Servicio {
     actualizarUsuario = async (id, usuario) => {
         try {
             const usuarioActualizado = await this.model.actualizarUsuario(id, usuario)
+            delete usuarioActualizado.passwd
             return usuarioActualizado
         }
         catch (error) {
@@ -543,6 +544,10 @@ class Servicio {
                         if (usuario.passwd !== passNueva) {
                             usuarioActualizado = await this.actualizarUsuario(id, { passwd: passNueva })
                             console.log("La constraseña se actualizó correctamente.")
+                            if (usuarioActualizado.provisoria) {
+                                usuarioActualizado.provisoria = false
+                                usuarioActualizado = await this.actualizarUsuario(id, usuarioActualizado)
+                            }
                             return usuarioActualizado
                         } else {
                             throw new Error('La contraseña nueva no puede ser igual a la actual.');
@@ -562,6 +567,24 @@ class Servicio {
         //}catch (error) {
         //  console.log(error.message) 
         //}
+    }
+
+    olvideMiPasswd = async (userName) => {
+        try {
+           if (userName) {
+            debugger;
+             let usuarioEncontrado = await this.model.obtenerUsuariosLogin(userName)
+             if (usuarioEncontrado) {
+                usuarioEncontrado.passwd = 'BOCA'
+                usuarioEncontrado.provisoria = true
+                const usuarioActualizado = await this.model.actualizarUsuario(usuarioEncontrado.id, usuarioEncontrado)
+                await this.nodeMailer.sendMail(usuarioActualizado.userName, usuarioActualizado.passwd)
+                return usuarioActualizado.provisoria
+             }
+           } 
+        } catch (error) {
+            throw new Error(error.message)
+        }
     }
 
     obtenerInProgress = async (id) => {

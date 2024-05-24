@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import "./MainLayout.css";
-import { Container } from "@mui/material";
+import { Container, useTheme } from "@mui/material";
 import SidePanel from "./SidePanel/SidePanel.tsx";
 import AccountData from "./Views/AccountData.tsx";
 import ChangePassword from "./Views/ChangePassword.tsx";
@@ -13,7 +13,6 @@ import Help from "./Views/Help.tsx";
 import VideoForm from "./Views/VideoForm.tsx";
 import TextForm from "./Views/TextForm.tsx";
 import { ButtonViewContext } from "./ButtonViewContext.ts";
-import LoadingScreen from "./Views/LoadingScreen.tsx";
 import PDFviewer from "./Views/PDFviewer.tsx";
 import WIPindicator from "./WorkInProgressIndicator/WIPindicator.tsx";
 import { SelectedSummaryContext, defaultSummary } from "./SelectedSummaryContext.ts";
@@ -22,6 +21,7 @@ import { Summary } from "../../Services/Types/UserTypes.ts";
 function GridLayout() {
   const [selectedCentralPanelView, setSelectedCentralPanelView] = useState<ValidViewNames>(ValidViewNames.noneSelected);
   const [selectedSummary, setSelectedSummary] = useState<Summary>(defaultSummary);
+  const myTheme = useTheme();
 
   /*Please notice that <Grid> component doesn't allow RowSpan, so 
   you will find a <Container> with another <Container> whithin as sidepanel 
@@ -31,7 +31,7 @@ function GridLayout() {
     <SelectedSummaryContext.Provider value={{ State: selectedSummary, SetState: setSelectedSummary }}>
       <ButtonViewContext.Provider value={setSelectedCentralPanelView}>
         <Container className="ExternalContainer">
-          <Container className="SidePanelContainer">
+          <Container className="SidePanelContainer" sx={{ backgroundColor: myTheme.palette.my.list }}>
             <SidePanel />
           </Container>
 

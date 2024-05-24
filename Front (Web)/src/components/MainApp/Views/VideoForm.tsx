@@ -103,7 +103,11 @@ function VideoForm() {
                 placeHolderItem="Sleccione un idioma..."
                 label="Idioma del Resumen"
               >
-                {["Español", "Inglés"]}
+                {[
+                  { name: "Español", code: "ES" },
+                  { name: "Inglés", code: "EN" },
+                  { name: "Hebreo", code: "HE" },
+                ]}
               </Dropdown>
               <TextField
                 size="small"

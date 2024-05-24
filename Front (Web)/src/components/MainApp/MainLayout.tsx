@@ -17,6 +17,7 @@ import PDFviewer from "./Views/PDFviewer.tsx";
 import WIPindicator from "./WorkInProgressIndicator/WIPindicator.tsx";
 import { SelectedSummaryContext, defaultSummary } from "./SelectedSummaryContext.ts";
 import { Summary } from "../../Services/Types/UserTypes.ts";
+import Comments from "./Views/Comments.tsx";
 
 function GridLayout() {
   const [selectedCentralPanelView, setSelectedCentralPanelView] = useState<ValidViewNames>(ValidViewNames.noneSelected);
@@ -56,8 +57,8 @@ function GridLayout() {
               {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Help) && <Help />}
               {ImTheActiveView(selectedCentralPanelView, ValidViewNames.VideoForm) && <VideoForm />}
               {ImTheActiveView(selectedCentralPanelView, ValidViewNames.TextForm) && <TextForm />}
-              {/*{ImTheActiveView(selectedCentralPanelView, ValidViewNames.Loading) && <LoadingScreen />}*/}
               {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Summary) && <PDFviewer />}
+              {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Comments) && <Comments />}
               {selectedCentralPanelView != ValidViewNames.noneSelected && (
                 <CloseButton
                   closeFunction={() => setSelectedCentralPanelView(ValidViewNames.noneSelected)}

@@ -10,7 +10,8 @@ export enum ValidViewNames  {
   Help = 'Ayuda',
   LogOut= 'LogOut',
   Loading = 'Cargando...',
-  Summary = 'Resumen'
+  Summary = 'Resumen',
+  Comments = "Comentarios y Sugerencias"
 }
 
 const ImTheActiveView = (nameToCompare: ValidViewNames, thisComponentsName: ValidViewNames) => {

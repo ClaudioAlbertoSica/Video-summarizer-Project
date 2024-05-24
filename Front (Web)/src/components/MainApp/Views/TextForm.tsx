@@ -66,10 +66,10 @@ function TextForm() {
                 className="MultiLineInput"
                 id="outlined-multiline-static"
                 name="TextToBeSent"
-                label="Multiline"
+                label="Copia y pega el texto a resumir aquí..."
                 multiline
                 rows={4}
-                defaultValue="Copia y pega el texto a resumir aquí..."
+                required
               />
               <Container className="SwitchsContainer">
                 <FormControlLabel

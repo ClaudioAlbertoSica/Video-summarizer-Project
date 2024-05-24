@@ -28,7 +28,7 @@ if __name__ == "__main__":
     esBreve = sys.argv[1]
     idioma = sys.argv[2]
 
-    print('esto vale esBreve:' + esBreve)
+    ##print('esto vale esBreve:' + esBreve)
 
   
     esBreve = int(esBreve)
@@ -43,7 +43,7 @@ if __name__ == "__main__":
             idioma = 'frances'
 
 
-    print(type(esBreve))
+    ##print(type(esBreve))
 
     with open('./services/serviciosPython/textoEntrada.txt', 'r', encoding='utf-8') as file:
         lines = file.readlines()

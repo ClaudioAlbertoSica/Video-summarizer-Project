@@ -26,8 +26,8 @@ class NodeMailer {
         const mensaje = {
             from : 'Resumenes AI',
             to: destinatario,
-            subject : selectedMsg.subject,
-            text : `${selectedMsg.msg}`
+            subject : this.msg.subject,
+            text : `${this.msg.msg}`
 
         }
 

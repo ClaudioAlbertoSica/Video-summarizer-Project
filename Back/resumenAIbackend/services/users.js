@@ -243,7 +243,7 @@ class Servicio {
 
 
         const pythonScriptPath2 = './services/serviciosPython/procesarVideo2.py';
-        const command2 = `python ${pythonScriptPath2} ${idioma}`;
+        const command2 = `python ${pythonScriptPath2} ${esBreve} ${idioma}`;
 
 
         return new Promise((resolve, reject) => {

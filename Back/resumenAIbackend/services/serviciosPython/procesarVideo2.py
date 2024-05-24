@@ -3,6 +3,7 @@ import shutil
 import google.generativeai as genai #Hubo que instalar el generative AI de google
 import PIL.Image #instalé Pillow library
 import re
+import sys
 ##import spacy
 import numpy as np
 
@@ -39,24 +40,21 @@ APIurl = ""
 
 
 ###SACO RESUMEN DEL TRASNCRIPT
-def armarResumen(texto):
-    petitionShort = "Hola! Por favor: dado el siguiente texto: " +texto+" me podrías generar un breve resumen de lo que trata el texto? Es la transcripcion de un video, y quiero un resumen apto para facilitarle la vida a un estudiante"
-    petitionLongES = "Hola! Por favor: dado el siguiente texto: " +texto+" me podrías generar un resumen completo y detallado de lo que trata el texto? Es la transcripcion de un video, y quiero un resumen apto para facilitarle la vida a un estudiante. Por favor, no escatimes en tecnicismos y explicaciones profundas del tema. Necesito que el resumen tenga una carilla de longitud un poco más de 2000 caracteres"
+def armarResumen(texto, esBreve, idioma):
+    if (esBreve == 1):    
+        petition = "Hola! Por favor: dado el siguiente texto: " +texto+" me podrías generar un breve resumen en " + idioma +  " de lo que trata el texto? Es la transcripcion de un video, y quiero un resumen apto para facilitarle la vida a un estudiante"
+    else:
+        petition = "Hola! Por favor: dado el siguiente texto: " +texto+" me podrías generar un resumen completo y detallado " + idioma + " de lo que trata el texto? Es la transcripcion de un video, y quiero un resumen apto para facilitarle la vida a un estudiante. Por favor, no escatimes en tecnicismos y explicaciones profundas del tema. Necesito que el resumen tenga una carilla de longitud un poco más de 2000 caracteres"
     genai.configure(api_key=APIkey)
     model = genai.GenerativeModel('gemini-pro')
-    response = model.generate_content(petitionLongES)
+    response = model.generate_content(petition)
 
     with open("./services/serviciosPython/resumenSalida.txt", "w", encoding= "utf-8") as f:
         f.write(response.text)
 
 
 
-##ACA DEBERIA IR EL TRANSCRIPT
-with open('./services/serviciosPython/transcripcion.txt', 'r', encoding='utf-8') as file:
-    lines = file.readlines()
-    texto = ''.join(lines)
 
-armarResumen(texto)
 
 
 
@@ -69,9 +67,7 @@ def get_png_files(directory):
             png_files.append(directory + '/' + file)
     return png_files
 
-directory = "./services/serviciosPython/capturas"
-rutasCapturas = get_png_files(directory)
-##print(rutasCapturas)
+
 
 
 ##HACE CAPTION A CADA UNA DE LAS CAPTURAS
@@ -103,15 +99,7 @@ def compararCapturasCResumen(arrCaptions, resumen):
     return rankingCaptions
 
 
-##LEE EL RESUMEN ARMADO PREVIAMENTE Y LO METE EN textoS
-with open('./services/serviciosPython/resumenSalida.txt', 'r', encoding='utf-8') as file:
-    lines = file.readlines()
-    textoS = ''.join(lines)
 
-
-descrCapturas = captionarCapturas(rutasCapturas)
-
-arrComparacion = compararCapturasCResumen(descrCapturas, textoS)
 
 ##print(arrComparacion)
 
@@ -124,7 +112,7 @@ def extract_numbers(array):
         numbers.extend(matches)
     return numbers
 
-arrComparacionLimpio = extract_numbers(arrComparacion)
+
 
 
 ##CONVIERTO ARR A INT
@@ -134,7 +122,7 @@ def convertirArrInt(arrStr):
         arrInt.append(int(i))
     return arrInt
 
-arrInteger = convertirArrInt(arrComparacionLimpio)
+
 
 def seleccionarCapturasRankeadas(arrCap, arrEval):
     capturasDEF = []
@@ -151,7 +139,7 @@ def seleccionarCapturasRankeadas(arrCap, arrEval):
     
     return capturasDEF
 
-capturasDefinitivas = seleccionarCapturasRankeadas(rutasCapturas, arrInteger)
+
 
 
 ##print(capturasDefinitivas)
@@ -170,5 +158,54 @@ def delete_except(paths, ruta):
             os.remove(os.path.join(folder_path, file_name))
 
 
-rutaCapturas = './services/serviciosPython/capturas/'
-delete_except(capturasDefinitivas, rutaCapturas)
+
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("FALTAN PARAMETROS")
+        sys.exit(1)
+
+    esBreve = sys.argv[1]
+    idioma = sys.argv[2]
+
+    esBreve = int(esBreve)
+    idioma = int(idioma)
+
+    match idioma:
+        case 0:
+            idioma = 'ingles'
+        case 1:
+            idioma = 'castellano'
+        case 2:
+            idioma = 'frances'
+
+    ##ACA DEBERIA IR EL TRANSCRIPT
+    with open('./services/serviciosPython/transcripcion.txt', 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        texto = ''.join(lines)
+
+    armarResumen(texto, esBreve, idioma)
+
+    directory = "./services/serviciosPython/capturas"
+    rutasCapturas = get_png_files(directory)
+
+    ##LEE EL RESUMEN ARMADO PREVIAMENTE Y LO METE EN textoS
+    with open('./services/serviciosPython/resumenSalida.txt', 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        textoS = ''.join(lines)
+
+
+    descrCapturas = captionarCapturas(rutasCapturas)
+
+    arrComparacion = compararCapturasCResumen(descrCapturas, textoS)
+    
+
+    arrComparacionLimpio = extract_numbers(arrComparacion)
+
+    arrInteger = convertirArrInt(arrComparacionLimpio)
+
+    capturasDefinitivas = seleccionarCapturasRankeadas(rutasCapturas, arrInteger)
+
+    rutaCapturas = './services/serviciosPython/capturas/'
+    delete_except(capturasDefinitivas, rutaCapturas)

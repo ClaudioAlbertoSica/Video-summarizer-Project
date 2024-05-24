@@ -5,10 +5,12 @@ import fs from 'fs'
 import PDFDocument from 'pdfkit';
 import path from 'path'
 import { fileURLToPath } from 'url';
+import NodeMailer from './notifications/nodemailer.js'
 
 class Servicio {
     constructor(persistencia) {
         this.model = Factory.get(persistencia)
+        this.nodeMailer = new NodeMailer()
     }
 
     //Finalizado
@@ -70,6 +72,7 @@ class Servicio {
                     delete usuario._id
                     delete usuario.passwd
                     console.log('LOGIN EXITOSO')
+                    //await this.nodeMailer.sendMail(usuario.userName)
                     //comparamos con el encontrado
                 } else {
                     console.log('REVISAR PASSWORD')

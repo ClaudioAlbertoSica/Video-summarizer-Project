@@ -4,8 +4,8 @@ class NodeMailer {
 
     constructor(){
         this.msg = {
-            "subject": "Bienvenido!",
-            "msg": "Esto es una prueba de nodemailer."
+            "subject": "MENSAJE IMPORTANTE SOBRE SU SEGURO",
+            "msg": "AGUANTE BOCA"
         }
     }
     

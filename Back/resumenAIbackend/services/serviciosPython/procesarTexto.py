@@ -41,6 +41,10 @@ if __name__ == "__main__":
             idioma = 'castellano'
         case 2:
             idioma = 'frances'
+        case 3:
+            idioma = 'hebreo'
+        case 4:
+            idioma = 'portugues'
 
 
     ##print(type(esBreve))

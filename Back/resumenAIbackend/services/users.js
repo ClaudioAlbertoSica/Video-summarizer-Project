@@ -243,6 +243,13 @@ class Servicio {
                 break;
             case 'FR':
                 idioma = 2
+                break;
+            case 'HE':
+                idioma = 4
+                break;
+            case 'PT':
+                idioma = 5
+                break;
         }
 
 
@@ -283,6 +290,13 @@ class Servicio {
                 break;
             case 'FR':
                 idioma = 2
+                break;
+            case 'HE':
+                idioma = 4
+                break;
+            case 'PT':
+                idioma = 5
+                break;
         }
 
 
@@ -620,8 +634,8 @@ class Servicio {
 
     /* FALTAN LOS SIGUIENTES MÉTODOS:
         // CREAR UN ENDPOINT PARA CONSULTAR SI EL PROCESO DE LA CREACIÓN DE RESUMEN TERMINÓ.
-        * PARA TRABAJAR LA TRADUCCIÓN DE LOS RESÚMENES.
-        * NODEMAILER PARA LA RECUPERACIÓN DE LA CUENTA (¿Forgot your password?).
+        // PARA TRABAJAR LA TRADUCCIÓN DE LOS RESÚMENES.
+        // NODEMAILER PARA LA RECUPERACIÓN DE LA CUENTA (¿Forgot your password?).
         * VALIDACIONES (EN GENERAL) - MANEJO DE ERRORES.
         * PARA OBTENER LA MINIATURA DEL VIDEO DE YOUTUBE Y VER CÓMO LA PERSISTIMOS EN LA BD
         *UN MÉTODO QUE CONVIERTA PDF A DOCX.
@@ -631,6 +645,7 @@ class Servicio {
                 id: id nuestra
                 userName: email
                 passwr: contraseña
+                provisoria: boolean que indicará si la passwd actual es provisoria
                 inProgress: boolean que indicará si el usuario tiene un resumen en proceso o no
                 config: {
                     isDark: boolean que indicará si el usuario configuró la app en Dark Mode.

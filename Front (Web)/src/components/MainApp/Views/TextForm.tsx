@@ -1,11 +1,11 @@
 import { TextField, Box, Button, Container, Typography, Alert, Paper, FormControlLabel, Switch } from "@mui/material";
 import "./View.css";
 import { FormEvent, ReactElement, useContext, useEffect, useRef, useState } from "react";
-import Dropdown from "./Dropdown";
 import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../Services/alertMessagesHandler";
 import { LoggedUserContext } from "../../../ActiveUserContext";
 import serverCall from "../../../Services/serverCall";
 import LoadingScreen from "./LoadingScreen";
+import Dropdown from "./Dropdown";
 
 function TextForm() {
   const activeUSer = useContext(LoggedUserContext);
@@ -29,6 +29,7 @@ function TextForm() {
     const language: string = formData.get("language") as string;
     const title: string = formData?.get("optionalTitle") as string;
     alertMessagesHandler(setAlertToShow, SendingPetitionToServer, alertTypes.info);
+    console.log(language);
     handleServerQuerry(text, title, isCompact, language);
   };
 
@@ -85,7 +86,11 @@ function TextForm() {
                 placeHolderItem="Sleccione un idioma..."
                 label="Idioma del Resumen"
               >
-                {["Español", "Inglés"]}
+                {[
+                  { name: "Español", code: "ES" },
+                  { name: "Inglés", code: "EN" },
+                  { name: "Hebreo", code: "HE" },
+                ]}
               </Dropdown>
               <TextField
                 size="small"

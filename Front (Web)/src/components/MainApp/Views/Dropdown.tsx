@@ -8,9 +8,14 @@ interface Props {
   name: string;
   label: string;
   placeHolderItem: string;
-  children: string[];
+  children: Language[];
   required?: boolean;
 }
+
+export type Language = {
+  name: string;
+  code: string;
+};
 
 function Dropdown({ id, name, label, placeHolderItem, required = false, children }: Props) {
   const [value, setValue] = useState("");
@@ -37,8 +42,8 @@ whith the sufixes "Form", "Slect" and "Item"*/
           <em>{placeHolderItem}</em>
         </MenuItem>
         {children.map((element, index) => (
-          <MenuItem key={index} className={styles.Item} value={element}>
-            {element}
+          <MenuItem key={index} className={styles.Item} value={element.code}>
+            {element.name}
           </MenuItem>
         ))}
       </Select>

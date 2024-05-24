@@ -43,6 +43,12 @@ align-self: center;
     background-color: lightgray;
 }
 
+.MuiFormControl-root.CommentsTitleInputsViews{
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: lightgray;ack;
+}
+
 .MuiPaper-root.ViewWrapper{
     background-color: rgba(197, 220, 255, 0.8);
     width: 92%;

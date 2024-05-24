@@ -15,6 +15,9 @@ function ConfigurationButtons() {
       <Button size="small" onClick={() => setSelectedCentralPanelView(ValidViewNames.Help)}>
         Ayuda!
       </Button>
+      <Button size="small" onClick={() => setSelectedCentralPanelView(ValidViewNames.Comments)}>
+        Enviar Comentarios o Sugerencias
+      </Button>
     </Stack>
   );
 }

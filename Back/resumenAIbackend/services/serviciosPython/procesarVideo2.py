@@ -179,6 +179,10 @@ if __name__ == "__main__":
             idioma = 'castellano'
         case 2:
             idioma = 'frances'
+        case 3:
+            idioma = 'hebreo'
+        case 4:
+            idioma = 'portugues'
 
     ##ACA DEBERIA IR EL TRANSCRIPT
     with open('./services/serviciosPython/transcripcion.txt', 'r', encoding='utf-8') as file:

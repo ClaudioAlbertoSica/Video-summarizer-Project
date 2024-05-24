@@ -149,7 +149,6 @@ class Controlador {
     }
 
     cambiarPass = async (req, res) => {
-        debugger;
         try {
             const { id } = req.params
             const { passActual, passNueva, passNuevaBis } = req.body
@@ -161,6 +160,17 @@ class Controlador {
         }
 
     }
+
+    olvideMiPasswd = async (req, res) => {
+        try { 
+            const { userName } = req.body
+            const provisoria = await this.servicio.olvideMiPasswd(userName)
+            res.json(provisoria)           
+        } catch (error) {
+            res.status(500).json({ error: error.message })
+        }
+    }
+
 
     obtenerInProgress = async (req, res) => {
         try {

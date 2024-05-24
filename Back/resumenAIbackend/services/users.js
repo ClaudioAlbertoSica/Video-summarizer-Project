@@ -221,10 +221,29 @@ class Servicio {
     }
 
     //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.
-    runPythonVideo2 = async () => {
+    runPythonVideo2 = async (esBreve, idioma) => {
+
+
+        if (esBreve) {
+            esBreve = 1
+        } else {
+            esBreve = 0
+        }
+
+        switch(idioma){
+            case 'EN':
+                idioma = 0
+                break;
+            case 'ES':
+                idioma = 1
+                break;
+            case 'FR':
+                idioma = 2
+        }
+
 
         const pythonScriptPath2 = './services/serviciosPython/procesarVideo2.py';
-        const command2 = `python ${pythonScriptPath2}`;
+        const command2 = `python ${pythonScriptPath2} ${idioma}`;
 
 
         return new Promise((resolve, reject) => {
@@ -243,7 +262,7 @@ class Servicio {
     }
 
     //LLAMAMOS AL SCRIPT PY PARA PROCESAR TEXTO
-    runPythonTexto = async (esBreve) => {
+    runPythonTexto = async (esBreve, idioma) => {
 
         if (esBreve) {
             esBreve = 1
@@ -251,8 +270,20 @@ class Servicio {
             esBreve = 0
         }
 
+        switch(idioma){
+            case 'EN':
+                idioma = 0
+                break;
+            case 'ES':
+                idioma = 1
+                break;
+            case 'FR':
+                idioma = 2
+        }
+
+
         const pythonScriptPath = './services/serviciosPython/procesarTexto.py';
-        const command = `python ${pythonScriptPath} ${esBreve}`;
+        const command = `python ${pythonScriptPath} ${esBreve} ${idioma}`;
         console.log('ejecute el script python - texto')
         //console.log('ejecute el script python')
         return new Promise((resolve, reject) => {
@@ -269,6 +300,29 @@ class Servicio {
         });
     }
 
+
+    corregirTranscript = async () =>{
+        let textoResumido= await fs.promises.readFile('./services/serviciosPython/transcripcion.txt', 'utf-8', (err) => {
+            if (err) {
+                console.log('error leyendo archivo')
+            } else {
+                console.log('Leido')
+            }
+        })
+    
+        textoResumido = textoResumido.replace(/�/g, '');
+    
+        
+        await fs.promises.writeFile('./services/serviciosPython/transcripcion.txt', textoResumido, (err) => {
+            if (err) {
+                console.log('error escribiendo archivo')
+            } else {
+                console.log('se escribio')
+            }
+        })
+    
+    
+    }
 
     //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.
     crearResumenVideo = async (id, url, title, esBreve, idioma) => {
@@ -288,6 +342,7 @@ class Servicio {
 
                 await this.runPythonVideo(url);
                 console.log('CORRÍ PYTHON 1')
+                await this.corregirTranscript();
                 await this.runPythonVideo2(esBreve, idioma);
                 console.log('CORRÍ PYTHON 2')
                 await this.runPythonArmado();
@@ -449,6 +504,9 @@ class Servicio {
     //NO MODIFICAR, FUNCIONA PERFECTAMENTE
     generarPDFTexto = async (texto) => {
         return new Promise((resolve, reject) => {
+
+            texto = texto.replace(/\r?\n/g, '\n')
+
             const doc = new PDFDocument();
             const pdfPath = './services/serviciosPython/documento.pdf';
             const writeStream = fs.createWriteStream(pdfPath);

@@ -14,7 +14,7 @@ function PasswordResetModal({ selectorCallback }: LoginModalSelector) {
           ¿Olvidó su contraseña?
         </Typography>
         <Typography variant="subtitle1" textAlign="center" gutterBottom>
-          Ingrese su email. Le será enviado un correo con una nueva contraseña (podrá cambiarla luego).
+          Ingrese su email. Le será enviado un correo con una nueva contraseña provisoria, deberá cambiar al ingresar.
         </Typography>
         <TextField
           className="FormInputs"
@@ -34,13 +34,13 @@ function PasswordResetModal({ selectorCallback }: LoginModalSelector) {
       <Container className="bottomOptionsContainer">
         <Typography variant="caption" display="block" gutterBottom>
           ¿Ya posee una cuenta? &nbsp;
-          <Link onClick={() => selectorCallback(ModalNames.Login)} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Login)} underline="hover" style={{ cursor: "pointer" }}>
             Ingresar
           </Link>
         </Typography>
         <Typography variant="caption" display="block" gutterBottom>
           ¿No tiene cuenta? &nbsp;
-          <Link onClick={() => selectorCallback(ModalNames.Create)} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Create)} underline="hover" style={{ cursor: "pointer" }}>
             Crear Una
           </Link>
         </Typography>

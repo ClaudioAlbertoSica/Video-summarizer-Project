@@ -1,8 +1,7 @@
 .MuiContainer-root.ExternalContainer{
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-start;
     padding: 0px;
     height: 100%;
     max-width: 100%;
@@ -10,24 +9,20 @@
 }
 
 .MuiContainer-root.SidePanelContainer{
-    max-width: 24%;
-    height: 100vh;
     display: flex;
+    width: 370px;
+    height: 100vh;
     flex-direction: column;
-    flex-wrap: nowrap;
     align-items: center;
     justify-content: flex-start;
-    padding-top: 70px;
-    padding-left: 0px;
-    padding-right: 0px;
-    padding-bottom: 10px;
+    padding: 0 0 10px 0;
 }
 
 .ContainerGrid{
+    flex-grow: 1;
     background-color: gray;
-    max-width: 76%;
     height: 100vh;
-
+    width: calc(100% - 370px);
 }
 
 .HeaderGridLeft{

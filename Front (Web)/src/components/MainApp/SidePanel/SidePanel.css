@@ -9,7 +9,7 @@
 .MuiContainer-root.SidePanelLogo::after{
     content: '';
     position: absolute;
-    background-color: red;
+    background-color: #1e1e1e;
     display: block;
     width: 370px;
     height: 100px;

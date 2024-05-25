@@ -69,7 +69,7 @@ function GridLayout({ isProvisoryPassword }: InitialInfo) {
     <SelectedSummaryContext.Provider value={{ State: selectedSummary, SetState: setSelectedSummary }}>
       <ButtonViewContext.Provider value={setSelectedCentralPanelView}>
         <Container className="ExternalContainer">
-          <Container className="SidePanelContainer" sx={{ backgroundColor: myTheme.palette.my.list }}>
+          <Container className="SidePanelContainer" sx={{ backgroundColor: myTheme.palette.my.sidePanelBg }}>
             <SidePanel />
           </Container>
 

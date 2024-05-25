@@ -120,13 +120,13 @@ class Controlador {
             const { id } = req.params
             let { url, title, esBreve, idioma } = req.body
             url = String(url)
-
+            const urlOriginal = url
             title = String(title)
 
             if (url.indexOf('&') !== -1) {
                 url = url.replace(/&/g, '"&"');
             }
-            const resumenNuevo = () => this.servicio.crearResumenVideo(id, url, title, esBreve, idioma)
+            const resumenNuevo = () => this.servicio.crearResumenVideo(id, url, title, esBreve, idioma, urlOriginal)
             resumenNuevo()
             res.status(200).json(false)
             //res.json(resumenNuevo)

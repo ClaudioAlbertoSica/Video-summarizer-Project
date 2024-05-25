@@ -94,7 +94,7 @@ function GridLayout({ isProvisoryPassword }: InitialInfo) {
           Close Button below shoots "noneSelected", so no view (and no button) is displayed at all.
           */}
             <Grid className="CentralPanel" item xs={12}>
-              {checkForForcedView()};
+              {checkForForcedView()}
             </Grid>
             <Grid className="FooterGrid" item xs={12}>
               <h1>Footer</h1>

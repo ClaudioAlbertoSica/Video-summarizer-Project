@@ -5,6 +5,7 @@ import server from "../../../Services/serverCall.ts";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../Services/alertMessagesHandler.ts";
 import { newUserTypesCorrections } from "../../../Services/updateLoggedUserFromDB.ts";
+import { DBuser, LoggedUser } from "../../../Services/Types/UserTypes.ts";
 interface Props {
   forcedBehaviourChanger: (arg: boolean) => void;
 }
@@ -39,13 +40,13 @@ function ChangePassword({ forcedBehaviourChanger }: Props) {
 
   const handleServerQuerry = async (currentPassword: string, passwordToBeSent1: string, passwordToBeSent2: string) => {
     await server
-      .post(`/cambiarpass/${userContext.userState.id}`, {
+      .post<DBuser>(`/cambiarpass/${userContext.userState.id}`, {
         passActual: currentPassword,
         passNueva: passwordToBeSent1,
         passNuevaBis: passwordToBeSent2,
       })
       .then((res) => {
-        const newUser = newUserTypesCorrections(res.data);
+        const newUser: LoggedUser = newUserTypesCorrections(res.data);
         newUser.passwd = currentPassword;
         userContext.userSteState(newUser);
         alertMessagesHandler(setAlertToShow, confirmationMessage, alertTypes.success, 800);

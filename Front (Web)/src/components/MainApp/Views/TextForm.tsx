@@ -88,8 +88,10 @@ function TextForm() {
               >
                 {[
                   { name: "Español", code: "ES" },
-                  { name: "Inglés", code: "EN" },
+                  { name: "Francés", code: "FR" },
                   { name: "Hebreo", code: "HE" },
+                  { name: "Inglés", code: "EN" },
+                  { name: "Portugués", code: "PT" },
                 ]}
               </Dropdown>
               <TextField

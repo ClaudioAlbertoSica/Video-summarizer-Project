@@ -244,8 +244,11 @@ class Servicio {
             case 'FR':
                 idioma = 2
                 break;
-            case 'PT':
+            case 'HE':
                 idioma = 3
+                break;
+            case 'PT':
+                idioma = 4
                 break;
         }
 
@@ -288,8 +291,11 @@ class Servicio {
             case 'FR':
                 idioma = 2
                 break;
-            case 'PT':
+            case 'HE':
                 idioma = 3
+                break;
+            case 'PT':
+                idioma = 4
                 break;
         }
 

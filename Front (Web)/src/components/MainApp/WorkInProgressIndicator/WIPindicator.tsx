@@ -5,7 +5,7 @@ import "./WIP.css";
 import ActiveWorkIndicator from "./ActiveWorkIndicator";
 import ReadyWorkIndicator from "./ReadyWorkIndicator";
 import { DBuser, LoggedUser } from "../../../Services/Types/UserTypes";
-import { PaletteMode } from "@mui/material";
+import { newUserTypesCorrections } from "../../../Services/updateLoggedUserFromDB";
 
 function WIPindicator() {
   const activeUSer = useContext(LoggedUserContext);
@@ -21,7 +21,6 @@ function WIPindicator() {
     await server
       .get<boolean>(`/inprogress/${activeUSer.userState.id}`)
       .then((res) => {
-        console.log(res.data);
         if (!res.data) {
           const update = async () => {
             await UpdateLoggedUserFromDB();
@@ -31,16 +30,13 @@ function WIPindicator() {
         return res;
       })
       .then((res) => {
-        console.log("response: " + res.data);
         if (!res.data /*meanning "server has no work in progress"*/) {
           clearIntervals(); //If server is not working anymore, all setInterval() are stopped
           checkServerStatus.current = false;
-
           const newActiveUser: LoggedUser = { ...activeUSer.userState };
           newActiveUser.inProgress = false;
           activeUSer.userSteState(newActiveUser);
         }
-        console.log(checkServerStatus.current);
         setShowIsWorking(res.data);
       })
       .catch((err) => console.log(err.error));
@@ -50,7 +46,6 @@ function WIPindicator() {
     while (intervalID.current.length != 0) {
       const removedElement = intervalID.current.pop();
       clearInterval(removedElement);
-      console.log("all intervals cleared");
     }
   };
 
@@ -66,24 +61,12 @@ function WIPindicator() {
       });
   };
 
-  const newUserTypesCorrections = (newUSer: DBuser) => {
-    /*Some types need to be adjusted, because they differ in the fron-web, from the server. 
-  isDark is a boolean in the server, while it is a PaletteMode-string like in the front-web*/
-    const adjustedUser: LoggedUser = newUSer.config.isDark
-      ? { ...newUSer, config: { isDark: "dark" as PaletteMode } }
-      : { ...newUSer, config: { isDark: "light" as PaletteMode } };
-
-    return adjustedUser;
-  };
-
   useEffect(() => {
     if (checkServerStatus.current) {
       setShowIsWorking(true);
       intervalID.current.push(setInterval(() => checkInProgress(), 3000));
-      console.log("I was here (true)" + activeUSer.userState.inProgress);
     } else {
       checkServerStatus.current = true;
-      console.log("I was here (false)" + activeUSer.userState.inProgress);
     }
   }, [activeUSer.userState.inProgress]);
 

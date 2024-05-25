@@ -1,5 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Button, IconButton } from "@mui/material";
+import { Button } from "@mui/material";
 import { useContext } from "react";
 import { LoggedUserContext } from "../../../../ActiveUserContext";
 import { SelectedSummaryContext, defaultSummary } from "../../SelectedSummaryContext";
@@ -8,7 +8,7 @@ import { LoggedUser, Summary } from "../../../../Services/Types/UserTypes.ts";
 import { ButtonViewContext } from "../../ButtonViewContext.ts";
 import { ValidViewNames } from "../ImTheActiveView.ts";
 
-function DeletePDF() {
+function DeletePDFbtn() {
   const loggedUser = useContext(LoggedUserContext);
   const summaryContext = useContext(SelectedSummaryContext);
   const setSelectedCentralPanelView = useContext(ButtonViewContext);
@@ -33,16 +33,18 @@ function DeletePDF() {
   };
 
   return (
-    <IconButton
+    <Button
+      className="CloseButton"
+      variant="outlined"
+      color="error"
+      startIcon={<DeleteIcon />}
       onClick={() => {
         handleClick();
       }}
     >
-      <Button className="CloseButton" variant="outlined" color="error" startIcon={<DeleteIcon />}>
-        Borrar
-      </Button>
-    </IconButton>
+      Borrar
+    </Button>
   );
 }
 
-export default DeletePDF;
+export default DeletePDFbtn;

@@ -7,6 +7,7 @@ export const placeholderUser: LoggedUser = Object.freeze({
     userName: "placeholer@placeholder.com",
     passwd: "placeholder",
     inProgress: false,
+    provisoria: false,
     config:{
         isDark: 'light' as PaletteMode
     },

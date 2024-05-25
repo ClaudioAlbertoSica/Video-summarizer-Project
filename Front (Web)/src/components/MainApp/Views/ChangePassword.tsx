@@ -4,39 +4,52 @@ import { FormEvent, useContext, useRef, useState } from "react";
 import server from "../../../Services/serverCall.ts";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../Services/alertMessagesHandler.ts";
+import { newUserTypesCorrections } from "../../../Services/updateLoggedUserFromDB.ts";
+interface Props {
+  forcedBehaviourChanger: (arg: boolean) => void;
+}
 
-function ChangePassword() {
+function ChangePassword({ forcedBehaviourChanger }: Props) {
   const userContext = useContext(LoggedUserContext);
   const formRef = useRef<HTMLFormElement>();
   const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
-  const AlertMessagePasswordsAreDifferent: string = "Las contraseñas provistas no son coincidentes";
-  const ConfirmationMessage: string = "La contraseña fue modificada satisfactoriamente";
+  const differentPAsswordMessage: string = "Las contraseñas provistas no son coincidentes";
+  const sameOldNewPassword: string = "La contraseña nueva no puede ser igual a la anterior";
+  const confirmationMessage: string = "La contraseña fue modificada satisfactoriamente";
+  const petitionSentToServer: string = "Solicitud enviada";
   const defaultAlertMessage: string = "Hubo un problema...";
 
   const handleSumbit = async (event: FormEvent) => {
     event.preventDefault();
 
     const formData = new FormData(formRef?.current);
+    const submittedCurrentPassword = formData?.get("currentPassword");
     const submittedPassword1 = formData?.get("yourPassword");
     const submittedPassword2 = formData?.get("yourRepeatedPassword");
 
-    if (submittedPassword1 === submittedPassword2) {
-      handleServerQuerry(submittedPassword1 as string, submittedPassword2 as string);
+    if (submittedCurrentPassword === submittedPassword1) {
+      alertMessagesHandler(setAlertToShow, sameOldNewPassword, alertTypes.warning, 1800);
+    } else if (submittedPassword1 !== submittedPassword2) {
+      alertMessagesHandler(setAlertToShow, differentPAsswordMessage, alertTypes.warning, 1800);
     } else {
-      alertMessagesHandler(setAlertToShow, AlertMessagePasswordsAreDifferent, alertTypes.warning);
+      handleServerQuerry(submittedCurrentPassword as string, submittedPassword1 as string, submittedPassword2 as string);
+      alertMessagesHandler(setAlertToShow, petitionSentToServer, alertTypes.info);
     }
   };
 
-  const handleServerQuerry = async (passwordToBeSent1: string, passwordToBeSent2: string) => {
+  const handleServerQuerry = async (currentPassword: string, passwordToBeSent1: string, passwordToBeSent2: string) => {
     await server
       .post(`/cambiarpass/${userContext.userState.id}`, {
-        passActual: userContext.userState.passwd,
+        passActual: currentPassword,
         passNueva: passwordToBeSent1,
         passNuevaBis: passwordToBeSent2,
       })
       .then((res) => {
-        userContext.userSteState(res.data);
-        alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success);
+        const newUser = newUserTypesCorrections(res.data);
+        newUser.passwd = currentPassword;
+        userContext.userSteState(newUser);
+        alertMessagesHandler(setAlertToShow, confirmationMessage, alertTypes.success, 800);
+        setTimeout(() => forcedBehaviourChanger(false), 800);
       })
       .catch((err) => {
         alertMessagesHandler(setAlertToShow, err.error || defaultAlertMessage, alertTypes.error);
@@ -50,8 +63,9 @@ function ChangePassword() {
           Cambiar Contraseña
         </Typography>
         <Typography className="ViewInfo" variant="h6">
-          Ingrese su contraseña actual. <br /> Luego ingrese la nueva, y vuelva a ingresar esta última para verificarla. <br />
-          Finalmente, haga click en "Modificar".
+          1) Ingrese su contraseña actual. <br />
+          2) Luego ingrese la nueva, y vuelva a ingresar esta última para verificarla. <br />
+          3) Finalmente, haga click en "Modificar".
         </Typography>
         <Container className="AlertsContainerViews">
           {alertToShow.message !== "don't show" && <Alert severity={alertToShow.type}> {alertToShow.message} </Alert>}

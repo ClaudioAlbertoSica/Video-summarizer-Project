@@ -1,9 +1,32 @@
 import sys
 import google.generativeai as genai
 
+safety_settings = [
+    {
+        "category": "HARM_CATEGORY_DANGEROUS",
+        "threshold": "BLOCK_NONE",
+    },
+    {
+        "category": "HARM_CATEGORY_HARASSMENT",
+        "threshold": "BLOCK_NONE",
+    },
+    {
+        "category": "HARM_CATEGORY_HATE_SPEECH",
+        "threshold": "BLOCK_NONE",
+    },
+    {
+        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        "threshold": "BLOCK_NONE",
+    },
+    {
+        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+        "threshold": "BLOCK_NONE",
+    },
+]
 
-APIkey  = "AIzaSyAgMBH_nlI8pg7QTS1abBMWlh_9ZqFq7YY"
-APIurl = "https://ai.google.dev/api/rest#service:-generativelanguage.googleapis.com"
+
+APIkey  = ""
+APIurl = ""
 
 def armarResumen(texto, esBreve, idioma):
     if (esBreve == 1):
@@ -15,7 +38,9 @@ def armarResumen(texto, esBreve, idioma):
     
 
     genai.configure(api_key=APIkey)
-    model = genai.GenerativeModel('gemini-pro')
+    ##model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel(model_name='gemini-pro', #generation_config=generation_config, 
+    safety_settings=safety_settings)
     response = model.generate_content(petition)
     with open("./services/serviciosPython/textoSalida.txt", "w", encoding='utf-8') as f:
         f.write(response.text)

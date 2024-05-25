@@ -5,7 +5,7 @@ import os
 import time
 import sys
 import whisper
-
+import re
 
 def descargaVideoYT(url, rutaDestino):
     global tituloVideo
@@ -43,6 +43,25 @@ def sacar_screenshots(video, tiempo, rutaimagen, clip):
         rutaLoop = os.path.join(rutaimagen, '{}.png'.format(i + 1))
         clip.save_frame(rutaLoop, t)
 
+def limpiarScreenshots(directory):
+    files = os.listdir(directory)
+    
+    screenshots = [f for f in files if re.match(r'^\d+\.png$', f)]
+    
+    screenshots.sort(key=lambda x: int(x.split('.')[0]))
+    
+
+    if len(screenshots) >= 10:
+        keep = screenshots[::2]
+        
+        keep = keep[:10]
+        
+        to_delete = [f for f in screenshots if f not in keep]
+        
+
+        for f in to_delete:
+            os.remove(os.path.join(directory, f))
+            print(f"Borrado {f}")
 
 def borrarVideo(video_file):
     attempts = 0
@@ -106,7 +125,8 @@ if __name__ == "__main__":
     tiempo = [i * 60 for i in range(total_minutes + 1)]## una captura por minuto
 
     sacar_screenshots(video, tiempo, rutaimagen, clip)
-
+    directorio_capturas = './services/serviciosPython/capturas'
+    limpiarScreenshots(directorio_capturas)
 
     print('saque screenshots')
     clip.close() 

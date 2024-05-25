@@ -94,8 +94,8 @@ class Servicio {
         try {
             //SI O SI TIENE QUE TENER UN ID
             if (id) {
-            const resumen = await this.model.obtenerResumenes(id, idres)
-            return resumen
+                const resumen = await this.model.obtenerResumenes(id, idres)
+                return resumen
             } else {
                 throw new Error('ID INDEFINIDO')
             }
@@ -112,33 +112,33 @@ class Servicio {
                 const __filename = fileURLToPath(import.meta.url);
                 const __dirname = path.dirname(__filename);
                 const pdfsDir = path.join(__dirname, 'pdfs');
-    
+
                 // Asegúrate de que el directorio exista, creándolo si es necesario
                 fs.mkdirSync(pdfsDir, { recursive: true });
-    
+
                 // Obtener la lista de archivos en el directorio
                 const files = fs.readdirSync(pdfsDir);
-    
+
                 // Eliminar todos los archivos en el directorio
                 files.forEach(file => {
                     const filePath = path.join(pdfsDir, file);
                     fs.unlinkSync(filePath);
                     console.log('Archivo eliminado:', filePath);
                 });
-    
+
                 // Obtener el resumen y convertirlo a PDF
                 const resumen = await this.model.obtenerResumenes(id, idres);
                 const pdfBase64 = resumen.pdf.data;
                 const pdfBuffer = Buffer.from(pdfBase64, 'base64');
-    
+
                 // Obtener el nombre del archivo y la ruta absoluta
                 const fileName = `resumen_${id}_${idres}.pdf`;
                 const filePath = path.join(pdfsDir, fileName);
-    
+
                 // Guardar el archivo PDF en el servidor
                 fs.writeFileSync(filePath, pdfBuffer);
                 console.log('Archivo creado:', filePath);
-    
+
                 return filePath; // Devuelve la ruta del archivo
             } else {
                 throw new Error('ID INDEFINIDO');
@@ -153,10 +153,10 @@ class Servicio {
             if (!filePath) {
                 throw new Error('Ruta de archivo indefinida');
             }
-            
+
             // Convierte la ruta a una ruta absoluta
             const absolutePath = path.resolve(filePath);
-            
+
             // Verifica si el archivo existe antes de intentar eliminarlo
             if (fs.existsSync(absolutePath)) {
                 // Elimina el archivo de forma sincrónica
@@ -206,7 +206,7 @@ class Servicio {
     //LLAMAMOS A LOS DOS SCRIPTS PY PARA PROCESAR VIDEO
     runPythonVideo = async (url) => {
 
-        
+
         const pythonScriptPath = './services/serviciosPython/procesarVideo.py';
         const command = `python ${pythonScriptPath} ${url}`;
         return new Promise((resolve, reject) => {
@@ -234,7 +234,7 @@ class Servicio {
             esBreve = 0
         }
 
-        switch(idioma){
+        switch (idioma) {
             case 'EN':
                 idioma = 0
                 break;
@@ -244,11 +244,8 @@ class Servicio {
             case 'FR':
                 idioma = 2
                 break;
-            case 'HE':
-                idioma = 4
-                break;
             case 'PT':
-                idioma = 5
+                idioma = 3
                 break;
         }
 
@@ -281,7 +278,7 @@ class Servicio {
             esBreve = 0
         }
 
-        switch(idioma){
+        switch (idioma) {
             case 'EN':
                 idioma = 0
                 break;
@@ -291,11 +288,8 @@ class Servicio {
             case 'FR':
                 idioma = 2
                 break;
-            case 'HE':
-                idioma = 4
-                break;
             case 'PT':
-                idioma = 5
+                idioma = 3
                 break;
         }
 
@@ -319,18 +313,18 @@ class Servicio {
     }
 
 
-    corregirTranscript = async () =>{
-        let textoResumido= await fs.promises.readFile('./services/serviciosPython/transcripcion.txt', 'utf-8', (err) => {
+    corregirTranscript = async () => {
+        let textoResumido = await fs.promises.readFile('./services/serviciosPython/transcripcion.txt', 'utf-8', (err) => {
             if (err) {
                 console.log('error leyendo archivo')
             } else {
                 console.log('Leido')
             }
         })
-    
+
         textoResumido = textoResumido.replace(/�/g, '');
-    
-        
+
+
         await fs.promises.writeFile('./services/serviciosPython/transcripcion.txt', textoResumido, (err) => {
             if (err) {
                 console.log('error escribiendo archivo')
@@ -338,13 +332,13 @@ class Servicio {
                 console.log('se escribio')
             }
         })
-    
-    
+
+
     }
 
     //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.
     crearResumenVideo = async (id, url, title, esBreve, idioma) => {
-        
+
         try {
             const resumenVid = {}
             if (id, url, esBreve, idioma) {
@@ -367,16 +361,16 @@ class Servicio {
                 console.log('CORRÍ PYTHON 3 - arma pdf')
                 resumenVid.pdf = await this.pasarPDFABinario()
                 console.log('CORRÍ PYTHON 4 - pasa binario')
-                
+
                 console.log('antes de entrar a model')
-                
-                const resumenNuevo = await this.model.crearResumenVideo(id, resumenVid) 
-                
+
+                const resumenNuevo = await this.model.crearResumenVideo(id, resumenVid)
+
                 await this.limpiarVideo()
-                
+
                 await this.actualizarUsuario(id, { inProgress: false })
-    
-                
+
+
                 console.log('volvi de meter el resumen!')
                 return resumenNuevo
             } else {
@@ -388,11 +382,11 @@ class Servicio {
         }
     }
 
-    runPythonArmado = async() => {
-        
+    runPythonArmado = async () => {
+
         const pythonScriptPath3 = './services/serviciosPython/armarPDF.py';
         const command = `python ${pythonScriptPath3}`;
-        
+
         return new Promise((resolve, reject) => {
             exec(command, (error, stdout, stderr) => {
                 console.log('ejecute el script python - armando el PDF...')
@@ -442,16 +436,16 @@ class Servicio {
                         console.log('Leido')
                     }
                 })
-                await this.generarPDFTexto(textoResumido) 
+                await this.generarPDFTexto(textoResumido)
                 resumen.pdf = await this.pasarPDFABinario()
             } else {
                 console.log('error de ingreso de datos')
             }
 
             const resumenNuevo = await this.model.crearResumenTexto(id, resumen)
-            
+
             await this.limpiarTexto()
-            
+
             await this.actualizarUsuario(id, { inProgress: false })
             return resumenNuevo
         } catch (error) {
@@ -463,11 +457,11 @@ class Servicio {
     limpiarTexto = async () => {
         const directoryPath = './services/serviciosPython/';
         const filesToDelete = ['textoEntrada.txt', 'documento.pdf', 'textoSalida.txt']; // Specify the exact files to delete here
-        
+
         try {
             for (const file of filesToDelete) {
                 const filePath = path.join(directoryPath, file);
-    
+
                 try {
                     await fs.promises.unlink(filePath);
                     console.log(`Deleted file: ${filePath}`);
@@ -482,40 +476,40 @@ class Servicio {
     };
 
     limpiarVideo = async () => {
-    const mainDirectoryPath = './services/serviciosPython/';
-    const imageDirectoryPath = './services/serviciosPython/capturas/';
-    const filesToDelete = ['resumenSalida.txt', 'transcripcion.txt', 'documento.pdf']; 
+        const mainDirectoryPath = './services/serviciosPython/';
+        const imageDirectoryPath = './services/serviciosPython/capturas/';
+        const filesToDelete = ['resumenSalida.txt', 'transcripcion.txt', 'documento.pdf'];
 
-    try {
-        for (const file of filesToDelete) {
-            const filePath = path.join(mainDirectoryPath, file);
+        try {
+            for (const file of filesToDelete) {
+                const filePath = path.join(mainDirectoryPath, file);
 
-            try {
-                await fs.promises.unlink(filePath);
-                console.log(`Deleted file: ${filePath}`);
-            } catch (err) {
-                console.error(`Error deleting file ${filePath}:`, err);
-            }
-        }
-        const imageFiles = await fs.promises.readdir(imageDirectoryPath);
-        for (const file of imageFiles) {
-            const filePath = path.join(imageDirectoryPath, file);
-
-            try {
-                const stats = await fs.promises.stat(filePath);
-                if (stats.isFile() && file.endsWith('.png')) {
+                try {
                     await fs.promises.unlink(filePath);
-                    console.log(`Deleted image file: ${filePath}`);
+                    console.log(`Deleted file: ${filePath}`);
+                } catch (err) {
+                    console.error(`Error deleting file ${filePath}:`, err);
                 }
-            } catch (err) {
-                console.error(`Error deleting image file ${filePath}:`, err);
             }
-        }
+            const imageFiles = await fs.promises.readdir(imageDirectoryPath);
+            for (const file of imageFiles) {
+                const filePath = path.join(imageDirectoryPath, file);
 
-        console.log('Finished deleting specified video files and all .png files.');
-    } catch (err) {
-        console.error('Error:', err);
-    }
+                try {
+                    const stats = await fs.promises.stat(filePath);
+                    if (stats.isFile() && file.endsWith('.png')) {
+                        await fs.promises.unlink(filePath);
+                        console.log(`Deleted image file: ${filePath}`);
+                    }
+                } catch (err) {
+                    console.error(`Error deleting image file ${filePath}:`, err);
+                }
+            }
+
+            console.log('Finished deleting specified video files and all .png files.');
+        } catch (err) {
+            console.error('Error:', err);
+        }
     }
 
 
@@ -585,17 +579,17 @@ class Servicio {
 
     olvideMiPasswd = async (userName) => {
         try {
-           if (userName) {
-            debugger;
-             let usuarioEncontrado = await this.model.obtenerUsuariosLogin(userName)
-             if (usuarioEncontrado) {
-                usuarioEncontrado.passwd = 'BOCA'
-                usuarioEncontrado.provisoria = true
-                const usuarioActualizado = await this.model.actualizarUsuario(usuarioEncontrado.id, usuarioEncontrado)
-                await this.nodeMailer.sendMail(usuarioActualizado.userName, usuarioActualizado.passwd)
-                return usuarioActualizado.provisoria
-             }
-           } 
+            if (userName) {
+                debugger;
+                let usuarioEncontrado = await this.model.obtenerUsuariosLogin(userName)
+                if (usuarioEncontrado) {
+                    usuarioEncontrado.passwd = 'BOCA'
+                    usuarioEncontrado.provisoria = true
+                    const usuarioActualizado = await this.model.actualizarUsuario(usuarioEncontrado.id, usuarioEncontrado)
+                    await this.nodeMailer.sendMail(usuarioActualizado.userName, usuarioActualizado.passwd)
+                    return usuarioActualizado.provisoria
+                }
+            }
         } catch (error) {
             throw new Error(error.message)
         }
@@ -618,19 +612,19 @@ class Servicio {
             const fileBuffer = await fs.promises.readFile("./services/serviciosPython/documento.pdf");
 
             const base64String = fileBuffer.toString('base64');
-            
-            const jsonObject = 
-                {
+
+            const jsonObject =
+            {
                 filename: "documento.pdf",
                 content_type: "application/pdf",
                 data: base64String
-                }
+            }
             return jsonObject
         } catch (error) {
             console.error('Error reading or processing the file:', error);
         }
     }
-    
+
 
     /* FALTAN LOS SIGUIENTES MÉTODOS:
         // CREAR UN ENDPOINT PARA CONSULTAR SI EL PROCESO DE LA CREACIÓN DE RESUMEN TERMINÓ.

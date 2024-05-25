@@ -106,7 +106,6 @@ function VideoForm() {
                 {[
                   { name: "Español", code: "ES" },
                   { name: "Francés", code: "FR" },
-                  { name: "Hebreo", code: "HE" },
                   { name: "Inglés", code: "EN" },
                   { name: "Portugués", code: "PT" },
                 ]}

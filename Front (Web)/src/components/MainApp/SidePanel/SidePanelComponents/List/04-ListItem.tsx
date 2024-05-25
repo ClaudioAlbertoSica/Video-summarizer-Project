@@ -1,4 +1,4 @@
-import { Avatar, Container, IconButton, Typography } from "@mui/material";
+import { Avatar, Container, IconButton, Tooltip, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import StarCounter from "../../../StarCounter/StarCounter.tsx";
 import "./ListItem.css";
@@ -33,9 +33,11 @@ function SummaryListItem({ thisItemRating = 0, image, title, idRes, isFavourite 
       <Container className="ItemAndTitleContainer">
         <Avatar src={image}></Avatar>
         <Container className="TitleAndCounterContainer">
-          <Typography className="ListItemTitle" variant="h6" textAlign="left">
-            {title}
-          </Typography>
+          <Tooltip title={title} placement="top-end">
+            <Typography className="ListItemTitle" variant="h6" textAlign="left">
+              {title}
+            </Typography>
+          </Tooltip>
           <StarCounter
             starsToShow={5}
             couterSize="small"

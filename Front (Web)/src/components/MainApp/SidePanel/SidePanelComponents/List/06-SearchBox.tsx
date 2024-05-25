@@ -1,11 +1,30 @@
-import { Container, TextField } from "@mui/material";
+import { Container, InputAdornment, TextField } from "@mui/material";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import "./List&Handler.css";
 
-function SearchBox() {
+interface Props {
+  filter: (arg: string) => void;
+}
+
+function SearchBox({ filter }: Props) {
   return (
-    <Container>
-      <ManageSearchIcon />
-      <TextField id="filled-search" label="Search field" type="search" variant="filled" />
+    <Container className="searchBoxContainer">
+      {/* <ManageSearchIcon fontSize="large" /> This places icon outside searchbox*/}
+      <TextField
+        className="SearchBox"
+        id="filled-search"
+        label="Search field"
+        type="search"
+        variant="filled"
+        onChange={(event) => filter(event.target.value)}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <ManageSearchIcon fontSize="large" />
+            </InputAdornment>
+          ),
+        }}
+      />
     </Container>
   );
 }

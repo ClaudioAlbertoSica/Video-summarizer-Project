@@ -7,8 +7,6 @@ import "../../SidePanel.css";
 import { LoggedUserContext } from "../../../../../ActiveUserContext";
 import server from "../../../../../Services/serverCall";
 
-const label = { inputProps: { "aria-label": "Switch demo" } };
-
 function DarkModeSwitch() {
   const activeUser = useContext(LoggedUserContext);
   let themeToSet: PaletteMode = activeUser.userState.config.isDark;
@@ -30,7 +28,9 @@ function DarkModeSwitch() {
     <>
       <Container className="DarkModeContainer">
         <WbSunnyIcon fontSize="small" />
-        <Switch size="small" onChange={() => handleOnChange()} {...label} defaultChecked={themeToSet === "dark"} />
+
+        <Switch size="small" onChange={() => handleOnChange()} checked={themeToSet === "dark"} />
+
         <NightsStayIcon fontSize="small" />
       </Container>
     </>

@@ -624,7 +624,7 @@ class Servicio {
                 debugger;
                 let usuarioEncontrado = await this.model.obtenerUsuariosLogin(userName)
                 if (usuarioEncontrado) {
-                    usuarioEncontrado.passwd = 'BOCA'
+                    usuarioEncontrado.passwd = await this.randomizarPass()
                     usuarioEncontrado.provisoria = true
                     const usuarioActualizado = await this.model.actualizarUsuario(usuarioEncontrado.id, usuarioEncontrado)
                     await this.nodeMailer.sendMail(usuarioActualizado.userName, usuarioActualizado.passwd)
@@ -634,6 +634,18 @@ class Servicio {
         } catch (error) {
             throw new Error(error.message)
         }
+    }
+
+    randomizarPass = async (length = 8) => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        let passRandom = '';
+        for (let i = 0; i < length; i++) {
+            await new Promise(resolve => setTimeout(resolve, 0));
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            passRandom += characters[randomIndex];
+        }
+        
+        return passRandom;
     }
 
     obtenerInProgress = async (id) => {
@@ -674,7 +686,7 @@ class Servicio {
         * VALIDACIONES (EN GENERAL) - MANEJO DE ERRORES.
         // PARA OBTENER LA MINIATURA DEL VIDEO DE YOUTUBE Y VER CÓMO LA PERSISTIMOS EN LA BD
         *UN MÉTODO QUE CONVIERTA PDF A DOCX.
-        *AGREGAR PASSWORD PROVISORIA
+        //AGREGAR PASSWORD PROVISORIA
         //AGREGAR PROPIEDAD PROVISORIA AL CREARUSUARIO
         * EL USUARIO DEBERÁ TENER LAS SIGUIENTES PROPIEDADES:
             usuario:  {

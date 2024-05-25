@@ -1,15 +1,17 @@
-import { ReactElement, useContext, useEffect } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { List, ListItem, Paper } from "@mui/material";
 import SummaryListItem from "./04-ListItem.tsx";
 import ListItemPlaceholder from "./05-ListItemPlaceHolder.tsx";
 import "./List&Handler.css";
 import placeholderImage from "../../../../../assets/Logo.png";
 import { LoggedUserContext } from "../../../../../ActiveUserContext.ts";
+import SearchBox from "./06-SearchBox.tsx";
 
 function ListForAccordion() {
   const currentlyLoggedUsuer = useContext(LoggedUserContext).userState;
+  const [filterKeywords, setFilterKeywords] = useState<string>("");
 
-  useEffect(() => {}, [currentlyLoggedUsuer.inventario]);
+  useEffect(() => {}, [currentlyLoggedUsuer.inventario, filterKeywords]);
 
   const listToShow = () => {
     let objetcToReturn: ReactElement[] = [
@@ -19,17 +21,23 @@ function ListForAccordion() {
     ];
 
     if (currentlyLoggedUsuer.inventario.length !== 0) {
-      objetcToReturn = currentlyLoggedUsuer.inventario.map((itm) => (
-        <ListItem key={itm.idres}>
-          <SummaryListItem
-            thisItemRating={itm.points}
-            image={itm.miniatura}
-            title={itm.title}
-            idRes={itm.idres}
-            isFavourite={itm.isFavourite}
-          />
-        </ListItem>
-      ));
+      objetcToReturn = currentlyLoggedUsuer.inventario.map((itm) => {
+        let itemToReturn: ReactElement = <></>;
+        if (itm.title.toLocaleLowerCase().includes(filterKeywords.toLowerCase())) {
+          itemToReturn = (
+            <ListItem key={itm.idres}>
+              <SummaryListItem
+                thisItemRating={itm.points}
+                image={itm.miniatura}
+                title={itm.title}
+                idRes={itm.idres}
+                isFavourite={itm.isFavourite}
+              />
+            </ListItem>
+          );
+        }
+        return itemToReturn;
+      });
     }
     return objetcToReturn;
   };
@@ -37,6 +45,7 @@ function ListForAccordion() {
   return (
     <>
       <Paper className="ListWrapper" elevation={3}>
+        <SearchBox filter={setFilterKeywords} />
         <List>{listToShow()}</List>
       </Paper>
     </>

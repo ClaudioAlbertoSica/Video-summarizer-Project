@@ -5,3 +5,19 @@
     border-radius: 30px;
     overflow-x: hidden;
 }
+
+.MuiContainer-root.searchBoxContainer{
+    padding: 20px;
+    padding-bottom: 0px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.MuiTextField-root.SearchBox{
+    width: 100%;
+}

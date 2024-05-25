@@ -245,10 +245,10 @@ class Servicio {
                 idioma = 2
                 break;
             case 'HE':
-                idioma = 4
+                idioma = 3
                 break;
             case 'PT':
-                idioma = 5
+                idioma = 4
                 break;
         }
 
@@ -292,10 +292,10 @@ class Servicio {
                 idioma = 2
                 break;
             case 'HE':
-                idioma = 4
+                idioma = 3
                 break;
             case 'PT':
-                idioma = 5
+                idioma = 4
                 break;
         }
 

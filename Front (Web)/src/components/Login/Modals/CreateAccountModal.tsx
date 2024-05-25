@@ -110,13 +110,13 @@ function CreateAccountModal({ selectorCallback, setNewLoggedUser }: LoginModalSe
       <Container className="bottomOptionsContainer">
         <Typography variant="caption" display="block" gutterBottom>
           ¿Ya posee una cuenta? &nbsp;
-          <Link onClick={() => selectorCallback(ModalNames.Login)} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Login)} underline="hover" style={{ cursor: "pointer" }}>
             Ingresar
           </Link>
         </Typography>
         <Typography variant="caption" display="block" gutterBottom>
           ¿Olvidó su contraseña? &nbsp;
-          <Link onClick={() => selectorCallback(ModalNames.Password)} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Password)} underline="hover" style={{ cursor: "pointer" }}>
             Recuperarla
           </Link>
         </Typography>

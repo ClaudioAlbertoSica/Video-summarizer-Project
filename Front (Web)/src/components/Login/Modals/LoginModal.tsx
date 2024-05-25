@@ -76,13 +76,13 @@ function LoginModal({ selectorCallback, setNewLoggedUser }: LoginModalInterface)
       <Container className="bottomOptionsContainer">
         <Typography variant="caption" display="block" gutterBottom>
           ¿No tiene cuenta? &nbsp;
-          <Link onClick={() => selectorCallback(ModalNames.Create)} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Create)} underline="hover" style={{ cursor: "pointer" }}>
             Crear Una
           </Link>
         </Typography>
         <Typography variant="caption" display="block" gutterBottom>
           ¿Olvidó su contraseña? &nbsp;
-          <Link onClick={() => selectorCallback(ModalNames.Password)} underline="hover">
+          <Link onClick={() => selectorCallback(ModalNames.Password)} underline="hover" style={{ cursor: "pointer" }}>
             Recuperarla
           </Link>
         </Typography>

@@ -6,6 +6,7 @@ import PDFDocument from 'pdfkit';
 import path from 'path'
 import { fileURLToPath } from 'url';
 import NodeMailer from './notifications/nodemailer.js'
+import axios from 'axios';
 
 class Servicio {
     constructor(persistencia) {
@@ -342,14 +343,41 @@ class Servicio {
 
     }
 
-    //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.
-    crearResumenVideo = async (id, url, title, esBreve, idioma) => {
 
+
+    obtenerMiniatura = async (urlP) => {
+        try {
+            const url =  new URL(urlP);
+            const videoID = await url.searchParams.get('v');
+            const thumbnailUrl = `https://img.youtube.com/vi/${videoID}/hqdefault.jpg`;
+            const response = await axios.get(thumbnailUrl, { responseType: 'stream' });
+            await response.data.pipe(fs.createWriteStream('./services/serviciosPython/miniatura/thumbnail.jpg'))
+              .on('finish', () => {
+                console.log('Miniatura guardada exitosamente.');
+              })
+              .on('error', err => {
+                console.error('Error al guardar la miniatura:', err);
+              });
+          } catch (error) {
+            console.error('Error al descargar la miniatura:', error);
+          }
+    }
+
+    thumbABinario = async () => {
+        const data = await fs.promises.readFile('./services/serviciosPython/miniatura/thumbnail.jpg');
+        const binario = data.toString('binary');
+        return binario
+    }
+
+    //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.
+    crearResumenVideo = async (id, url, title, esBreve, idioma, urlOriginal) => {
         try {
             const resumenVid = {}
             if (id, url, esBreve, idioma) {
                 await this.actualizarUsuario(id, { inProgress: true })
-                resumenVid.thumbnail = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT7h1oqIwMtvT8R1VuR60jUiElORY8V0xcH3zfrSY-Qw&s'
+                await this.obtenerMiniatura(urlOriginal)
+                const thumbnail = await this.thumbABinario()
+                resumenVid.thumbnail = thumbnail
                 resumenVid.isFavourite = false
                 resumenVid.points = 0
                 if (title) {
@@ -357,6 +385,8 @@ class Servicio {
                 } else {
                     resumenVid.title = "ResumenDeVideo"
                 }
+
+                
 
                 await this.runPythonVideo(url);
                 console.log('CORRÍ PYTHON 1')
@@ -384,6 +414,7 @@ class Servicio {
             }
         } catch (error) {
             await this.actualizarUsuario(id, { inProgress: false })
+            await this.limpiarVideo()
             console.log(error.message)
         }
     }
@@ -456,6 +487,7 @@ class Servicio {
             return resumenNuevo
         } catch (error) {
             await this.actualizarUsuario(id, { inProgress: false })
+            await this.limpiarTexto()
             console.log(error.message)
         }
     }

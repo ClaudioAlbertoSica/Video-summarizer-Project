@@ -5,8 +5,9 @@ import { PaletteMode } from "@mui/material";
 export type LoggedUser = {
     id: string;
     userName: string;
-    passwd: string;
+    passwd?: string;
     inProgress: boolean;
+    provisoria: boolean; 
     config: Config;
     inventario: Summary[]; // Data to create the List of previous summaries
    // selectedSummary?: Summary; // Data to display a full summary, when List is clicked
@@ -17,8 +18,9 @@ export type LoggedUser = {
 export type DBuser ={
         id: string;
         userName: string;
-        passwd: string;
+        passwd?: string;
         inProgress: boolean;
+        provisoria: boolean; 
         config: ConfigDB;
         inventario: Summary[]; // Data to create the List of previous summaries
     }

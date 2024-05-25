@@ -21,7 +21,12 @@ function App() {
         <ThemeProvider theme={myTheme}>
           <CssBaseline />
           <LoggedUserContext.Provider value={{ userState: currentUser, userSteState: setUser }}>
-            {currentUser === placeholderUser ? <LoginLayout setUser={setUser} /> : <GridLayout />};
+            {currentUser === placeholderUser ? (
+              <LoginLayout setUser={setUser} />
+            ) : (
+              <GridLayout isProvisoryPassword={currentUser.provisoria} />
+            )}
+            ;
           </LoggedUserContext.Provider>
         </ThemeProvider>
       </ColorContext.Provider>

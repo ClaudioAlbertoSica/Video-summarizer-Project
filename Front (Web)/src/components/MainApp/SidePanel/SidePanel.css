@@ -1,5 +1,9 @@
-.SidePanelLogo{
-
+.MuiContainer-root.SidePanelLogo{
+    background-image: url(../../../assets/dome1.gif);
+    background-size: 380px;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 370px;
 }
 
 .MuiContainer-root.SidePanelAccordionContainer{
@@ -12,12 +16,12 @@
 }
 
 .MuiContainer-root.DarkModeContainer{
-max-width: 100%;
-width: 100%;
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
-flex-wrap: nowrap;
-padding: 0px;
+    max-width: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 0px;
 }

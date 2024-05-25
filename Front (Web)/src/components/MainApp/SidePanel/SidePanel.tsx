@@ -6,7 +6,7 @@ import Accordion from "./SidePanelComponents/Accordion.tsx";
 function SidePanel() {
   return (
     <>
-      <Avatar className="SidePanelLogo" alt="Avatar" src={Logo} />
+      <Container className="SidePanelLogo"/>
       <Container className="SidePanelAccordionContainer">
         <Accordion />
       </Container>

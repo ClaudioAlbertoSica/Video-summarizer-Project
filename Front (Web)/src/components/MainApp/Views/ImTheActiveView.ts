@@ -6,6 +6,7 @@ export enum ValidViewNames  {
   TextForm = 'Formulario de Texto',
   AccountData = 'Datos de tu cuenta',
   ChangePassword = 'Cambiar contraseña',
+  ChangePasswordMandatory = 'Cambio de contraseña obligatorio',
   FAQ = 'Preguntas Frecuentes',
   Help = 'Ayuda',
   LogOut= 'LogOut',

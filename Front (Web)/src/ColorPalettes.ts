@@ -8,6 +8,7 @@ declare module "@mui/material/styles" {
     interface Theme {
       palette: {
         my: {
+          sidePanelBg: string,
           header: string;
           list: string;
           listHeader: string;
@@ -18,6 +19,7 @@ declare module "@mui/material/styles" {
     interface ThemeOptions {
       paletteOptions?: {
         my?: {
+          sidePanelBg?: string,
           header?: string;
           list?: string;
           listHeader?: string;
@@ -46,6 +48,7 @@ declare module "@mui/material/styles" {
               secondary: grey[800],
             },
             my: {
+              sidePanelBg: hexToRgb('#448DA3'),
               header: hexToRgb("#9BE8EA"),
               list: hexToRgb("#448DA3"),
               listHeader: hexToRgb("#65CAD2"),
@@ -58,14 +61,15 @@ declare module "@mui/material/styles" {
             divider: deepOrange[700],
             background: {
               default: deepOrange[900],
-              paper: deepOrange[900],
+              paper: hexToRgb('#25232a'),
             },
             text: {
               primary: "#fff",
               secondary: grey[300],
             },
             my: {
-              header: hexToRgb("#3C1C0C"),
+              sidePanelBg: hexToRgb('#1e1e1e'),
+              header: hexToRgb("#bf360c"),
               list: hexToRgb("#E56C26"),
               listHeader: hexToRgb("#883C10"),
               listItem: hexToRgb("#F3A06E"),
@@ -78,3 +82,6 @@ declare module "@mui/material/styles" {
 
   //Context para poder cambiar el Theme
   export const ColorContext = createContext<Dispatch<SetStateAction<PaletteMode>>>(() => {});
+
+/*   background-color: #1e1e1e;
+    color: #25232a; */

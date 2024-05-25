@@ -1,4 +1,4 @@
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MuiAccordion, { AccordionProps } from "@mui/material/Accordion";
 import MuiAccordionSummary, { AccordionSummaryProps } from "@mui/material/AccordionSummary";
@@ -25,7 +25,7 @@ const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
   <MuiAccordionSummary expandIcon={<KeyboardArrowDownIcon sx={{ fontSize: "0.9rem" }} />} {...props} />
 ))(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "rgba(255, 255, 255, .05)" : "rgba(0, 0, 0, .03)",
+//  backgroundColor: theme.palette.mode === "dark" ? "rgba(255, 255, 255, .05)" : "rgba(0, 0, 0, .03)",
   flexDirection: "row",
   "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
     transform: "rotate(90deg)",
@@ -42,7 +42,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export default function CustomizedAccordions() {
   const [expanded, setExpanded] = useState<string | false>("panel1"); // possible string values are "panel1", "panel2", "panel3", etc...
-
+  const myTheme = useTheme();
   const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -50,7 +50,7 @@ export default function CustomizedAccordions() {
   return (
     <>
       <Accordion expanded={expanded === "panel1"} onChange={handleChange("panel1")}>
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" sx={{ backgroundColor: myTheme.palette.my.header, borderRadius: '10px', margin: '3px 5px'}}>
           <Typography>Nuevo Resumen</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -58,7 +58,7 @@ export default function CustomizedAccordions() {
         </AccordionDetails>
       </Accordion>
       <Accordion expanded={expanded === "panel2"} onChange={handleChange("panel2")}>
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header" sx={{ backgroundColor: myTheme.palette.my.header, borderRadius: '10px', margin: '3px 5px' }}>
           <Typography>Cuenta</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -66,7 +66,7 @@ export default function CustomizedAccordions() {
         </AccordionDetails>
       </Accordion>
       <Accordion expanded={expanded === "panel3"} onChange={handleChange("panel3")}>
-        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header" sx={{ backgroundColor: myTheme.palette.my.header, borderRadius: '10px', margin: '3px 5px' }}>
           <Typography>Configuración y Ayuda</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -74,7 +74,7 @@ export default function CustomizedAccordions() {
         </AccordionDetails>
       </Accordion>
       <Accordion expanded={expanded === "panel4"} onChange={handleChange("panel4")}>
-        <AccordionSummary aria-controls="panel4d-content" id="panel4d-header">
+        <AccordionSummary aria-controls="panel4d-content" id="panel4d-header" sx={{ backgroundColor: myTheme.palette.my.header, borderRadius: '10px', margin: '3px 5px' }}>
           <Typography>Favoritos</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -82,7 +82,7 @@ export default function CustomizedAccordions() {
         </AccordionDetails>
       </Accordion>
       <Accordion expanded={expanded === "panel5"} onChange={handleChange("panel5")}>
-        <AccordionSummary aria-controls="panel5d-content" id="panel5d-header">
+        <AccordionSummary aria-controls="panel5d-content" id="panel5d-header" sx={{ backgroundColor: myTheme.palette.my.header, borderRadius: '10px', margin: '3px 5px' }}>
           <Typography>Historial</Typography>
         </AccordionSummary>
         <AccordionDetails>

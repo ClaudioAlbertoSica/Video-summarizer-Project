@@ -114,7 +114,7 @@ function TextForm() {
                 </Container>
               </Container>
             </Box>
-            <Container className="FormTextImagen"></Container> 
+            <Container className="RightContent FormTextImagen"></Container> 
           </Container>
         </Paper>
       );

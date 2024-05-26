@@ -65,7 +65,7 @@ class AcconutScreen extends ConsumerWidget {
                           if (_inputRepeatPassController.text == _inputPassController.text) {
                               bool changeOk = await changePass(_inputCurrentPass.text,_inputPassController.text, _inputRepeatPassController.text, idUser as String);
                               if (changeOk) {
-                              context.goNamed(LoadingScreen.name);
+                              context.goNamed(LoadingScreen.name, extra: 'Cambio de contraseña exitoso!');
                             } else {
                               _showErrorMessage(context);
                             }

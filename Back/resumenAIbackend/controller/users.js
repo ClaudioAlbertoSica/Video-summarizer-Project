@@ -16,6 +16,18 @@ class Controlador {
         }
     }
 
+    obtenerUsuarioResumido  = async (req, res) => {
+        try {
+            debugger;
+            const { id } = req.params
+            const usuarioResumido = await this.servicio.obtenerUsuariosResumido(id)
+            res.json(usuarioResumido)
+        }
+        catch (error) {
+            res.status(500).json({ error: error.message })
+        }
+    }
+
     guardarUsuario = async (req, res) => {
         try {
             const usuario = req.body

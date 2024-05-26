@@ -10,6 +10,10 @@ class ThemeNotifier extends StateNotifier<User> {
     state = state.copyWith(isDark : isDark);
   }
 
+  void setInProgress(bool inProgress) {
+    state = state.copyWith(inProgress : inProgress);
+  }
+  
   void setUserLogin(User userLog){
     state = state.copyWith(userLog: userLog);
   }

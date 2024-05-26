@@ -25,6 +25,19 @@ class Servicio {
         }
     }
 
+    obtenerUsuariosResumido  = async (id) => {
+        try {
+            const usuario = await this.model.obtenerUsuarios(id)
+            const usuarioResumido = await this.model.obtenerUsuariosLogin(usuario.userName)
+            delete usuarioResumido._id
+            delete usuarioResumido.passwd
+            return usuarioResumido
+        }
+        catch (error) {
+            console.log(error.message)
+        }
+    }
+
     //Finalizado
     guardarUsuario = async (usuario) => {
         try {

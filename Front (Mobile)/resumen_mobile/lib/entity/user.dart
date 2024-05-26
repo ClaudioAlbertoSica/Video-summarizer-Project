@@ -46,12 +46,12 @@ User(
       );
   }
 
-  User copyWith({bool?isDark, User? userLog}) {
+  User copyWith({bool?isDark, User? userLog, bool? inProgress}) {
     return userLog ?? User(
       userName: userName,
       id: id,
       inventario: inventario,
-      inProgress: inProgress,
+      inProgress: inProgress ?? this.inProgress,
       isDark: isDark ?? this.isDark,
     );
   }

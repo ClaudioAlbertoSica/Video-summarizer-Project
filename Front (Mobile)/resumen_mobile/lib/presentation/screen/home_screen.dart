@@ -1,40 +1,61 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
+import 'package:resumen_mobile/entity/user.dart';
 import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
+import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_stack_layout.dart';
 import '../../core/menu/drawer_menu.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_navigation_bar.dart';
+import 'package:http/http.dart' as http;
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   static const String name = 'HomeScreen';
 
   const HomeScreen({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen>{
+  String errorMessage = '';
   int _selectedIndex = 1; // Index for 'view_list' icon
-
-  void _onItemTapped(int index) {
+  
+  Future<void> _onItemTapped(int index) async {
+    final idUser = ref.watch(userNotifierProvider).id;
+    final bool inProgress= await isInProgress(idUser);
     setState(() {
       _selectedIndex = index;
     });
     if (index == 0) {
-      context.pushNamed(CoreFormVideo.name);
-    } else if (index == 0) {
+      if(!inProgress){
+        context.pushNamed(CoreFormVideo.name);
+      }else{
+        context.goNamed(LoadingScreen.name, extra: 'Seguimos trabajando en tu resumen! Por favor espera unos minutos...');
+      }
       // Already on home screen, no action needed
     } else if (index == 2) {
-      context.pushNamed(CoreFormText.name);
+      if(!inProgress){
+        context.pushNamed(CoreFormText.name);
+      }else{
+        context.goNamed(LoadingScreen.name, extra: 'Seguimos trabajando en tu resumen! Por favor espera unos minutos...');
+      }
     }
+  }
+
+  @override
+  void initState() async {
+    super.initState();
+    final idUser = ref.watch(userNotifierProvider).id;
+    await isInProgress(idUser);
   }
 
   @override
@@ -52,6 +73,75 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _StackLayoutHome(screenHeight: screenHeight),
       bottomNavigationBar: UicoreNavigationBar(onTap: _onItemTapped, initialIndex: _selectedIndex),
     );
+  }
+  
+
+    Future<bool> isInProgress(String idUser) async {
+    bool inProgress = false;
+    try {
+      final url = Uri.parse('http://10.0.2.2:8080/api/inprogress/$idUser');
+      final response = await http.get(url, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+      if (response.statusCode == 200) {
+        // Desestructura el JSON para obtener el campo "data"
+        final jsonData = json.decode(response.body);
+        inProgress = jsonData;
+        //final userInProgress = jsonData['inProgress'];
+        //inProgress = userInProgress as bool;
+        ref.read(userNotifierProvider.notifier).setInProgress(inProgress);
+        if(!inProgress){
+          await actualizarUsuario(idUser);
+        }
+      } else {
+        
+          errorMessage = json.decode(response.body)['error'];
+        
+      }
+    } catch (error) {
+      
+        errorMessage = 'Error: Connection ERROR - Server not found';
+    
+    }
+    return inProgress;
+  }
+
+
+  Future<void> actualizarUsuario(String idUser) async {
+    
+    try {
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
+      final response = await http.get(url, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+      if (response.statusCode == 200) {
+        final rsp = json.decode(response.body);
+
+        User userActualizado = User(
+            userName: rsp['userName'],
+            id: rsp['id'],
+            inventario: (rsp['inventario'] as List)
+              .map((item) => ResumenPreview.fromJson(item))
+              .toList(), 
+            inProgress: rsp['inProgress'],
+            isDark: rsp['config']['isDark']
+          );
+
+          ref.read(resumenNotifierProvider.notifier).changeList(userActualizado.inventario);
+          ref.read(userNotifierProvider.notifier).setUserLogin(userActualizado);
+          ref.read(userNotifierProvider.notifier).togleDarkMode(userActualizado.isDark);
+      } else {
+        
+          errorMessage = json.decode(response.body)['error'];
+        
+      }
+    } catch (error) {
+      
+        errorMessage = 'Error: Connection ERROR - Server not found';
+    
+    }
   }
 }
 
@@ -156,4 +246,5 @@ class _BarraSearch extends ConsumerWidget {
       ),
     );
   }
+
 }

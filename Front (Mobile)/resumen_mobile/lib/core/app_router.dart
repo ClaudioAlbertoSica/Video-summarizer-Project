@@ -64,7 +64,7 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/loading-screen',
-      builder: (context, state) => const LoadingScreen(),
+      builder: (context, state) => LoadingScreen(text: state.extra as String),
       name: LoadingScreen.name
     ),
     GoRoute(

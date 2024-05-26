@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
+import 'package:resumen_mobile/presentation/providers/user_provider.dart';
+import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 
 class LoadingScreen extends StatefulWidget {
   static const String name = 'loading_screen';
-
-  const LoadingScreen({super.key});
+  final String text;
+  const LoadingScreen({super.key, required this.text});
 
   @override
   State<LoadingScreen> createState() => _LoadingScreenState();
@@ -31,8 +33,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: LoadingView(imageLigth: 'loading2.gif', imageDark: 'loadingD.gif', text: 'Cambio de contraseña exitoso!',),
+    return Scaffold(
+      body: LoadingView(imageLigth: 'loading2.gif', imageDark: 'loadingD.gif', text: widget.text),
       
       
     );
@@ -56,25 +58,18 @@ class LoadingView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final isDark = ref.watch(themeNotifierProvider).isDark;
-    final String background = isDark ? imageDark : imageLigth;
+    final screenHeight = MediaQuery.of(context).size.height;
 
-    return Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.asset('assets/images/$background', 
-                fit: BoxFit.cover)
-              ),
-                //const CircularProgressIndicator(backgroundColor: Colors.black38 ,),
+    return StackLayoutCustomized(
+              screenHeight: screenHeight,
+              colorLight: const Color.fromRGBO(235, 240, 241, 1), 
+              colorDark: const Color.fromRGBO(30, 30, 30, 1) , 
+              imageLigth:imageLigth , 
+              imageDark:imageDark , 
+              content: [
                 const SizedBox(height: 10,),
                 Text(text),
               ],
-            ) ),
-    );
+          );
   }
 }

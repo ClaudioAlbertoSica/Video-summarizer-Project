@@ -9,7 +9,8 @@ class Router {
 
     start() {
         this.router.post('/recuperar', this.controlador.olvideMiPasswd)
-        this.router.get('/:id?', this.controlador.obtenerUsuarios)
+        //this.router.get('/:id?', this.controlador.obtenerUsuarios)
+        this.router.get('/:id', this.controlador.obtenerUsuarioResumido)
         this.router.get('/inprogress/:id', this.controlador.obtenerInProgress)
         this.router.post('/:id/resumen/video', this.controlador.crearResumenVideo)
         this.router.post('/:id/resumen/texto', this.controlador.crearResumenTexto)

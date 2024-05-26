@@ -15,12 +15,17 @@ function TextForm() {
   const SendingPetitionToServer: string = "Esperando respuesta del servidor...";
   const ServerErrorMessage: string = "Hubo un problema con el envío";
   const myTheme = useTheme();
-  
-  useEffect(() => {
-    // setIsShowingFrom(!activeUSer.userState.inProgress);
-  }, [activeUSer.userState.inProgress]);
+  const [resetDropdown, setResetDropdown] = useState<boolean>(true); // A boolean that is used to trigger the Dropdown's useEffect, so it is resetted.
+  const [isCompactSwitchValue, setIsCompactSwitchValue] = useState<boolean>(false);
 
-  const handleFormClear = () => formRef.current?.reset();
+  useEffect(() => {}, [activeUSer.userState.inProgress]);
+
+  const handleFormClear = () => {
+    formRef.current?.reset();
+    setIsCompactSwitchValue(false);
+    setResetDropdown(!resetDropdown);
+    setAlertToShow({ message: "don't show", type: alertTypes.info });
+  };
 
   const handleSumbit = async (event: FormEvent) => {
     event.preventDefault();
@@ -30,7 +35,6 @@ function TextForm() {
     const language: string = formData.get("language") as string;
     const title: string = formData?.get("optionalTitle") as string;
     alertMessagesHandler(setAlertToShow, SendingPetitionToServer, alertTypes.info);
-    console.log(language);
     handleServerQuerry(text, title, isCompact, language);
   };
 
@@ -77,7 +81,9 @@ function TextForm() {
                   <FormControlLabel
                     className="FormSwitchInputs"
                     name="CompactSummarySwitch"
-                    control={<Switch />}
+                    control={
+                      <Switch checked={isCompactSwitchValue} onChange={() => setIsCompactSwitchValue(!isCompactSwitchValue)} />
+                    }
                     label="Resumen Compacto"
                   />
                 </Container>
@@ -87,6 +93,7 @@ function TextForm() {
                   name="language"
                   placeHolderItem="Sleccione un idioma..."
                   label="Idioma del Resumen"
+                  toReset={resetDropdown}
                 >
                   {[
                     { name: "Español", code: "ES" },
@@ -105,16 +112,22 @@ function TextForm() {
                   variant="outlined"
                 />
                 <Container className="FormButtonsContainer">
-                  <Button className="GenerateSummaryButton" variant="contained" type="submit" onClick={() => handleSumbit} sx={{ backgroundColor: myTheme.palette.my.list}}>
+                  <Button
+                    className="GenerateSummaryButton"
+                    variant="contained"
+                    type="submit"
+                    onClick={() => handleSumbit}
+                    sx={{ backgroundColor: myTheme.palette.my.list }}
+                  >
                     Generar
                   </Button>
-                  <Button className="ClearSummaryButton" variant="text" color="error" type="reset" onClick={() => handleFormClear}>
+                  <Button className="ClearSummaryButton" variant="text" color="error" onClick={() => handleFormClear()}>
                     Borrar
                   </Button>
                 </Container>
               </Container>
             </Box>
-            <Container className="RightContent FormTextImagen"></Container> 
+            <Container className="RightContent FormTextImagen"></Container>
           </Container>
         </Paper>
       );

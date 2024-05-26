@@ -21,3 +21,9 @@
 .MuiTextField-root.SearchBox{
     width: 100%;
 }
+
+
+.MuiAvatar-root.avatarForListItem{
+height: 60px;
+width: 60px;
+}

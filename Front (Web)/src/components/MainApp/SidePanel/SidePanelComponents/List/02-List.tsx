@@ -6,6 +6,8 @@ import "./List&Handler.css";
 import placeholderImage from "../../../../../assets/Logo.png";
 import { LoggedUserContext } from "../../../../../ActiveUserContext.ts";
 import SearchBox from "./06-SearchBox.tsx";
+import placeholderAvatar from "../../../../../assets/PlaceHolderAvatar2.png";
+import { URLforBinaryImage } from "../../../../../Services/URLforBinaryImage.ts";
 
 function ListForAccordion() {
   const currentlyLoggedUsuer = useContext(LoggedUserContext).userState;
@@ -28,7 +30,7 @@ function ListForAccordion() {
             <ListItem key={itm.idres}>
               <SummaryListItem
                 thisItemRating={itm.points}
-                image={itm.miniatura}
+                image={itm.thumbnail ? URLforBinaryImage(itm.thumbnail) : placeholderAvatar}
                 title={itm.title}
                 idRes={itm.idres}
                 isFavourite={itm.isFavourite}

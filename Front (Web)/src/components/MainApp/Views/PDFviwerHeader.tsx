@@ -3,27 +3,14 @@ import StarCounter from "../StarCounter/StarCounter";
 import "./View.css";
 import { Summary } from "../../../Services/Types/UserTypes";
 import placeholderAvatar from "../../../assets/PlaceHolderAvatar2.png";
+import { URLforBinaryImage } from "../../../Services/URLforBinaryImage";
 
 function PDFviwerHeader({ thumbnail, title, points, isFavourite, idres }: Summary) {
-  const binarytoBlob = (data: string) => {
-    const byteArray = Uint8Array.from(data, (c) => c.charCodeAt(0));
-    return new Blob([byteArray], { type: "image/jpg" });
-  };
-
-  const urlforBlob = (data: Blob) => {
-    const url = URL.createObjectURL(data);
-    return url;
-  };
-
-  const urlForThumbnail = () => {
-    return urlforBlob(binarytoBlob(thumbnail));
-  };
-
   return (
     <>
       {idres != "-1" && (
         <Container className="HeaderItemsConatiner">
-          <Avatar className="PDFviewrHeadAvatar" src={thumbnail ? urlForThumbnail() : placeholderAvatar}></Avatar>
+          <Avatar className="PDFviewrHeadAvatar" src={thumbnail ? URLforBinaryImage(thumbnail) : placeholderAvatar}></Avatar>
           <Typography className="SummaryTitle" variant="h4" textAlign="left">
             {title}
           </Typography>

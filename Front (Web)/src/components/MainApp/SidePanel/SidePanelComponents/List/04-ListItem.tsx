@@ -31,7 +31,7 @@ function SummaryListItem({ thisItemRating = 0, image, title, idRes, isFavourite 
   return (
     <Container className="ListItemContainer">
       <Container className="ItemAndTitleContainer">
-        <Avatar src={image}></Avatar>
+        <Avatar className="avatarForListItem" src={image}></Avatar>
         <Container className="TitleAndCounterContainer">
           <Tooltip title={title} placement="top-end">
             <Typography className="ListItemTitle" variant="h6" textAlign="left">

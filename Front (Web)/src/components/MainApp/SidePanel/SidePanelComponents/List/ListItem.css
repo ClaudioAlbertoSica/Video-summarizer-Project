@@ -31,10 +31,11 @@ margin-left: 10px;
 }
 
 .MuiContainer-root.TitleAndCounterContainer{
-width: 100%;
-padding: 10px;
-margin: 0px;
-margin-left: 10px;
+    width: 100%;
+    padding-left: 10px;
+    margin: 0px;
+    margin-left: 10px;
+    padding-right: 0px;
 }
 
 .MuiContainer-root.IconButtonContainer{

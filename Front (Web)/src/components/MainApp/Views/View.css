@@ -7,11 +7,13 @@
 
 .MuiTypography-root.ViewSubTitle{
     margin-bottom: 10px;
-    font-weight: bold;
+    font-weight: 400;
+    font-size: 1rem;
 }
 
 .MuiTypography-root.ViewInfo{
     margin-bottom: 20px;
+    font-style: italic;
 }
 
 .MuiContainer-root.AlertsContainerViews{
@@ -62,6 +64,22 @@
 
 .MuiContainer-root.FAQImagen{
     background-image: url(/src/assets/FAQD.gif);
+}
+
+.MuiContainer-root.WorkingResume{
+    background-image: url(/src/assets/isLoadingD.gif);
+}
+
+.MuiContainer-root.HelpImage{
+    background-image: url(/src/assets/Help.gif);
+}
+
+.MuiContainer-root.CommentsImage{
+    background-image: url(/src/assets/Comments.gif);
+}
+
+.MuiContainer-root.AccountDataImage{
+    background-image: url(/src/assets/Me.gif);
 }
 
 .MuiBox-root.FormBoxView{

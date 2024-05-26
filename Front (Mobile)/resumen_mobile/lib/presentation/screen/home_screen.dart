@@ -149,8 +149,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
 class _StackLayoutHome extends ConsumerWidget {
   // ME TRAJE LAS LISTAS DE IMÁGENES
   final double screenHeight;
-  final List<String> imageNames = ['home1.gif','home2.gif', 'home3.gif', 'home4.gif'];
-  final List<String> imageDark = ['dome1.gif','dome1.gif', 'dome3.gif', 'dome4.gif'];
+  final List<String> imageNames = ['home1.gif'];
+  final List<String> imageDark = ['dome1.gif'];
 
   _StackLayoutHome({
     super.key,

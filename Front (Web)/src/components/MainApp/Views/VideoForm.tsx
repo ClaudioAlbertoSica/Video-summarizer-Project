@@ -15,11 +15,19 @@ function VideoForm() {
   const SendingPetitionToServer: string = "Esperando respuesta del servidor...";
   const ServerErrorMessage: string = "Hubo un problema con el envío";
   const myTheme = useTheme();
+  const [resetDropdown, setResetDropdown] = useState<boolean>(true); // A boolean that is used to trigger the Dropdown's useEffect, so it is resetted.
+  const [isCompactSwitchValue, setIsCompactSwitchValue] = useState<boolean>(false);
+
   useEffect(() => {
     // setIsShowingFrom(!activeUSer.userState.inProgress);
   }, [activeUSer.userState.inProgress]);
 
-  const handleFormClear = () => formRef.current?.reset();
+  const handleFormClear = () => {
+    formRef.current?.reset();
+    setIsCompactSwitchValue(false);
+    setResetDropdown(!resetDropdown);
+    setAlertToShow({ message: "don't show", type: alertTypes.info });
+  };
 
   const handleSumbit = async (event: FormEvent) => {
     event.preventDefault();
@@ -81,7 +89,9 @@ function VideoForm() {
                     className="FormSwitchInputs"
                     id="CompactSummarySwitch"
                     name="CompactSummarySwitch"
-                    control={<Switch />}
+                    control={
+                      <Switch checked={isCompactSwitchValue} onChange={() => setIsCompactSwitchValue(!isCompactSwitchValue)} />
+                    }
                     label="Resumen Compacto"
                   />
                   {/*<FormControlLabel
@@ -103,6 +113,7 @@ function VideoForm() {
                   name="language"
                   placeHolderItem="Sleccione un idioma..."
                   label="Idioma del Resumen"
+                  toReset={resetDropdown}
                 >
                   {[
                     { name: "Español", code: "ES" },
@@ -121,10 +132,16 @@ function VideoForm() {
                   variant="outlined"
                 />
                 <Container className="FormButtonsContainer">
-                  <Button className="GenerateSummaryButton" variant="contained" type="submit" onClick={() => handleSumbit} sx={{ backgroundColor: myTheme.palette.my.list}}>
+                  <Button
+                    className="GenerateSummaryButton"
+                    variant="contained"
+                    type="submit"
+                    onClick={() => handleSumbit}
+                    sx={{ backgroundColor: myTheme.palette.my.list }}
+                  >
                     Generar
                   </Button>
-                  <Button className="ClearSummaryButton" variant="text" color="error" type="reset" onClick={() => handleFormClear}>
+                  <Button className="ClearSummaryButton" variant="text" color="error" onClick={() => handleFormClear()}>
                     Borrar
                   </Button>
                 </Container>

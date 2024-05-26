@@ -3,13 +3,22 @@ import StarCounter from "../StarCounter/StarCounter";
 import "./View.css";
 import { Summary } from "../../../Services/Types/UserTypes";
 
-function PDFviwerHeader({ miniatura, title, points, isFavourite, idres }: Summary) {
+function PDFviwerHeader({ thumbnail, title, points, isFavourite, idres }: Summary) {
+  const binarytoBlob = (data: string) => {
+    const byteArray = Uint8Array.from(data, (c) => c.charCodeAt(0));
+    return new Blob([byteArray], { type: "image/jpg" });
+  };
+
+  const urlforBlob = (data: Blob) => {
+    const url = URL.createObjectURL(data);
+    return url;
+  };
+
   return (
     <>
-      {" "}
       {idres != "-1" && (
         <Container className="HeaderItemsConatiner">
-          <Avatar src={miniatura} sx={{ width: 55, height: 55, marginRight: "15px" }}></Avatar>
+          <Avatar className="PDFviewrHeadAvatar" src={urlforBlob(binarytoBlob(thumbnail))}></Avatar>
           <Typography className="SummaryTitle" variant="h4" textAlign="left">
             {title}
           </Typography>

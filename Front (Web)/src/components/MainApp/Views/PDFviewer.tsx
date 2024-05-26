@@ -6,7 +6,7 @@ import "./View.css";
 import { Container } from "@mui/material";
 import PDFviwerHeader from "./PDFviwerHeader.tsx";
 import { Summary } from "../../../Services/Types/UserTypes.ts";
-import { SelectedSummaryContext } from "../SelectedSummaryContext.ts";
+import { SelectedSummaryContext, defaultSummary } from "../SelectedSummaryContext.ts";
 
 type pdfInResponse = {
   pdf: pdf;
@@ -23,7 +23,7 @@ export type ServerSummaryResponse = Summary & pdfInResponse;
 function PDFviewer() {
   const activeUSer = useContext(LoggedUserContext);
   const [documentToShow, setDocumentToShow] = useState<Blob>(new Blob());
-  const currentDocument = useRef<Summary>();
+  const currentDocument = useRef<Summary>(defaultSummary);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const summaryContext = useContext(SelectedSummaryContext);
 
@@ -54,7 +54,9 @@ function PDFviewer() {
 
   return (
     <Container className="ContainerForPDFViewr">
-      <Container className="ContainerForPDFViewrHeader">{!isLoading && <PDFviwerHeader {...summaryContext.State} />}</Container>
+      <Container className="ContainerForPDFViewrHeader">
+        {!isLoading && <PDFviwerHeader {...currentDocument.current} />}
+      </Container>
       <Container className="containerForPDFViewrEmbededs">
         {isLoading ? (
           <img className="embededPDFViewrLoader" src={isloadingGif} title="Titulo" />

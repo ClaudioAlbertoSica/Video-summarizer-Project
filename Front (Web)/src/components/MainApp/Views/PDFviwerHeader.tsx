@@ -6,7 +6,6 @@ import { Summary } from "../../../Services/Types/UserTypes";
 function PDFviwerHeader({ thumbnail, title, points, isFavourite, idres }: Summary) {
   return (
     <>
-      {console.log(thumbnail)}
       {idres != "-1" && (
         <Container className="HeaderItemsConatiner">
           <Avatar className="PDFviewrHeadAvatar" src={thumbnail}></Avatar>

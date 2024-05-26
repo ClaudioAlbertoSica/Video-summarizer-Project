@@ -54,6 +54,7 @@ class ModelMongoDB {
                     usuario.passwd = String(usuario.passwd)
                     usuario.inventario = []
                     usuario.inProgress = false
+                    usuario.provisoria = false
                     usuario.config = {
                         isDark:false
                     }

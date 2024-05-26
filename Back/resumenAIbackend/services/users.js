@@ -352,15 +352,15 @@ class Servicio {
             const thumbnailUrl = `https://img.youtube.com/vi/${videoID}/hqdefault.jpg`;
             const response = await axios.get(thumbnailUrl, { responseType: 'stream' });
             await response.data.pipe(fs.createWriteStream('./services/serviciosPython/miniatura/thumbnail.jpg'))
-              .on('finish', () => {
+            .on('finish', () => {
                 console.log('Miniatura guardada exitosamente.');
-              })
-              .on('error', err => {
+            })
+            .on('error', err => {
                 console.error('Error al guardar la miniatura:', err);
-              });
-          } catch (error) {
+            });
+        } catch (error) {
             console.error('Error al descargar la miniatura:', error);
-          }
+        }
     }
 
     thumbABinario = async () => {
@@ -372,6 +372,7 @@ class Servicio {
     //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.
     crearResumenVideo = async (id, url, title, esBreve, idioma, urlOriginal) => {
         try {
+            await this.limpiarVideo()
             const resumenVid = {}
             if (id, url, esBreve, idioma) {
                 await this.actualizarUsuario(id, { inProgress: true })
@@ -413,9 +414,11 @@ class Servicio {
                 console.log('error de ingreso de datos')
             }
         } catch (error) {
-            await this.actualizarUsuario(id, { inProgress: false })
-            await this.limpiarVideo()
+            console.log('estoy entrando al catch')
             console.log(error.message)
+            await this.actualizarUsuario(id, { inProgress: false })
+            //await this.limpiarVideo()
+            
         }
     }
 
@@ -445,6 +448,7 @@ class Servicio {
         const rutaSalida = './services/serviciosPython/textoSalida.txt'
         const resumen = {}
         try {
+            await this.limpiarTexto()
             if (id, texto, esBreve, idioma) {
                 await this.actualizarUsuario(id, { inProgress: true })
                 if (title) {
@@ -487,7 +491,6 @@ class Servicio {
             return resumenNuevo
         } catch (error) {
             await this.actualizarUsuario(id, { inProgress: false })
-            await this.limpiarTexto()
             console.log(error.message)
         }
     }
@@ -504,12 +507,12 @@ class Servicio {
                     await fs.promises.unlink(filePath);
                     console.log(`Deleted file: ${filePath}`);
                 } catch (err) {
-                    console.error(`Error deleting file ${filePath}:`, err);
+                    //console.error(`Error deleting file ${filePath}:`, err);
                 }
             }
             console.log('Finished deleting specified files.');
         } catch (err) {
-            console.error('Error:', err);
+            //console.error('Error:', err);
         }
     };
 
@@ -526,7 +529,7 @@ class Servicio {
                     await fs.promises.unlink(filePath);
                     console.log(`Deleted file: ${filePath}`);
                 } catch (err) {
-                    console.error(`Error deleting file ${filePath}:`, err);
+                    //console.error(`Error deleting file ${filePath}:`, err);
                 }
             }
             const imageFiles = await fs.promises.readdir(imageDirectoryPath);
@@ -540,13 +543,13 @@ class Servicio {
                         console.log(`Deleted image file: ${filePath}`);
                     }
                 } catch (err) {
-                    console.error(`Error deleting image file ${filePath}:`, err);
+                   // console.error(`Error deleting image file ${filePath}:`, err);
                 }
             }
 
             console.log('Finished deleting specified video files and all .png files.');
         } catch (err) {
-            console.error('Error:', err);
+            //console.error('Error:', err);
         }
     }
 
@@ -621,7 +624,7 @@ class Servicio {
                 debugger;
                 let usuarioEncontrado = await this.model.obtenerUsuariosLogin(userName)
                 if (usuarioEncontrado) {
-                    usuarioEncontrado.passwd = 'BOCA'
+                    usuarioEncontrado.passwd = await this.randomizarPass()
                     usuarioEncontrado.provisoria = true
                     const usuarioActualizado = await this.model.actualizarUsuario(usuarioEncontrado.id, usuarioEncontrado)
                     await this.nodeMailer.sendMail(usuarioActualizado.userName, usuarioActualizado.passwd)
@@ -631,6 +634,18 @@ class Servicio {
         } catch (error) {
             throw new Error(error.message)
         }
+    }
+
+    randomizarPass = async (length = 8) => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        let passRandom = '';
+        for (let i = 0; i < length; i++) {
+            await new Promise(resolve => setTimeout(resolve, 0));
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            passRandom += characters[randomIndex];
+        }
+        
+        return passRandom;
     }
 
     obtenerInProgress = async (id) => {
@@ -669,8 +684,10 @@ class Servicio {
         // PARA TRABAJAR LA TRADUCCIÓN DE LOS RESÚMENES.
         // NODEMAILER PARA LA RECUPERACIÓN DE LA CUENTA (¿Forgot your password?).
         * VALIDACIONES (EN GENERAL) - MANEJO DE ERRORES.
-        * PARA OBTENER LA MINIATURA DEL VIDEO DE YOUTUBE Y VER CÓMO LA PERSISTIMOS EN LA BD
+        // PARA OBTENER LA MINIATURA DEL VIDEO DE YOUTUBE Y VER CÓMO LA PERSISTIMOS EN LA BD
         *UN MÉTODO QUE CONVIERTA PDF A DOCX.
+        //AGREGAR PASSWORD PROVISORIA
+        //AGREGAR PROPIEDAD PROVISORIA AL CREARUSUARIO
         * EL USUARIO DEBERÁ TENER LAS SIGUIENTES PROPIEDADES:
             usuario:  {
                 _id: id de mongo

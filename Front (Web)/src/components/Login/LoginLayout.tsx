@@ -4,8 +4,8 @@ import "./LoginLayout.css";
 import LoginModal from "./Modals/LoginModal.tsx";
 import CreateAccountModal from "./Modals/CreateAccountModal.tsx";
 import PasswordResetModal from "./Modals/PasswordResetModal.tsx";
-import { LoggedUser } from "../../ActiveUserContext.ts";
 import { ModalNames, ImTheActiveModal } from "./Modals/ImTheActiveModal.ts";
+import { LoggedUser } from "../../Services/Types/UserTypes.ts";
 
 export interface SetLoggedUser {
   setUser: (user: LoggedUser) => void;

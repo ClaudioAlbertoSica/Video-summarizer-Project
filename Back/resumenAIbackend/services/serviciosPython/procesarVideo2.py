@@ -44,9 +44,10 @@ def armarResumen(texto, esBreve, idioma):
     if (esBreve == 1):    
         petition = "Hola! Por favor: dado el siguiente texto: " +texto+" me podrías generar un breve resumen en " + idioma +  " de lo que trata el texto? Es la transcripcion de un video, y quiero un resumen apto para facilitarle la vida a un estudiante"
     else:
-        petition = "Hola! Por favor: dado el siguiente texto: " +texto+" me podrías generar un resumen completo y detallado " + idioma + " de lo que trata el texto? Es la transcripcion de un video, y quiero un resumen apto para facilitarle la vida a un estudiante. Por favor, no escatimes en tecnicismos y explicaciones profundas del tema. Necesito que el resumen tenga una carilla de longitud un poco más de 2000 caracteres"
+        petition = "Hola! Por favor: dado el siguiente texto: " +texto+" me podrías generar un resumen completo y detallado " + idioma + " de lo que trata el texto? Es la transcripcion de un video, y quiero un resumen apto para facilitarle la vida a un estudiante. Por favor, no escatimes en tecnicismos y explicaciones profundas del tema. Necesito que el resumen tenga una carilla de longitud un poco más de 2000 caracteres."
     genai.configure(api_key=APIkey)
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel(model_name='gemini-pro', #generation_config=generation_config, 
+    safety_settings=safety_settings)
     response = model.generate_content(petition)
 
     with open("./services/serviciosPython/resumenSalida.txt", "w", encoding= "utf-8") as f:

@@ -2,6 +2,7 @@ import { Avatar, Container, Typography } from "@mui/material";
 import StarCounter from "../StarCounter/StarCounter";
 import "./View.css";
 import { Summary } from "../../../Services/Types/UserTypes";
+import placeholderAvatar from "../../../assets/PlaceHolderAvatar2.png";
 
 function PDFviwerHeader({ thumbnail, title, points, isFavourite, idres }: Summary) {
   const binarytoBlob = (data: string) => {
@@ -14,11 +15,15 @@ function PDFviwerHeader({ thumbnail, title, points, isFavourite, idres }: Summar
     return url;
   };
 
+  const urlForThumbnail = () => {
+    return urlforBlob(binarytoBlob(thumbnail));
+  };
+
   return (
     <>
       {idres != "-1" && (
         <Container className="HeaderItemsConatiner">
-          <Avatar className="PDFviewrHeadAvatar" src={urlforBlob(binarytoBlob(thumbnail))}></Avatar>
+          <Avatar className="PDFviewrHeadAvatar" src={thumbnail ? urlForThumbnail() : placeholderAvatar}></Avatar>
           <Typography className="SummaryTitle" variant="h4" textAlign="left">
             {title}
           </Typography>

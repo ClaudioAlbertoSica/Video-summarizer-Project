@@ -5,10 +5,13 @@ import { LoggedUserContext } from "../../../../ActiveUserContext";
 import { SelectedSummaryContext, defaultSummary } from "../../SelectedSummaryContext";
 import server from "../../../../../src/Services/serverCall.ts";
 import { LoggedUser, Summary } from "../../../../Services/Types/UserTypes.ts";
+import { ButtonViewContext } from "../../ButtonViewContext.ts";
+import { ValidViewNames } from "../../Views/ImTheActiveView.ts";
 
 function Trash() {
   const loggedUser = useContext(LoggedUserContext);
   const summaryContext = useContext(SelectedSummaryContext);
+  const setSelectedCentralPanelView = useContext(ButtonViewContext);
 
   const handleClick = async () => {
     const idresSelected = summaryContext.State.idres;
@@ -21,6 +24,7 @@ function Trash() {
         newUserContext.inventario.splice(selectedResDBindex, 1);
         loggedUser.userSteState(newUserContext);
         summaryContext.SetState(defaultSummary);
+        setSelectedCentralPanelView(ValidViewNames.noneSelected);
       })
       .catch((err) => {
         console.log(err.error);

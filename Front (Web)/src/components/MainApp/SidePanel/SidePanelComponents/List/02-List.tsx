@@ -18,7 +18,7 @@ function ListForAccordion() {
   const listToShow = () => {
     let objetcToReturn: ReactElement[] = [
       <ListItem key={"Nothing to show"}>
-        <ListItemPlaceholder image={placeholderImage} title="No summaries yet" />
+        <ListItemPlaceholder image={placeholderImage} title="Sin resúmenes" />
       </ListItem>,
     ];
 

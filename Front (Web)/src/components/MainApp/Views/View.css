@@ -37,17 +37,7 @@
     margin-left: 0;
 }
 
-.MuiContainer-root.FormVideoImagen{
-    background-image: url(/src/assets/formVideoResumenBackgroundD.gif);
-    background-position: center;
-    min-width: 570px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.MuiContainer-root.FormTextImagen{
+.MuiContainer-root.RightContent{
     background-image: url(/src/assets/formTextResumenBackgroundD.gif);
     background-position: center;
     background-size: cover;
@@ -55,6 +45,23 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     background-repeat: no-repeat;
+    border-left: 1px dotted grey;
+}
+
+.MuiContainer-root.FormVideoImagen{
+    background-image: url(/src/assets/formVideoResumenBackgroundD.gif);
+}
+
+.MuiContainer-root.FormTextImagen{
+    background-image: url(/src/assets/formTextResumenBackgroundD.gif);
+}
+
+.MuiContainer-root.FormChangePassImagen{
+    background-image: url(/src/assets/accountScreenD.gif);
+}
+
+.MuiContainer-root.FAQImagen{
+    background-image: url(/src/assets/FAQD.gif);
 }
 
 .MuiBox-root.FormBoxView{
@@ -63,7 +70,12 @@
     min-width: 510px;
     padding: 20px;
     align-items: flex-start;
-    border-right: 1px dotted grey;
+}
+
+.LeftContent {
+    min-width: 510px;
+    padding: 20px;
+    align-items: flex-start;
 }
 
 .MuiFormControl-root.FormInputsViews{

@@ -57,7 +57,7 @@ function VideoForm() {
     if (bol) {
       elementtoReturn = (
         <Paper className="ViewWrapper" elevation={5}>
-          <Container className="FormFlexPostal"> 
+          <Container className="FormFlexPostal">
             <Box className="FormBoxView" component="form" ref={formRef} onSubmit={handleSumbit}>
               <Typography className="ViewTitle" variant="h4" sx={{ margin: "0px", marginBottom: "0px" }}>
                 Generá tu resumen (Video)
@@ -130,7 +130,7 @@ function VideoForm() {
                 </Container>
               </Container>
             </Box>
-            <Container className="FormVideoImagen"></Container> 
+            <Container className="RightContent FormVideoImagen"></Container>
           </Container>
         </Paper>
       );

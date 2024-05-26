@@ -6,7 +6,7 @@ export const defaultSummary: Summary = {
     idres: "-1",
     title: "",
     points: 0,
-    miniatura: "",
+    thumbnail: "",
     isFavourite: false,
 }
 

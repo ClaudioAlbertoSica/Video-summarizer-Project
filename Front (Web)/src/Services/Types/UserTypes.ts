@@ -43,7 +43,7 @@ export type DBuser ={
         idres: string;
         title: string;
         points: number;
-        miniatura: string;
+        thumbnail: string;
         isFavourite: boolean
         }
 

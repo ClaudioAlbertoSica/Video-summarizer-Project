@@ -16,21 +16,21 @@ export const placeholderUser: LoggedUser = Object.freeze({
         title: "placeholder1",
         points: 0,
         isFavourite: true,
-        miniatura: "./assets/Logo.png",
+        thumbnail: "./assets/Logo.png",
         },
         {
             idres: "2",
             title: "placeholder2",
             points: 3,
             isFavourite: false,
-            miniatura: "./assets/Logo.png",
+            thumbnail: "./assets/Logo.png",
             },],
     selectedSummary: {
         idres: "-1",
         title: "PlaceHolder Title",
         points: 4,
         isFavourite: false,
-        miniatura: "./assets/Logo.png",
+        thumbnail: "./assets/Logo.png",
         },
     })
 

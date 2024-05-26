@@ -54,9 +54,7 @@ function PDFviewer() {
 
   return (
     <Container className="ContainerForPDFViewr">
-      <Container className="ContainerForPDFViewrHeader">
-        {!isLoading && <PDFviwerHeader {...currentDocument.current} />}
-      </Container>
+      <Container className="ContainerForPDFViewrHeader">{!isLoading && <PDFviwerHeader {...summaryContext.State} />}</Container>
       <Container className="containerForPDFViewrEmbededs">
         {isLoading ? (
           <img className="embededPDFViewrLoader" src={isloadingGif} title="Titulo" />

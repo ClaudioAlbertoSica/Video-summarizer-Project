@@ -2,15 +2,14 @@ import { Avatar, Container, Typography } from "@mui/material";
 import StarCounter from "../StarCounter/StarCounter";
 import "./View.css";
 import { Summary } from "../../../Services/Types/UserTypes";
-import placeholderAvatar from "../../../assets/PlaceHolderAvatar2.png";
-import { URLforBinaryImage } from "../../../Services/URLforBinaryImage";
 
 function PDFviwerHeader({ thumbnail, title, points, isFavourite, idres }: Summary) {
   return (
     <>
+      {console.log(thumbnail)}
       {idres != "-1" && (
         <Container className="HeaderItemsConatiner">
-          <Avatar className="PDFviewrHeadAvatar" src={thumbnail ? URLforBinaryImage(thumbnail) : placeholderAvatar}></Avatar>
+          <Avatar className="PDFviewrHeadAvatar" src={thumbnail}></Avatar>
           <Typography className="SummaryTitle" variant="h4" textAlign="left">
             {title}
           </Typography>

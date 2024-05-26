@@ -29,10 +29,10 @@ function ListForAccordion() {
           itemToReturn = (
             <ListItem key={itm.idres}>
               <SummaryListItem
-                thisItemRating={itm.points}
-                image={itm.thumbnail ? URLforBinaryImage(itm.thumbnail) : placeholderAvatar}
+                points={itm.points}
+                thumbnail={itm.thumbnail ? URLforBinaryImage(itm.thumbnail) : placeholderAvatar}
                 title={itm.title}
-                idRes={itm.idres}
+                idres={itm.idres}
                 isFavourite={itm.isFavourite}
               />
             </ListItem>

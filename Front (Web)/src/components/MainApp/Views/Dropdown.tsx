@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, useTheme } from "@mui/material";
 import { useState } from "react";
 import "./View.css";
 import styles from "./Dropdown.module.css";
@@ -19,7 +19,7 @@ export type Language = {
 
 function Dropdown({ id, name, label, placeHolderItem, required = false, children }: Props) {
   const [value, setValue] = useState("");
-
+  const myTheme = useTheme();
   const handleChange = (event: SelectChangeEvent) => {
     setValue(event.target.value);
   };
@@ -37,6 +37,7 @@ whith the sufixes "Form", "Slect" and "Item"*/
         labelId={`${label}-helper`}
         label={label}
         onChange={handleChange}
+        sx={{ backgroundColor: myTheme.palette.my.greyModalBg}}
       >
         <MenuItem className={styles.Item} value="">
           <em>{placeHolderItem}</em>

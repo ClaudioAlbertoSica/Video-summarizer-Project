@@ -1,4 +1,4 @@
-import { TextField, Box, Button, Container, Typography, Alert, Paper, FormControlLabel, Switch } from "@mui/material";
+import { TextField, Box, Button, Container, Typography, Alert, Paper, FormControlLabel, Switch, useTheme } from "@mui/material";
 import "./View.css";
 import { FormEvent, ReactElement, useContext, useEffect, useRef, useState } from "react";
 import Dropdown from "./Dropdown";
@@ -14,7 +14,7 @@ function VideoForm() {
   const ConfirmationMessage: string = "Solicitud enviada con éxito";
   const SendingPetitionToServer: string = "Esperando respuesta del servidor...";
   const ServerErrorMessage: string = "Hubo un problema con el envío";
-
+  const myTheme = useTheme();
   useEffect(() => {
     // setIsShowingFrom(!activeUSer.userState.inProgress);
   }, [activeUSer.userState.inProgress]);
@@ -57,78 +57,81 @@ function VideoForm() {
     if (bol) {
       elementtoReturn = (
         <Paper className="ViewWrapper" elevation={5}>
-          <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>
-            <Typography className="ViewTitle" variant="h4" sx={{ margin: "0px", marginBottom: "0px" }}>
-              Generá tu resumen (Video)
-            </Typography>
-            <Container className="AlertsContainerViews">
-              {alertToShow.message !== "don't show" && <Alert severity={alertToShow.type}> {alertToShow.message} </Alert>}
-            </Container>
-            <Container className="InputsContainer">
-              <TextField
-                size="small"
-                className="FormInputsViews"
-                id="AddLink"
-                name="AddLink"
-                label="URL Youtube Link"
-                type="url"
-                variant="outlined"
-                required
-              />
-              <Container className="SwitchsContainer">
-                <FormControlLabel
-                  className="FormSwitchInputs"
-                  id="CompactSummarySwitch"
-                  name="CompactSummarySwitch"
-                  control={<Switch />}
-                  label="Resumen Compacto"
-                />
-                {/*<FormControlLabel
-                  className="FormSwitchInputs"
-                  name="TranscriptionSwitch"
-                  control={<Switch />}
-                  label="Obtener Transcripción"
-                />
-                <FormControlLabel
-                  className="FormSwitchInputs"
-                  name="ImagesSwitch"
-                  control={<Switch />}
-                  label="Obtener Imágenes"
-      />*/}
+          <Container className="FormFlexPostal"> 
+            <Box className="FormBoxView" component="form" ref={formRef} onSubmit={handleSumbit}>
+              <Typography className="ViewTitle" variant="h4" sx={{ margin: "0px", marginBottom: "0px" }}>
+                Generá tu resumen (Video)
+              </Typography>
+              <Container className="AlertsContainerViews">
+                {alertToShow.message !== "don't show" && <Alert severity={alertToShow.type}> {alertToShow.message} </Alert>}
               </Container>
-              <Dropdown
-                required={true}
-                id="language"
-                name="language"
-                placeHolderItem="Sleccione un idioma..."
-                label="Idioma del Resumen"
-              >
-                {[
-                  { name: "Español", code: "ES" },
-                  { name: "Francés", code: "FR" },
-                  { name: "Inglés", code: "EN" },
-                  { name: "Portugués", code: "PT" },
-                ]}
-              </Dropdown>
-              <TextField
-                size="small"
-                className="FormInputsViews"
-                id="optionalTitle"
-                name="optionalTitle"
-                label="Ingrese un título (opcional)"
-                type="text"
-                variant="outlined"
-              />
-              <Container className="FormButtonsContainer">
-                <Button className="GenerateSummaryButton" variant="contained" type="submit" onClick={() => handleSumbit}>
-                  Generar
-                </Button>
-                <Button className="ClearSummaryButton" variant="text" color="error" type="reset" onClick={() => handleFormClear}>
-                  Borrar
-                </Button>
+              <Container className="InputsContainer">
+                <TextField
+                  size="small"
+                  className="FormInputsViews"
+                  id="AddLink"
+                  name="AddLink"
+                  label="URL Youtube Link"
+                  type="url"
+                  variant="outlined"
+                  required
+                />
+                <Container className="SwitchsContainer">
+                  <FormControlLabel
+                    className="FormSwitchInputs"
+                    id="CompactSummarySwitch"
+                    name="CompactSummarySwitch"
+                    control={<Switch />}
+                    label="Resumen Compacto"
+                  />
+                  {/*<FormControlLabel
+                    className="FormSwitchInputs"
+                    name="TranscriptionSwitch"
+                    control={<Switch />}
+                    label="Obtener Transcripción"
+                  />
+                  <FormControlLabel
+                    className="FormSwitchInputs"
+                    name="ImagesSwitch"
+                    control={<Switch />}
+                    label="Obtener Imágenes"
+        />*/}
+                </Container>
+                <Dropdown
+                  required={true}
+                  id="language"
+                  name="language"
+                  placeHolderItem="Sleccione un idioma..."
+                  label="Idioma del Resumen"
+                >
+                  {[
+                    { name: "Español", code: "ES" },
+                    { name: "Francés", code: "FR" },
+                    { name: "Inglés", code: "EN" },
+                    { name: "Portugués", code: "PT" },
+                  ]}
+                </Dropdown>
+                <TextField
+                  size="small"
+                  className="FormInputsViews"
+                  id="optionalTitle"
+                  name="optionalTitle"
+                  label="Ingrese un título (opcional)"
+                  type="text"
+                  variant="outlined"
+                />
+                <Container className="FormButtonsContainer">
+                  <Button className="GenerateSummaryButton" variant="contained" type="submit" onClick={() => handleSumbit} sx={{ backgroundColor: myTheme.palette.my.list}}>
+                    Generar
+                  </Button>
+                  <Button className="ClearSummaryButton" variant="text" color="error" type="reset" onClick={() => handleFormClear}>
+                    Borrar
+                  </Button>
+                </Container>
               </Container>
-            </Container>
-          </Box>
+            </Box>
+            <Container className="FormVideoImagen"></Container> 
+          </Container>
         </Paper>
       );
     }

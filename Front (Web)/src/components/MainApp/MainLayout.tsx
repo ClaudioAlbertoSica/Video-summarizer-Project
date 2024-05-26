@@ -69,7 +69,7 @@ function GridLayout({ isProvisoryPassword }: InitialInfo) {
     <SelectedSummaryContext.Provider value={{ State: selectedSummary, SetState: setSelectedSummary }}>
       <ButtonViewContext.Provider value={setSelectedCentralPanelView}>
         <Container className="ExternalContainer">
-          <Container className="SidePanelContainer" sx={{ backgroundColor: myTheme.palette.my.sidePanelBg }}>
+          <Container className="SidePanelContainer" sx={{ backgroundColor: myTheme.palette.my.header}}>
             <SidePanel />
           </Container>
 
@@ -93,7 +93,7 @@ function GridLayout({ isProvisoryPassword }: InitialInfo) {
           The code makes use of the ImTheActiveView() function, that will only be true for the desired View.
           Close Button below shoots "noneSelected", so no view (and no button) is displayed at all.
           */}
-            <Grid className="CentralPanel" item xs={12}>
+            <Grid className="CentralPanel" item xs={12} sx={{ backgroundColor: myTheme.palette.my.sidePanelBg}}>
               {checkForForcedView()};
             </Grid>
             <Grid className="FooterGrid" item xs={12}>

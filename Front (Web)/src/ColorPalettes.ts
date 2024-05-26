@@ -8,6 +8,7 @@ declare module "@mui/material/styles" {
     interface Theme {
       palette: {
         my: {
+          greyModalBg: string,
           sidePanelBg: string,
           header: string;
           list: string;
@@ -19,6 +20,7 @@ declare module "@mui/material/styles" {
     interface ThemeOptions {
       paletteOptions?: {
         my?: {
+          greyModalBg?: string,
           sidePanelBg?: string,
           header?: string;
           list?: string;
@@ -48,6 +50,7 @@ declare module "@mui/material/styles" {
               secondary: grey[800],
             },
             my: {
+              greyModalBg: hexToRgb('#3b3940'),
               sidePanelBg: hexToRgb('#448DA3'),
               header: hexToRgb("#9BE8EA"),
               list: hexToRgb("#448DA3"),
@@ -57,7 +60,7 @@ declare module "@mui/material/styles" {
           }
         : {
             // palette values for dark mode
-            primary: deepOrange,
+            primary: grey,
             divider: deepOrange[700],
             background: {
               default: deepOrange[900],
@@ -68,8 +71,9 @@ declare module "@mui/material/styles" {
               secondary: grey[300],
             },
             my: {
+              greyModalBg: hexToRgb('#3b3940'),
               sidePanelBg: hexToRgb('#1e1e1e'),
-              header: hexToRgb("#bf360c"),
+              header: hexToRgb("#121212"),
               list: hexToRgb("#E56C26"),
               listHeader: hexToRgb("#883C10"),
               listItem: hexToRgb("#F3A06E"),

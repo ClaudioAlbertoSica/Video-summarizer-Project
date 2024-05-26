@@ -49,40 +49,40 @@ export default function CustomizedAccordions() {
 
   return (
     <>
-      <Accordion expanded={expanded === "panel1"} onChange={handleChange("panel1")}>
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" sx={{ backgroundColor: myTheme.palette.my.header, borderRadius: '10px', margin: '3px 5px'}}>
+      <Accordion expanded={expanded === "panel1"} onChange={handleChange("panel1")} sx={{ backgroundColor: myTheme.palette.my.header}}>
+        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" sx={{ backgroundColor: myTheme.palette.my.sidePanelBg, borderRadius: '10px', margin: '3px 5px'}}>
           <Typography>Nuevo Resumen</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <NewSummaryButtons />
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === "panel2"} onChange={handleChange("panel2")}>
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header" sx={{ backgroundColor: myTheme.palette.my.header, borderRadius: '10px', margin: '3px 5px' }}>
+      <Accordion expanded={expanded === "panel2"} onChange={handleChange("panel2")} sx={{ backgroundColor: myTheme.palette.my.header}}>
+        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header" sx={{ backgroundColor: myTheme.palette.my.sidePanelBg, borderRadius: '10px', margin: '3px 5px' }}>
           <Typography>Cuenta</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <AccountDataButtons />
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === "panel3"} onChange={handleChange("panel3")}>
-        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header" sx={{ backgroundColor: myTheme.palette.my.header, borderRadius: '10px', margin: '3px 5px' }}>
+      <Accordion expanded={expanded === "panel3"} onChange={handleChange("panel3")} sx={{ backgroundColor: myTheme.palette.my.header}}>
+        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header" sx={{ backgroundColor: myTheme.palette.my.sidePanelBg, borderRadius: '10px', margin: '3px 5px' }}>
           <Typography>Configuración y Ayuda</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <ConfigurationButtons />
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === "panel4"} onChange={handleChange("panel4")}>
-        <AccordionSummary aria-controls="panel4d-content" id="panel4d-header" sx={{ backgroundColor: myTheme.palette.my.header, borderRadius: '10px', margin: '3px 5px' }}>
+      <Accordion expanded={expanded === "panel4"} onChange={handleChange("panel4")} sx={{ backgroundColor: myTheme.palette.my.header}}>
+        <AccordionSummary aria-controls="panel4d-content" id="panel4d-header" sx={{ backgroundColor: myTheme.palette.my.sidePanelBg, borderRadius: '10px', margin: '3px 5px' }}>
           <Typography>Favoritos</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <ListHandler isFavoritesList />
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={expanded === "panel5"} onChange={handleChange("panel5")}>
-        <AccordionSummary aria-controls="panel5d-content" id="panel5d-header" sx={{ backgroundColor: myTheme.palette.my.header, borderRadius: '10px', margin: '3px 5px' }}>
+      <Accordion expanded={expanded === "panel5"} onChange={handleChange("panel5")} sx={{ backgroundColor: myTheme.palette.my.header}}>
+        <AccordionSummary aria-controls="panel5d-content" id="panel5d-header" sx={{ backgroundColor: myTheme.palette.my.sidePanelBg, borderRadius: '10px', margin: '3px 5px' }}>
           <Typography>Historial</Typography>
         </AccordionSummary>
         <AccordionDetails>

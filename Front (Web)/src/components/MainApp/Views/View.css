@@ -1,14 +1,14 @@
 /*TextForm.tsx, and VideoForm.tsx have this in-code modifyed*/
 .MuiTypography-root.ViewTitle{
-margin-bottom: 30px;
-font-weight: bold;
-align-self: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+    align-self: flex-start;
 }
 
 .MuiTypography-root.ViewSubTitle{
     margin-bottom: 10px;
     font-weight: bold;
-    }
+}
 
 .MuiTypography-root.ViewInfo{
     margin-bottom: 20px;
@@ -18,29 +18,56 @@ align-self: center;
     height: 60px;
     padding: 0px;
     min-width: none;
-    margin: 5px;
+    margin: 5px 0;
+    width: 100%;
 }
 
 .MuiContainer-root.InputsContainer{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-left: 0px;
+    width: 100%;
+    padding-left: 0;
 }
 
-.FormBox{
+.MuiContainer-root.FormFlexPostal{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding-right: 0;
+    margin-left: 0;
+}
+
+.MuiContainer-root.FormVideoImagen{
+    background-image: url(/src/assets/formVideoResumenBackgroundD.gif);
+    background-position: center;
+    min-width: 570px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.MuiContainer-root.FormTextImagen{
+    background-image: url(/src/assets/formTextResumenBackgroundD.gif);
+    background-position: center;
+    background-size: cover;
+    min-width: 570px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-repeat: no-repeat;
+}
+
+.MuiBox-root.FormBoxView{
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    width: 100%;
-    height: 100%;
-    align-content: center;
+    min-width: 510px;
+    padding: 20px;
+    align-items: flex-start;
+    border-right: 1px dotted grey;
 }
 
 .MuiFormControl-root.FormInputsViews{
-    width: 50%;
     margin-bottom: 20px;
-    background-color: lightgray;
 }
 
 .MuiFormControl-root.CommentsTitleInputsViews{
@@ -50,21 +77,9 @@ align-self: center;
 }
 
 .MuiPaper-root.ViewWrapper{
-    background-color: rgba(197, 220, 255, 0.8);
-    width: 92%;
-    height: 90%;
-    margin: 20px;
-    margin-bottom: 5px;
-    overflow-y: hidden;
-    border-radius: 30px;
-    overflow-x: hidden;
-    padding: 15px;
+    margin: 80px;
+    border-radius: 20px;
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
 }
 
 /* This is just a wrapper that comes with the MaterialUI Button.
@@ -91,12 +106,12 @@ Touch it with caution. I just used it to kill it's built-in margin */
 .MuiContainer-root.SwitchsContainer{
     display: flex;
     flex-direction: column;
-    width: 50%;
     margin-bottom: 15px;
 }
 
 .MuiButton-root.GenerateSummaryButton{
     margin: 10px;
+    border-radius: 1.3rem;
 }
 
 .MuiButton-root.ClearSummaryButton{
@@ -105,15 +120,16 @@ Touch it with caution. I just used it to kill it's built-in margin */
 
 .MuiContainer-root.FormButtonsContainer{
     display: flex;
-    justify-content: space-around;
-    margin-top: 10px;
+    margin-top: 0.75rem;
+    padding-top: 1rem;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-left: 0;
+    border-top: 1px dotted grey;
 }
 
 
 .MuiFormControl-root.MuiTextField-root.MultiLineInput{
-    width: 80%;
-    background-color: rgba(0, 255, 255, 0.2);
-    margin: 0px;
     margin-bottom: 10px;
 }
 

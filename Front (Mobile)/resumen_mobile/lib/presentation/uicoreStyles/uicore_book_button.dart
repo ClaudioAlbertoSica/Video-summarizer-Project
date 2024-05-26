@@ -114,7 +114,6 @@ Image getImage() {
       try {
         // Decodificar la cadena binaria
         Uint8List bytes = Uint8List.fromList(resumen.thumbnail!.codeUnits);
-
         return Image.memory(
           bytes,
           width: 70,
@@ -125,7 +124,7 @@ Image getImage() {
         print('Error al decodificar la imagen: $e');
         // Si la decodificación falla, retorna un contenedor vacío
         return Image.asset(
-          'assets/images/thumball.jpeg',
+          'assets/images/errorThumbnail.jpeg',
           width: 70,
           height: 70,
           fit: BoxFit.cover,

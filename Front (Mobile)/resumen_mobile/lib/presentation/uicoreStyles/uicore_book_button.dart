@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -108,14 +109,28 @@ class BookButton extends ConsumerWidget {
     return Container();
   }
 
-  Image getImage() {
+Image getImage() {
     if (resumen.thumbnail != null) {
-      return Image.network(
-        resumen.thumbnail!,
-        width: 70,
-        height: 70,
-        fit: BoxFit.cover,
-      );
+      try {
+        // Decodificar la cadena binaria
+        Uint8List bytes = Uint8List.fromList(resumen.thumbnail!.codeUnits);
+
+        return Image.memory(
+          bytes,
+          width: 70,
+          height: 70,
+          fit: BoxFit.cover,
+        );
+      } catch (e) {
+        print('Error al decodificar la imagen: $e');
+        // Si la decodificación falla, retorna un contenedor vacío
+        return Image.asset(
+          'assets/images/thumball.jpeg',
+          width: 70,
+          height: 70,
+          fit: BoxFit.cover,
+        );
+      }
     }
     return Image.asset(
       'assets/images/thumball.jpeg',

@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
+import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ResumenDetailScreen extends ConsumerWidget {
@@ -26,76 +27,88 @@ class ResumenDetailScreen extends ConsumerWidget {
     final idUser = ref.watch(userNotifierProvider).id;
     final idRes = resumen.idres;
     final isDark = ref.watch(userNotifierProvider).isDark;
+    final screenHeight = MediaQuery.of(context).size.height;
     
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: 200,
-                child: InkWell(
-                  onTap: () async {
-                    await completeResumen(idUser, idRes, context);
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: getImage(isDark),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(resumen.title, style: GoogleFonts.ubuntu(fontSize: 24, fontWeight: FontWeight.w700)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: SingleChildScrollView(
+        child: StackLayoutCustomized(
+          screenHeight: screenHeight,
+          colorLight: const Color.fromRGBO(235, 240, 241, 1), 
+          colorDark: const Color.fromRGBO(30, 30, 30, 1) , 
+          imageLigth:'onlyBackgroundWithLogo.png',
+          imageDark:'onlyBackgroundWithLogoD.png',
+          content: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RatingBar.builder(
-                    initialRating: 3,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: 20,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
+                  const SizedBox(height: 40,),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 200,
+                    child: InkWell(
+                      onTap: () async {
+                        await completeResumen(idUser, idRes, context);
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: getImage(isDark),
+                      ),
                     ),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
                   ),
+                  const SizedBox(height: 20),
+                  Text(resumen.title, style: GoogleFonts.ubuntu(fontSize: 24, fontWeight: FontWeight.w700)),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.favorite, color: resumen.isFavourite ? Colors.red : Colors.grey),
-                        onPressed: () {
+                      RatingBar.builder(
+                        initialRating: 3,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 20,
+                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (rating) {
+                          print(rating);
                         },
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.download, color: Colors.blue),
-                        onPressed: () {
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () {
-                        },
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.favorite, color: resumen.isFavourite ? Colors.red : Colors.grey),
+                            onPressed: () {
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.download, color: Colors.blue),
+                            onPressed: () {
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ]
         ),
-      ),
+      )
     );
   }
 

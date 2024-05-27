@@ -156,13 +156,22 @@ class ResumenDetailScreen extends ConsumerWidget {
   Image getImage(isDark) {
     if (resumen.thumbnail != null) {
       try {
-        final thumbnailBytes = base64Decode(resumen.thumbnail!);
-        Uint8List bytes = Uint8List.fromList(thumbnailBytes);
-        return Image.memory(
-          bytes,
+/*         final thumbnailBytes = base64Decode(resumen.thumbnail!);
+        Uint8List bytes = Uint8List.fromList(thumbnailBytes); */
+        return Image.network(
+          resumen.thumbnail!,
           width: double.infinity,
           height: double.infinity,
           fit: BoxFit.cover,
+          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+            // Mostrar una imagen de error si falla la carga
+            return Image.asset(
+              isDark ? 'assets/images/errorThumbnailD.gif' : 'assets/images/errorThumbnail.gif',
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
+            );
+          },
         );
       } catch (e) {
         return Image.asset(

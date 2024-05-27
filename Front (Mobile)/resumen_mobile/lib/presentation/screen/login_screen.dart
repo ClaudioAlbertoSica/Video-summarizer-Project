@@ -41,6 +41,7 @@ class LoginScreen extends ConsumerWidget {
           //MODULARICÉ UN POCO
           _ImagenContainer(screenHeight: screenHeight),
           //MODULARICÉ UN POCO
+          _PositionedFill(),
           Padding(
             padding: const EdgeInsets.all(50.0),
             child: Column(

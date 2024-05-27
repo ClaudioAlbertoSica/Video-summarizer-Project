@@ -8,6 +8,7 @@ class Router {
     }
 
     start() {
+        this.router.post('/:id/sugerencia', this.controlador.enviarSugerencia)
         this.router.post('/recuperar', this.controlador.olvideMiPasswd)
         //this.router.get('/:id?', this.controlador.obtenerUsuarios)
         this.router.get('/:id', this.controlador.obtenerUsuarioResumido)
@@ -24,6 +25,7 @@ class Router {
         this.router.post('/', this.controlador.guardarUsuario)
         this.router.put('/:id', this.controlador.actualizarUsuario)
         this.router.delete('/:id', this.controlador.borrarUsuario)
+        
         //NOS FALTAN: CREAR RESUMEN, ACTUALIZAR CONTRASEÑA
 
         return this.router

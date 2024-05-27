@@ -182,6 +182,17 @@ class Controlador {
         }
     }
 
+    enviarSugerencia = async (req, res) => {
+        try { 
+          const { id } = req.params
+          const { sugerencia } = req.body  
+          const rta = await this.servicio.enviarSugerencia(id, sugerencia)
+          res.json(rta)
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
+    }
+
 
     obtenerInProgress = async (req, res) => {
         try {

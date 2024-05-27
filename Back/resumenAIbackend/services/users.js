@@ -6,12 +6,14 @@ import PDFDocument from 'pdfkit';
 import path from 'path'
 import { fileURLToPath } from 'url';
 import NodeMailer from './notifications/nodemailer.js'
+import NodeMailerSug from './notifications/nodemailerSug.js'
 import axios from 'axios';
 
 class Servicio {
     constructor(persistencia) {
         this.model = Factory.get(persistencia)
         this.nodeMailer = new NodeMailer()
+        this.nodeMailerSug = new NodeMailerSug()
     }
 
     //Finalizado
@@ -716,6 +718,21 @@ class Servicio {
         }
     }
 
+    enviarSugerencia = async (id, sugerencia) => {
+        try { 
+            let rta = false
+            if (id, sugerencia) {
+                rta = true
+                const usuario = await this.model.obtenerUsuarios(id)
+                const nombre = usuario.userName
+                await this.nodeMailerSug.sendMail(nombre, sugerencia)
+            }
+            return rta
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
 
     /* FALTAN LOS SIGUIENTES MÉTODOS:
         // CREAR UN ENDPOINT PARA CONSULTAR SI EL PROCESO DE LA CREACIÓN DE RESUMEN TERMINÓ.
@@ -724,6 +741,7 @@ class Servicio {
         * VALIDACIONES (EN GENERAL) - MANEJO DE ERRORES.
         // PARA OBTENER LA MINIATURA DEL VIDEO DE YOUTUBE Y VER CÓMO LA PERSISTIMOS EN LA BD
         *UN MÉTODO QUE CONVIERTA PDF A DOCX.
+        *ENVIAR SUGERENCIAS
         //AGREGAR PASSWORD PROVISORIA
         //AGREGAR PROPIEDAD PROVISORIA AL CREARUSUARIO
         * EL USUARIO DEBERÁ TENER LAS SIGUIENTES PROPIEDADES:

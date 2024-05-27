@@ -16,17 +16,29 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 
-class LoginScreen extends ConsumerWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   static const String name = 'LoginScreen';
-  //Aca creo que iria un atributo para guardar lo del form o input.
-  final TextEditingController _inputUsernameController = TextEditingController();
-  final TextEditingController _inputPassController = TextEditingController();
-  String errorMessage = '';
 
   LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final TextEditingController _inputUsernameController = TextEditingController();
+  final TextEditingController _inputPassController = TextEditingController();
+  String errorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    imageCache.clear();
+    imageCache.clearLiveImages();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       //resizeToAvoidBottomInset: false,
@@ -106,17 +118,17 @@ class LoginScreen extends ConsumerWidget {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/login');
+      final url = Uri.parse('http://localhost:8080/api/login');
       final response = await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String> {
-          /*'userName': username,
-          'passwd': password,*/
-          "userName": "claudioalbertosica@gmail.com",
-          "passwd": "123",
+          'userName': username,
+          'passwd': password,
+/*           "userName": "marianolegon@gmail.com",
+          "passwd": "123", */
         }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK

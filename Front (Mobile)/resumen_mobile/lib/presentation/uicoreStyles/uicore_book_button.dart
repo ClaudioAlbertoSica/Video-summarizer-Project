@@ -110,7 +110,7 @@ class BookButton extends ConsumerWidget {
   }
 
 Image getImage() {
-    if (resumen.thumbnail != null) {
+    if (resumen.thumbnail != null && resumen.thumbnail != "") {
       try {
         // Decodificar la cadena binaria
         final thumbnailBytes = base64Decode(resumen.thumbnail!);
@@ -125,7 +125,7 @@ Image getImage() {
         print('Error al decodificar la imagen: $e');
         // Si la decodificación falla, retorna un contenedor vacío
         return Image.asset(
-          'assets/images/errorThumbnail.jpeg',
+          'assets/images/errorThumbnail.gif',
           width: 70,
           height: 70,
           fit: BoxFit.cover,
@@ -142,7 +142,7 @@ Image getImage() {
 
   Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });

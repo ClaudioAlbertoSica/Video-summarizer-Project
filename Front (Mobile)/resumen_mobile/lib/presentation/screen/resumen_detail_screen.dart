@@ -35,7 +35,7 @@ class ResumenDetailScreen extends ConsumerWidget {
     
     Future<void> actualizarUsuario(String idUser) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/$idUser');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -166,7 +166,7 @@ class ResumenDetailScreen extends ConsumerWidget {
         );
       } catch (e) {
         return Image.asset(
-          isDark ? 'assets/images/errorThumbnailD.jpeg' : 'assets/images/errorThumbnail.jpeg',
+          isDark ? 'assets/images/errorThumbnailD.gif' : 'assets/images/errorThumbnail.gif',
           width: double.infinity,
           height: double.infinity,
           fit: BoxFit.cover,
@@ -183,7 +183,7 @@ class ResumenDetailScreen extends ConsumerWidget {
 
   Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -209,7 +209,7 @@ class ResumenDetailScreen extends ConsumerWidget {
 
   Future<void> borrarResumen(String idUser, String idRes) async{
   try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.delete(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });

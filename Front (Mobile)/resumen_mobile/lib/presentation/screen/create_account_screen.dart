@@ -119,7 +119,7 @@ class CreateAccountScreen extends StatelessWidget {
     bool createOk = false;
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8080 instead of localhost:8080
-      final url = Uri.parse('http://10.0.2.2:8080/api/');
+      final url = Uri.parse('http://localhost:8080/api/');
       final response = await http.post(
         url,
         headers: <String, String>{

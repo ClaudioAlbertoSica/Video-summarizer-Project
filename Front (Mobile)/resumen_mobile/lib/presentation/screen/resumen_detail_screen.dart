@@ -1,13 +1,17 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
+import 'package:resumen_mobile/entity/user.dart';
+import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
+import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class ResumenDetailScreen extends ConsumerWidget {
@@ -29,6 +33,40 @@ class ResumenDetailScreen extends ConsumerWidget {
     final isDark = ref.watch(userNotifierProvider).isDark;
     final screenHeight = MediaQuery.of(context).size.height;
     
+    Future<void> actualizarUsuario(String idUser) async {
+    try {
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
+      final response = await http.get(url, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+      if (response.statusCode == 200) {
+        final rsp = json.decode(response.body);
+
+        User userActualizado = User(
+            userName: rsp['userName'],
+            id: rsp['id'],
+            inventario: (rsp['inventario'] as List)
+              .map((item) => ResumenPreview.fromJson(item))
+              .toList(), 
+            inProgress: rsp['inProgress'],
+            isDark: rsp['config']['isDark']
+          );
+
+          ref.read(resumenNotifierProvider.notifier).changeList(userActualizado.inventario);
+          ref.read(userNotifierProvider.notifier).setUserLogin(userActualizado);
+      } else {
+        
+          errorMessage = json.decode(response.body)['error'];
+        
+      }
+    } catch (error) {
+      
+        errorMessage = 'Error: Connection ERROR - Server not found';
+    
+    }
+  }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -96,7 +134,10 @@ class ResumenDetailScreen extends ConsumerWidget {
                           ),
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
+                            onPressed: () async {
+                              await borrarResumen(idUser, idRes);
+                              await actualizarUsuario(idUser);
+                              context.goNamed(LoadingScreen.name, extra: 'Resumen Eliminado! Redirigiendo al Home...');
                             },
                           ),
                         ],
@@ -115,8 +156,8 @@ class ResumenDetailScreen extends ConsumerWidget {
   Image getImage(isDark) {
     if (resumen.thumbnail != null) {
       try {
-        Uint8List bytes = Uint8List.fromList(resumen.thumbnail!.codeUnits);
-
+        final thumbnailBytes = base64Decode(resumen.thumbnail!);
+        Uint8List bytes = Uint8List.fromList(thumbnailBytes);
         return Image.memory(
           bytes,
           width: double.infinity,
@@ -165,4 +206,22 @@ class ResumenDetailScreen extends ConsumerWidget {
       errorMessage = 'Error: Connection ERROR - Server not found';
     }
   }
+
+  Future<void> borrarResumen(String idUser, String idRes) async{
+  try {
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
+      final response = await http.delete(url, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+      if (response.statusCode == 200) {
+        print('Respuesta del servidor: ${response.body}');
+      } else {
+        errorMessage = json.decode(response.body)['error'];
+      }
+    } catch (error) {
+      errorMessage = 'Error: Connection ERROR - Server not found';
+    }
+  }
+  
 }

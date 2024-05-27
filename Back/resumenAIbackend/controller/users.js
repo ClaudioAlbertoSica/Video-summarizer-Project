@@ -18,7 +18,6 @@ class Controlador {
 
     obtenerUsuarioResumido  = async (req, res) => {
         try {
-            debugger;
             const { id } = req.params
             const usuarioResumido = await this.servicio.obtenerUsuariosResumido(id)
             res.json(usuarioResumido)

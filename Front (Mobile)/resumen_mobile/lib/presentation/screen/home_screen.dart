@@ -51,12 +51,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
     }
   }
 
-  @override
-  void initState() async {
-    super.initState();
-    final idUser = ref.watch(userNotifierProvider).id;
-    await isInProgress(idUser);
-  }
+
 
   @override
   Widget build(BuildContext context) {

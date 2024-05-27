@@ -378,8 +378,8 @@ class Servicio {
 
     thumbABinario = async () => {
         const data = await fs.promises.readFile('./services/serviciosPython/miniatura/thumbnail.jpg');
-        const binario = data.toString('binary');
-        return binario
+        const base64 = data.toString('base64');
+        return base64
     }
 
     //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.

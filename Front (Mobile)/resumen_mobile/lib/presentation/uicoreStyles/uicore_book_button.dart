@@ -113,7 +113,8 @@ Image getImage() {
     if (resumen.thumbnail != null) {
       try {
         // Decodificar la cadena binaria
-        Uint8List bytes = Uint8List.fromList(resumen.thumbnail!.codeUnits);
+        final thumbnailBytes = base64Decode(resumen.thumbnail!);
+        Uint8List bytes = Uint8List.fromList(thumbnailBytes);
         return Image.memory(
           bytes,
           width: 70,
@@ -141,7 +142,7 @@ Image getImage() {
 
   Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
     try {
-      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });

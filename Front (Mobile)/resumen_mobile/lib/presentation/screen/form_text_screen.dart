@@ -1,14 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:resumen_mobile/entity/preview_resumen.dart';
+import 'package:resumen_mobile/entity/user.dart';
+import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
+import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
-
+import 'package:http/http.dart' as http;
 import '../uicoreStyles/uicore_navigation_bar.dart';
 import 'home_screen.dart';
 
-enum Idiomas { english, spanish }
+enum Idiomas{ EN, ES, FR, PT}
 
 class CoreFormText extends ConsumerStatefulWidget {
   const CoreFormText({super.key});
@@ -68,7 +74,7 @@ class _CoreFormTextState extends ConsumerState<CoreFormText> {
   }
 }
 
-class FormText extends StatefulWidget {
+class FormText extends ConsumerStatefulWidget {
   final String id;
   const FormText({
     super.key,
@@ -76,19 +82,20 @@ class FormText extends StatefulWidget {
   });
 
   @override
-  State<FormText> createState() => _FormTextState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _FormTextState();
 }
 
-class _FormTextState extends State<FormText> {
+class _FormTextState extends ConsumerState<FormText> {
   bool shortValue = false;
-
+  String errorMessage = '';
   final TextEditingController _inputTextController = TextEditingController();
   final TextEditingController _inputTitleController = TextEditingController();
 
-  Idiomas idiomaSeleccionado = Idiomas.spanish;
+  Idiomas idiomaSeleccionado = Idiomas.ES;
 
   @override
   Widget build(BuildContext context) {
+    final inProgress = ref.watch(userNotifierProvider).inProgress;
     return Form(
       autovalidateMode: AutovalidateMode.always,
       child: Column(
@@ -117,29 +124,46 @@ class _FormTextState extends State<FormText> {
             },
           ),
           ExpansionTile(
-            title: const Text('Idioma'),
-            subtitle: const Text('Selecciona el idioma.'),
-            children: [
-              RadioListTile(
-                title: Text(Idiomas.english.name),
-                value: Idiomas.english,
-                groupValue: idiomaSeleccionado,
-                onChanged: (value) {
-                  idiomaSeleccionado = value as Idiomas;
-                  setState(() {});
-                },
-              ),
-              RadioListTile(
-                title: Text(Idiomas.spanish.name),
-                value: Idiomas.spanish,
-                groupValue: idiomaSeleccionado,
-                onChanged: (value) {
-                  idiomaSeleccionado = value as Idiomas;
-                  setState(() {});
-                },
-              )
-            ],
-          ),
+                title: const Text('Idioma'),
+                subtitle: const Text('Selecciona el idioma.'),
+                children:[
+                  RadioListTile(
+                    title: const Text('Inglés'),
+                    value: Idiomas.EN, 
+                    groupValue: idiomaSeleccionado, 
+                    onChanged: (value){
+                      idiomaSeleccionado = value as Idiomas;
+                      setState(() {});
+                    }
+                    ),
+                  RadioListTile(
+                    title: const Text('Español'),
+                    value: Idiomas.ES, 
+                    groupValue: idiomaSeleccionado, 
+                    onChanged: (value){
+                      idiomaSeleccionado = value as Idiomas;
+                      setState(() {});
+                    }
+                    ),
+                  RadioListTile(
+                    title: const Text('Francés'),
+                    value: Idiomas.FR, 
+                    groupValue: idiomaSeleccionado, 
+                    onChanged: (value){
+                      idiomaSeleccionado = value as Idiomas;
+                      setState(() {});
+                    }
+                    ),
+                  RadioListTile(
+                    title: const Text('Portugues'),
+                    value: Idiomas.PT, 
+                    groupValue: idiomaSeleccionado, 
+                    onChanged: (value){
+                      idiomaSeleccionado = value as Idiomas;
+                      setState(() {});
+                    }
+                    )
+                ]),
           TextFormField(
             controller: _inputTitleController,
             decoration: const InputDecoration(
@@ -151,12 +175,13 @@ class _FormTextState extends State<FormText> {
           ),
           const SizedBox(height: 25),
           ElevatedButton(
-            onPressed: () {
-              /*print(_inputTextController.text);
-              print(shortValue);
-              print(idiomaSeleccionado);
-              print(_inputTitleController.text);
-              print(widget.id);*/
+            onPressed: () async {
+              if(!inProgress){
+                        final bool creando = await crearResumenTexto(widget.id, ref);
+                        if(creando){
+                          context.goNamed(LoadingScreen.name, extra: 'Estamos generando tu resumen! Esto puede demorar unos minutos...');
+                        }
+                      }
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
@@ -171,5 +196,100 @@ class _FormTextState extends State<FormText> {
         ],
       ),
     );
+  }
+    Future<bool> crearResumenTexto(String idUser, WidgetRef ref) async {
+    bool creando = false;
+    // servidor Node.js
+    try {
+      //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/texto');
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, void>{
+        'texto':_inputTitleController.text,
+        'esBreve':shortValue,
+        'idioma':idiomaSeleccionado.name,
+        'title': _inputTitleController.text
+        }),
+      );
+      //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
+      if (response.statusCode == 200) {
+        // Si la solicitud es exitosa, imprime la respuesta del servidor
+        print('Respuesta del servidor: ${response.body}');
+        creando = true;
+      } else {
+        errorMessage = json.decode(response.body)['error'];
+      }
+    } catch (error) {
+      errorMessage = 'Error: Connection ERROR - Server not found';
+    }
+    return creando;
+  }
+
+  Future<bool> isInProgress(String idUser) async {
+    bool inProgress = ref.read(userNotifierProvider).inProgress;
+    try {
+      final url = Uri.parse('http://10.0.2.2:8080/api/inprogress/$idUser');
+      final response = await http.get(url, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        inProgress = jsonData;
+        ref.read(userNotifierProvider.notifier).setInProgress(inProgress);
+        if(!inProgress){
+          await actualizarUsuario(idUser);
+        }
+      } else {
+        
+          errorMessage = json.decode(response.body)['error'];
+        
+      }
+    } catch (error) {
+      
+        errorMessage = 'Error: Connection ERROR - Server not found';
+    
+    }
+    return inProgress;
+  }
+
+
+  Future<void> actualizarUsuario(String idUser) async {
+    
+    try {
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
+      final response = await http.get(url, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+      if (response.statusCode == 200) {
+        final rsp = json.decode(response.body);
+
+        User userActualizado = User(
+            userName: rsp['userName'],
+            id: rsp['id'],
+            inventario: (rsp['inventario'] as List)
+              .map((item) => ResumenPreview.fromJson(item))
+              .toList(), 
+            inProgress: rsp['inProgress'],
+            isDark: rsp['config']['isDark']
+          );
+
+          ref.read(resumenNotifierProvider.notifier).changeList(userActualizado.inventario);
+          ref.read(userNotifierProvider.notifier).setUserLogin(userActualizado);
+      } else {
+        
+          errorMessage = json.decode(response.body)['error'];
+        
+      }
+    } catch (error) {
+      
+        errorMessage = 'Error: Connection ERROR - Server not found';
+    
+    }
   }
 }

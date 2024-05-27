@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -22,6 +23,10 @@ class BookButton extends ConsumerWidget {
     final idUser = ref.watch(userNotifierProvider).id;
     final idRes = resumen.idres;
     
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      clearImageCache();
+    });
+
     return Card(
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
@@ -88,6 +93,12 @@ class BookButton extends ConsumerWidget {
     );
   }
 
+  // Función para limpiar el caché de imágenes
+  void clearImageCache() {
+    imageCache.clear();
+    imageCache.clearLiveImages();
+  }
+
   Container getPill() {
     if (resumen.isFavourite) {
       return Container(
@@ -109,18 +120,25 @@ class BookButton extends ConsumerWidget {
     return Container();
   }
 
-Image getImage() {
+Widget getImage() {
     if (resumen.thumbnail != null && resumen.thumbnail != "") {
       try {
-        // Decodificar la cadena binaria
+/*         // Decodificar la cadena binaria
         final thumbnailBytes = base64Decode(resumen.thumbnail!);
-        Uint8List bytes = Uint8List.fromList(thumbnailBytes);
-        return Image.memory(
-          bytes,
+        Uint8List bytes = Uint8List.fromList(thumbnailBytes); */
+        return CachedNetworkImage(
+        imageUrl: resumen.thumbnail!,
+        width: 70,
+        height: 70,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Image.asset(
+          'assets/images/errorThumbnail.gif',
           width: 70,
           height: 70,
           fit: BoxFit.cover,
-        );
+        ),
+      );
       } catch (e) {
         print('Error al decodificar la imagen: $e');
         // Si la decodificación falla, retorna un contenedor vacío

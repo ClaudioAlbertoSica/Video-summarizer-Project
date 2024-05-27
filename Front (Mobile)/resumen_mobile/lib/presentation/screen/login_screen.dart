@@ -16,30 +16,24 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 
-class LoginScreen extends ConsumerStatefulWidget {
+class LoginScreen extends ConsumerWidget {
   static const String name = 'LoginScreen';
-
-  LoginScreen({super.key});
-
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends ConsumerState<LoginScreen> {
+  //Aca creo que iria un atributo para guardar lo del form o input.
   final TextEditingController _inputUsernameController = TextEditingController();
   final TextEditingController _inputPassController = TextEditingController();
   String errorMessage = '';
 
-  @override
-  void initState() {
-    super.initState();
-    imageCache.clear();
-    imageCache.clearLiveImages();
-  }
+  LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final screenHeight = MediaQuery.of(context).size.height;
+  
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      clearImageCache();
+    });
+
+
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       body: Stack(
@@ -47,7 +41,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           //MODULARICÉ UN POCO
           _ImagenContainer(screenHeight: screenHeight),
           //MODULARICÉ UN POCO
-          _PositionedFill(),
           Padding(
             padding: const EdgeInsets.all(50.0),
             child: Column(
@@ -113,6 +106,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
   
+  // Función para limpiar el caché de imágenes
+  void clearImageCache() {
+    imageCache.clear();
+    imageCache.clearLiveImages();
+  }
+
   Future<bool> sendLoginData(String username, String password, WidgetRef ref) async {
     bool loginOk = false;
     // servidor Node.js

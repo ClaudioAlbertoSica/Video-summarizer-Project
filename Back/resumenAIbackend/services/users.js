@@ -27,14 +27,27 @@ class Servicio {
 
     obtenerUsuariosResumido  = async (id) => {
         try {
-            const usuario = await this.model.obtenerUsuarios(id)
-            const usuarioResumido = await this.model.obtenerUsuariosLogin(usuario.userName)
-            delete usuarioResumido._id
-            delete usuarioResumido.passwd
-            return usuarioResumido
-        }
-        catch (error) {
-            console.log(error.message)
+            const usuario = await this.model.obtenerUsuarios(id);
+            const usuarioResumido = await this.model.obtenerUsuariosLogin(usuario.userName);
+            delete usuarioResumido._id;
+            delete usuarioResumido.passwd;
+    
+            // Función para convertir base64 a URL de datos
+            const convertirBase64AImagen = (thumbnailBase64) => {
+                return `data:image/jpeg;base64,${thumbnailBase64}`;
+            };
+    
+            // Recorrer el inventario y convertir los thumbnails
+            usuarioResumido.inventario = usuarioResumido.inventario.map(item => {
+                if (item.thumbnail) {
+                    item.thumbnail = convertirBase64AImagen(item.thumbnail);
+                }
+                return item;
+            });
+    
+            return usuarioResumido;
+        } catch (error) {
+            console.log(error.message);
         }
     }
 
@@ -86,6 +99,20 @@ class Servicio {
                 if (passwd !== undefined && usuario.passwd == passwd) {
                     delete usuario._id
                     delete usuario.passwd
+
+                    // Función para convertir base64 a URL de datos
+                    const convertirBase64AImagen = (thumbnailBase64) => {
+                        return `data:image/jpeg;base64,${thumbnailBase64}`;
+                    };
+            
+                    // Recorrer el inventario y convertir los thumbnails
+                    usuario.inventario = usuario.inventario.map(item => {
+                        if (item.thumbnail) {
+                            item.thumbnail = convertirBase64AImagen(item.thumbnail);
+                        }
+                        return item;
+                    });
+
                     console.log('LOGIN EXITOSO')
                     //await this.nodeMailer.sendMail(usuario.userName)
                     //comparamos con el encontrado
@@ -355,8 +382,6 @@ class Servicio {
 
 
     }
-
-
 
     obtenerMiniatura = async (urlP) => {
         try {

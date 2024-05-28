@@ -14,25 +14,32 @@ import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class ResumenDetailScreen extends ConsumerWidget {
+class ResumenDetailScreen extends ConsumerStatefulWidget {
   ResumenDetailScreen({
-    super.key,
+    Key? key,
     required this.resumen,
     required this.pdfBytes,
-  });
+  }) : super(key: key);
 
   static const String name = 'ResumenDetailScreen';
   final ResumenPreview resumen;
   final Uint8List pdfBytes;
+
+  @override
+  _ResumenDetailScreenState createState() => _ResumenDetailScreenState();
+}
+
+class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
   String errorMessage = '';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final idUser = ref.watch(userNotifierProvider).id;
-    final idRes = resumen.idres;
+    final idRes = widget.resumen.idres;
     final isDark = ref.watch(userNotifierProvider).isDark;
     final screenHeight = MediaQuery.of(context).size.height;
-    
+    final resumen = widget.resumen;
+
     Future<void> actualizarUsuario(String idUser) async {
     try {
       final url = Uri.parse('http://localhost:8080/api/$idUser');
@@ -67,99 +74,116 @@ class ResumenDetailScreen extends ConsumerWidget {
     }
   }
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-      ),
-      body: SingleChildScrollView(
-        child: StackLayoutCustomized(
-          screenHeight: screenHeight,
-          colorLight: const Color.fromRGBO(235, 240, 241, 1), 
-          colorDark: const Color.fromRGBO(30, 30, 30, 1) , 
-          imageLigth:'onlyBackgroundWithLogo.png',
-          imageDark:'onlyBackgroundWithLogoD.png',
-          content: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 40,),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 200,
-                    child: InkWell(
-                      onTap: () async {
-                        await completeResumen(idUser, idRes, context);
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: getImage(isDark),
-                      ),
+  return Scaffold(
+    extendBodyBehindAppBar: true,
+    appBar: AppBar(
+      backgroundColor: Colors.transparent,
+    ),
+    body: SingleChildScrollView(
+      child: StackLayoutCustomized(
+        screenHeight: screenHeight,
+        colorLight: const Color.fromRGBO(235, 240, 241, 1), 
+        colorDark: const Color.fromRGBO(30, 30, 30, 1) , 
+        imageLigth:'onlyBackgroundWithLogo.png',
+        imageDark:'onlyBackgroundWithLogoD.png',
+        content: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 40,),
+                SizedBox(
+                  width: double.infinity,
+                  height: 200,
+                  child: InkWell(
+                    onTap: () async {
+                      await completeResumen(idUser, idRes, context);
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: getImage(isDark),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  Text(resumen.title, style: GoogleFonts.ubuntu(fontSize: 24, fontWeight: FontWeight.w700)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RatingBar.builder(
-                        initialRating: 3,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemSize: 20,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
+                ),
+                const SizedBox(height: 20),
+                Text(resumen.title, style: GoogleFonts.ubuntu(fontSize: 24, fontWeight: FontWeight.w700)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RatingBar.builder(
+                      initialRating: resumen.points * 1.0,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemSize: 20,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.favorite, color: resumen.isFavourite ? Colors.red : Colors.grey),
-                            onPressed: () {
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.download, color: Colors.blue),
-                            onPressed: () {
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () async {
+                      onRatingUpdate: (rating) async {
+                        await actualizarResumenPoints(idUser, idRes, rating, ref);
+                      },
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.favorite, color: widget.resumen.isFavourite ? Colors.red : Colors.grey),
+                          onPressed: () async {
+                            await putLikeResume(idUser, idRes, ref);
+                            setState(() {});
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.download, color: Colors.blue),
+                          onPressed: () {
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () async {
+                            bool confirmarBorrado = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Estas por borrar ${resumen.title}"),
+                                  content: const Text("¿Estás seguro que deseas borrarlo?"),
+                                  actions: [
+                                    ElevatedButton(onPressed: ()=> Navigator.of(context).pop(false), child: const Text("Cancelar")),
+                                    ElevatedButton(onPressed:()=> Navigator.of(context).pop(true), child: const Text("Borrar"))
+                                  ],
+                                );
+                              }
+                            );
+                            if (confirmarBorrado) {
                               await borrarResumen(idUser, idRes);
                               await actualizarUsuario(idUser);
                               context.goNamed(LoadingScreen.name, extra: 'Resumen Eliminado! Redirigiendo al Home...');
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ]
-        ),
-      )
-    );
-  }
+          ),
+        ]
+      ),
+    )
+  );
+}
 
   Image getImage(isDark) {
-    if (resumen.thumbnail != null) {
+    if (widget.resumen.thumbnail != null) {
       try {
 /*         final thumbnailBytes = base64Decode(resumen.thumbnail!);
         Uint8List bytes = Uint8List.fromList(thumbnailBytes); */
         return Image.network(
-          resumen.thumbnail!,
+          widget.resumen.thumbnail!,
           width: double.infinity,
           height: double.infinity,
           fit: BoxFit.cover,
@@ -233,4 +257,51 @@ class ResumenDetailScreen extends ConsumerWidget {
     }
   }
   
+  Future<void> putLikeResume(String idUser, String idRes, WidgetRef ref) async {
+    try {
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
+      final response = await http.put(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, bool>{
+          'isFavourite': !widget.resumen.isFavourite,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        ref.read(resumenNotifierProvider.notifier).toggleFavourite(idRes);
+        print('hice Toggle en favorito: ${response.body}');
+      } else {
+        errorMessage = json.decode(response.body)['error'];
+      }
+    } catch (error) {
+      errorMessage = 'Error: Connection ERROR - Server not found';
+    }
+  }
+  
+  Future<void> actualizarResumenPoints(String idUser, String idRes, double rating, WidgetRef ref) async {
+     try {
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
+      final response = await http.put(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, int>{
+          'points': rating.round(),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        ref.read(resumenNotifierProvider.notifier).changeRating(idRes, rating.round());
+        print('Respuesta del servidor: ${response.body}');
+      } else {
+        errorMessage = json.decode(response.body)['error'];
+      }
+    } catch (error) {
+      errorMessage = 'Error: Connection ERROR - Server not found';
+    }
+  }
 }

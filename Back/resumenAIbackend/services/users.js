@@ -27,26 +27,13 @@ class Servicio {
         }
     }
 
-    obtenerUsuariosResumido  = async (id) => {
+    obtenerUsuariosResumido = async (id) => {
         try {
             const usuario = await this.model.obtenerUsuarios(id);
             const usuarioResumido = await this.model.obtenerUsuariosLogin(usuario.userName);
             delete usuarioResumido._id;
             delete usuarioResumido.passwd;
-    
-            // Función para convertir base64 a URL de datos
-            const convertirBase64AImagen = (thumbnailBase64) => {
-                return `data:image/jpeg;base64,${thumbnailBase64}`;
-            };
-    
-            // Recorrer el inventario y convertir los thumbnails
-            usuarioResumido.inventario = usuarioResumido.inventario.map(item => {
-                if (item.thumbnail) {
-                    item.thumbnail = convertirBase64AImagen(item.thumbnail);
-                }
-                return item;
-            });
-    
+
             return usuarioResumido;
         } catch (error) {
             console.log(error.message);
@@ -101,19 +88,6 @@ class Servicio {
                 if (passwd !== undefined && usuario.passwd == passwd) {
                     delete usuario._id
                     delete usuario.passwd
-
-                    // Función para convertir base64 a URL de datos
-                    const convertirBase64AImagen = (thumbnailBase64) => {
-                        return `data:image/jpeg;base64,${thumbnailBase64}`;
-                    };
-            
-                    // Recorrer el inventario y convertir los thumbnails
-                    usuario.inventario = usuario.inventario.map(item => {
-                        if (item.thumbnail) {
-                            item.thumbnail = convertirBase64AImagen(item.thumbnail);
-                        }
-                        return item;
-                    });
 
                     console.log('LOGIN EXITOSO')
                     //await this.nodeMailer.sendMail(usuario.userName)
@@ -387,26 +361,13 @@ class Servicio {
 
     obtenerMiniatura = async (urlP) => {
         try {
-            const url =  new URL(urlP);
+            const url = new URL(urlP);
             const videoID = await url.searchParams.get('v');
             const thumbnailUrl = `https://img.youtube.com/vi/${videoID}/hqdefault.jpg`;
-            const response = await axios.get(thumbnailUrl, { responseType: 'stream' });
-            await response.data.pipe(fs.createWriteStream('./services/serviciosPython/miniatura/thumbnail.jpg'))
-            .on('finish', () => {
-                console.log('Miniatura guardada exitosamente.');
-            })
-            .on('error', err => {
-                console.error('Error al guardar la miniatura:', err);
-            });
+            return thumbnailUrl
         } catch (error) {
             console.error('Error al descargar la miniatura:', error);
         }
-    }
-
-    thumbABinario = async () => {
-        const data = await fs.promises.readFile('./services/serviciosPython/miniatura/thumbnail.jpg');
-        const base64 = data.toString('base64');
-        return base64
     }
 
     //FALTA ENVIARLE POR PARÁMETRO EL BOOL ES BREVE PARA QUE SEPAMOS SI QUIERE UN RESUMEN EXTENSO O CORTO.
@@ -416,8 +377,7 @@ class Servicio {
             const resumenVid = {}
             if (id, url, esBreve, idioma) {
                 await this.actualizarUsuario(id, { inProgress: true })
-                await this.obtenerMiniatura(urlOriginal)
-                const thumbnail = await this.thumbABinario()
+                const thumbnail = await this.obtenerMiniatura(urlOriginal)
                 resumenVid.thumbnail = thumbnail
                 resumenVid.isFavourite = false
                 resumenVid.points = 0
@@ -427,7 +387,7 @@ class Servicio {
                     resumenVid.title = "ResumenDeVideo"
                 }
 
-                
+
 
                 await this.runPythonVideo(url);
                 console.log('CORRÍ PYTHON 1')
@@ -458,7 +418,7 @@ class Servicio {
             console.log(error.message)
             await this.actualizarUsuario(id, { inProgress: false })
             //await this.limpiarVideo()
-            
+
         }
     }
 
@@ -583,7 +543,7 @@ class Servicio {
                         console.log(`Deleted image file: ${filePath}`);
                     }
                 } catch (err) {
-                   // console.error(`Error deleting image file ${filePath}:`, err);
+                    // console.error(`Error deleting image file ${filePath}:`, err);
                 }
             }
 
@@ -684,7 +644,7 @@ class Servicio {
             const randomIndex = Math.floor(Math.random() * characters.length);
             passRandom += characters[randomIndex];
         }
-        
+
         return passRandom;
     }
 
@@ -719,7 +679,7 @@ class Servicio {
     }
 
     enviarSugerencia = async (id, sugerencia) => {
-        try { 
+        try {
             let rta = false
             if (id, sugerencia) {
                 rta = true

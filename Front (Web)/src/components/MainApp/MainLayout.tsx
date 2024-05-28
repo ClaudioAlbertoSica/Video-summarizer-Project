@@ -74,14 +74,14 @@ function GridLayout({ isProvisoryPassword }: InitialInfo) {
           </Container>
 
           <Grid className="ContainerGrid" container spacing={0}>
-            <Grid className="HeaderGridLeft" item xs={8}>
-              {forcePasswordChangeScreen ? (
+            <Grid className="HeaderGridLeft" item xs={8} sx={{backgroundColor: myTheme.palette.my.sidePanelBg}}>
+{/*               {forcePasswordChangeScreen ? (
                 <h1>{ValidViewNames.ChangePasswordMandatory}</h1>
               ) : (
                 <h1>{selectedCentralPanelView}</h1>
-              )}
+              )} */}
             </Grid>
-            <Grid className="HeaderGridRight" item xs={4}>
+            <Grid className="HeaderGridRight" item xs={4} sx={{backgroundColor: myTheme.palette.my.sidePanelBg}}>
               <WIPindicator />
             </Grid>
             {/*
@@ -96,8 +96,7 @@ function GridLayout({ isProvisoryPassword }: InitialInfo) {
             <Grid className="CentralPanel" item xs={12} sx={{ backgroundColor: myTheme.palette.my.sidePanelBg }}>
               {checkForForcedView()}
             </Grid>
-            <Grid className="FooterGrid" item xs={12}>
-              <h1>Footer</h1>
+            <Grid className="FooterGrid" item xs={12}sx={{backgroundColor: myTheme.palette.my.sidePanelBg}}>
             </Grid>
           </Grid>
         </Container>

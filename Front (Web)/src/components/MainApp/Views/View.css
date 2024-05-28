@@ -182,6 +182,7 @@ Touch it with caution. I just used it to kill it's built-in margin */
     flex-wrap: wrap;
     align-content: center;
     justify-content: space-around;
+    border-top: 1px dotted grey;
 }
 
 .ContainerForPDFViewrHeader{

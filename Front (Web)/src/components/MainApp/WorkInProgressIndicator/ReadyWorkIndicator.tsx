@@ -1,9 +1,10 @@
 import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
-import { Container, Typography } from "@mui/material";
+import { Container, Typography, useTheme } from "@mui/material";
 
 function ReadyWorkIndicator() {
+  const myTheme = useTheme();
   return (
-    <Container className="WIPindicatorsContainer">
+    <Container className="WIPindicatorsContainer" sx={{ backgroundColor: myTheme.palette.my.sidePanelBg}}>
       <CheckCircleOutlineSharpIcon color="primary" fontSize="large" />
       <Container className="WIPtextContainer">
         <Typography variant="subtitle2">RESÚMENES LISTOS</Typography>

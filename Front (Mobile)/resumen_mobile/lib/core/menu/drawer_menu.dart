@@ -41,7 +41,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ListTile(
             title: const Text('Account'),
             onTap: () {
-              context.pushNamed(AcconutScreen.name);
+              context.pushNamed(AcconutScreen.name, extra: const SizedBox(height: 0.0,));
               // Navega a la pantalla de cuenta
               // Reemplaza con la navegación adecuada
             },

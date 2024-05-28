@@ -7,6 +7,7 @@ import 'package:resumen_mobile/entity/preview_resumen.dart';
 import 'package:resumen_mobile/entity/user.dart';
 import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
+import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
 import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import '../uicoreStyles/uicore_input_style.dart';
@@ -64,7 +65,21 @@ class LoginScreen extends ConsumerWidget {
                   onPressed: () async {
                     bool user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
                     if (user) {
-                      context.goNamed(HomeScreen.name);
+                      final bool provisoria =  ref.read(userNotifierProvider).provisoria;
+                      if(provisoria){
+                      context.goNamed(AcconutScreen.name, extra: 
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.center ,
+                        children: [
+                          Text('Su contraseña es provisoria. Deberá cambiarla para continuar navegando.',
+                            textAlign: TextAlign.center,),
+                          Text('La misma que utilizó para ingresar deberá colocarla en el primer campo.',
+                            textAlign: TextAlign.center,),
+                          SizedBox(height: 10,),
+                        ],));
+                        }else{
+                          context.goNamed(HomeScreen.name);
+                        }
                     } else {
                       _showErrorMessage(context);
                     }
@@ -118,7 +133,7 @@ class LoginScreen extends ConsumerWidget {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://localhost:8080/api/login');
+      final url = Uri.parse('http://10.0.2.2:8080/api/login');
       final response = await http.post(
         url,
         headers: <String, String>{
@@ -145,12 +160,14 @@ class LoginScreen extends ConsumerWidget {
               .map((item) => ResumenPreview.fromJson(item))
               .toList(), 
             inProgress: rsp['inProgress'],
-            isDark: rsp['config']['isDark']
+            isDark: rsp['config']['isDark'],
+            provisoria: rsp['provisoria'],
           );
 
           ref.read(resumenNotifierProvider.notifier).changeList(userLogueado.inventario);
           ref.read(userNotifierProvider.notifier).setUserLogin(userLogueado);
           ref.read(userNotifierProvider.notifier).togleDarkMode(userLogueado.isDark);
+
         loginOk = true;
       } else {
         errorMessage = json.decode(response.body)['error'];
@@ -164,19 +181,27 @@ class LoginScreen extends ConsumerWidget {
   }
 
   void _showDialogForgotPass(BuildContext context) {
+  TextEditingController _inputForgotController = TextEditingController();
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Password Recovery'),
-          content: const Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Please enter your email address to recover your password:'),
-              TextField(
-                decoration: InputDecoration(hintText: 'Email'),
-              ),
-            ],
+          content: Form(
+            autovalidateMode: AutovalidateMode.always,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Please enter your email address to recover your password:'),
+                TextFormField(
+                  decoration:const  InputDecoration(hintText: 'Email'),
+                  controller: _inputForgotController,
+                  validator:  (String? value) {
+                    return (value == '' || value == null) ? 'Este campo es requerido.' : null;
+                    },
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -186,8 +211,13 @@ class LoginScreen extends ConsumerWidget {
               child: const Text('Cancel'),
             ),
             ElevatedButton(
-              onPressed: () {
-                // Acción para el botón OK
+              onPressed: () async {
+                bool sendOk = await recuperarContrasenia(_inputForgotController.text);
+                if(sendOk){
+                  Navigator.of(context).pop();
+                }else{
+                  _showErrorMessage(context);
+                }
               },
               child: const Text('OK'),
             ),
@@ -196,7 +226,39 @@ class LoginScreen extends ConsumerWidget {
       },
     );
   }
-  
+  Future<bool> recuperarContrasenia(String userName) async{
+    bool sendOk = false;
+    // servidor Node.js
+    try {
+      //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
+      final url = Uri.parse('http://10.0.2.2:8080/api/recuperar');
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String> {
+          'userName': userName,
+        }),
+      );
+      //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
+      if (response.statusCode == 200) {
+        // Si la solicitud es exitosa, imprime la respuesta del servidor
+        print('Respuesta del servidor: ${response.body}');
+                
+        sendOk = true;
+      } else {
+        errorMessage = json.decode(response.body)['error'];
+      }
+    } catch (error) {
+      print(error);
+      errorMessage = 'Error: Connection ERROR - Server not found';
+    }
+
+    return sendOk;
+  }
+
+
   void _showErrorMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

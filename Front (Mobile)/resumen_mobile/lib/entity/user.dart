@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:resumen_mobile/entity/app_theme.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
-import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
-import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 
 class User {
 
@@ -12,6 +8,7 @@ final String id;
 final List<ResumenPreview> inventario;
 final bool inProgress;
 final bool isDark;
+final bool provisoria;
 
 User(
     {
@@ -20,7 +17,7 @@ User(
       this.inventario = const [],
       this.inProgress = false,
       this.isDark = false,
-      
+      this.provisoria = false
     }
   );
 
@@ -31,7 +28,7 @@ User(
       inventario: json['inventario'],
       inProgress: json['inProgress'],
       isDark: json['isDark'],
-      
+      provisoria: json['provisoria']
 
     );
   }
@@ -43,6 +40,7 @@ User(
       inventario: inventario,
       inProgress: inProgress,
       isDark: isDark,
+      provisoria: provisoria,
       );
   }
 
@@ -53,6 +51,7 @@ User(
       inventario: inventario,
       inProgress: inProgress ?? this.inProgress,
       isDark: isDark ?? this.isDark,
+      provisoria: provisoria
     );
   }
 

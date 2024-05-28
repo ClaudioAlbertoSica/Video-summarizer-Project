@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
 import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
@@ -49,7 +50,7 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/account-screen',
-      builder: (context, state) => AcconutScreen(),
+      builder: (context, state) => AcconutScreen(msg: state.extra as Widget),
       name: AcconutScreen.name
     ),
     GoRoute(

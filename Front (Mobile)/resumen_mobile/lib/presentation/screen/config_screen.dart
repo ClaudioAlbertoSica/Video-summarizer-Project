@@ -65,7 +65,7 @@ void changeConfig(String idUser, WidgetRef ref) async {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://localhost:8080/api/$idUser');
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
       final response = await http.put(
         url,
         headers: <String, String>{
@@ -89,7 +89,9 @@ void changeConfig(String idUser, WidgetRef ref) async {
               .map((item) => ResumenPreview.fromJson(item))
               .toList(), 
           inProgress: rsp['inProgress'],
-          isDark: rsp['config']['isDark']);
+          isDark: rsp['config']['isDark'],
+          provisoria: rsp['provisoria'],
+          );
           
           ref.read(userNotifierProvider.notifier).setUserLogin(userModificado);
           ref.read(userNotifierProvider.notifier).togleDarkMode(userModificado.isDark);

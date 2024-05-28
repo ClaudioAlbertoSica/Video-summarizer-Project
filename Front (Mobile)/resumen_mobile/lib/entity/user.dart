@@ -61,4 +61,14 @@ ThemeData getTheme() {
       brightness: isDark ? Brightness.dark : Brightness.light,
     );
   }
+
+  ResumenPreview getResumen(String idres){
+    ResumenPreview? resumen;
+    for (var r in inventario) {
+      if(r.idres == idres){
+        resumen = r;
+      }
+    }
+    return resumen!;
+  }
 }

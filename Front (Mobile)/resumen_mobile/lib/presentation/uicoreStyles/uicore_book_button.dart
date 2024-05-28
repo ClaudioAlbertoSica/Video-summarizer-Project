@@ -122,9 +122,6 @@ class BookButton extends ConsumerWidget {
 Image getImage(isDark) {
     if (resumen.thumbnail != null && resumen.thumbnail != "") {
       try {
-/*         // Decodificar la cadena binaria
-        final thumbnailBytes = base64Decode(resumen.thumbnail!);
-        Uint8List bytes = Uint8List.fromList(thumbnailBytes); */
         return Image.network(
           resumen.thumbnail!,
           width: 70,
@@ -161,7 +158,7 @@ Image getImage(isDark) {
 
   Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
     try {
-      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });

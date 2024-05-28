@@ -30,17 +30,16 @@ class _CoreFormVideoState extends ConsumerState<CoreFormVideo> {
   final int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    if (index == 0) {
-      context.pushNamed(CoreFormVideo.name);
-    } else if (index == 1) {
-      context.pushNamed(HomeScreen.name);
+    if (index == 1) {
+      context.goNamed(HomeScreen.name);
     } else if (index == 2) {
-      context.pushNamed(CoreFormText.name);
+      context.goNamed(CoreFormText.name);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isDark = ref.watch(userNotifierProvider).isDark;
     final idUser = ref.watch(userNotifierProvider).id;
     return Scaffold(
       drawerEnableOpenDragGesture: false,
@@ -72,7 +71,9 @@ class _CoreFormVideoState extends ConsumerState<CoreFormVideo> {
       ),
       bottomNavigationBar: UicoreNavigationBar(
         onTap: _onItemTapped,
-        initialIndex: _selectedIndex, // Index for 'text_snippet' icon
+        initialIndex: _selectedIndex,
+        color: const Color.fromRGBO(235, 240, 241, 1),
+        isDark: isDark,
       ),
     );
   }

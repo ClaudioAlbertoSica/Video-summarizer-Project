@@ -15,18 +15,21 @@ class BookButton extends ConsumerWidget {
 
   final ResumenPreview resumen;
   String errorMessage = '';
+  bool imText = false;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final idUser = ref.watch(userNotifierProvider).id;
     final idRes = resumen.idres;
     final isDark = ref.watch(userNotifierProvider).isDark;
-
+    Image imageThumbnail = getImage(isDark);
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       clearImageCache();
     });
 
     return Card(
+      color: isDark ? null : imText ? Color.fromRGBO(69, 179, 156, 1) : Color.fromRGBO(245, 54, 84, 1),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(9.0),
@@ -42,7 +45,7 @@ class BookButton extends ConsumerWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(9),
-                child: getImage(isDark),
+                child: imageThumbnail,
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -52,7 +55,7 @@ class BookButton extends ConsumerWidget {
                   children: [
                     Text(
                       resumen.title,
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -79,6 +82,7 @@ class BookButton extends ConsumerWidget {
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white
                         ),
                       ),
                     ],
@@ -148,6 +152,7 @@ Image getImage(isDark) {
         );
       }
     }
+    imText = true;
     return Image.asset(
       'assets/images/thumball.jpeg',
       width: 70,

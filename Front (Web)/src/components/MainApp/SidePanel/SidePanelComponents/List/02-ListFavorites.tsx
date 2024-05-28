@@ -7,7 +7,6 @@ import placeholderImage from "../../../../../assets/Logo.png";
 import { LoggedUserContext } from "../../../../../ActiveUserContext.ts";
 import { Summary } from "../../../../../Services/Types/UserTypes.ts";
 import placeholderAvatar from "../../../../../assets/PlaceHolderAvatar2.png";
-import { URLforBinaryImage } from "../../../../../Services/URLforBinaryImage.ts";
 
 function ListFavorites() {
   const currentlyLoggedUsuer = useContext(LoggedUserContext).userState;
@@ -28,7 +27,7 @@ function ListFavorites() {
         <ListItem key={itm.idres}>
           <SummaryListItem
             points={itm.points}
-            thumbnail={itm.thumbnail ? URLforBinaryImage(itm.thumbnail) : placeholderAvatar}
+            thumbnail={itm.thumbnail ? itm.thumbnail : placeholderAvatar}
             title={itm.title}
             idres={itm.idres}
             isFavourite={itm.isFavourite}

@@ -125,10 +125,10 @@ class LoginScreen extends ConsumerWidget {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String> {
-          'userName': username,
-          'passwd': password,
-/*           "userName": "marianolegon@gmail.com",
-          "passwd": "123", */
+          /*'userName': username,
+          'passwd': password,*/
+          "userName": "rocio.bani93@gmail.com",
+          "passwd": "123", 
         }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK

@@ -39,6 +39,7 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
     final isDark = ref.watch(userNotifierProvider).isDark;
     final screenHeight = MediaQuery.of(context).size.height;
     final resumen = widget.resumen;
+    final isFavourite = ref.watch(userNotifierProvider).getResumen(idRes).isFavourite;
 
     Future<void> actualizarUsuario(String idUser) async {
     try {
@@ -130,7 +131,7 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
                     Row(
                       children: [
                         IconButton(
-                          icon: Icon(Icons.favorite, color: widget.resumen.isFavourite ? Colors.red : Colors.grey),
+                          icon: Icon(Icons.favorite, color: isFavourite ? Colors.red : Colors.grey),
                           onPressed: () async {
                             await putLikeResume(idUser, idRes, ref);
                             setState(() {});
@@ -138,7 +139,8 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.download, color: Colors.blue),
-                          onPressed: () {
+                          onPressed: () async {
+                            await downloadResumen(idUser, idRes);
                           },
                         ),
                         IconButton(
@@ -180,8 +182,6 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
   Image getImage(isDark) {
     if (widget.resumen.thumbnail != null) {
       try {
-/*         final thumbnailBytes = base64Decode(resumen.thumbnail!);
-        Uint8List bytes = Uint8List.fromList(thumbnailBytes); */
         return Image.network(
           widget.resumen.thumbnail!,
           width: double.infinity,
@@ -214,6 +214,24 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
     );
   }
 
+Future<void> downloadResumen(String idUser, String idRes) async {
+try {
+      final url = Uri.parse('http://localhost:8080/api/$idUser/pdf/$idRes');
+      final response = await http.get(url, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+      if (response.statusCode == 200) {
+        print(response.body);
+
+      } else {
+        errorMessage = json.decode(response.body)['error'];
+      }
+    } catch (error) {
+      errorMessage = 'Error: Connection ERROR - Server not found';
+    }
+}
+
   Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
     try {
       final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
@@ -241,6 +259,7 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
   }
 
   Future<void> borrarResumen(String idUser, String idRes) async{
+    
   try {
       final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.delete(url, headers: <String, String>{
@@ -258,6 +277,7 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
   }
   
   Future<void> putLikeResume(String idUser, String idRes, WidgetRef ref) async {
+    ResumenPreview resumen = ref.read(userNotifierProvider).getResumen(idRes);
     try {
       final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.put(
@@ -266,12 +286,12 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, bool>{
-          'isFavourite': !widget.resumen.isFavourite,
+          'isFavourite': !resumen.isFavourite,
         }),
       );
 
       if (response.statusCode == 200) {
-        ref.read(resumenNotifierProvider.notifier).toggleFavourite(idRes);
+        await actualizarUsuario(idUser);
         print('hice Toggle en favorito: ${response.body}');
       } else {
         errorMessage = json.decode(response.body)['error'];
@@ -282,7 +302,7 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
   }
   
   Future<void> actualizarResumenPoints(String idUser, String idRes, double rating, WidgetRef ref) async {
-     try {
+    try {
       final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.put(
         url,
@@ -302,6 +322,42 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
       }
     } catch (error) {
       errorMessage = 'Error: Connection ERROR - Server not found';
+    }
+  }
+
+    Future<void> actualizarUsuario(String idUser) async {
+    
+    try {
+      final url = Uri.parse('http://localhost:8080/api/$idUser');
+      final response = await http.get(url, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+      if (response.statusCode == 200) {
+        final rsp = json.decode(response.body);
+
+        User userActualizado = User(
+            userName: rsp['userName'],
+            id: rsp['id'],
+            inventario: (rsp['inventario'] as List)
+              .map((item) => ResumenPreview.fromJson(item))
+              .toList(), 
+            inProgress: rsp['inProgress'],
+            isDark: rsp['config']['isDark']
+          );
+
+          ref.read(resumenNotifierProvider.notifier).changeList(userActualizado.inventario);
+          ref.read(userNotifierProvider.notifier).setUserLogin(userActualizado);
+          ref.read(userNotifierProvider.notifier).togleDarkMode(userActualizado.isDark);
+      } else {
+        
+          errorMessage = json.decode(response.body)['error'];
+        
+      }
+    } catch (error) {
+      
+        errorMessage = 'Error: Connection ERROR - Server not found';
+    
     }
   }
 }

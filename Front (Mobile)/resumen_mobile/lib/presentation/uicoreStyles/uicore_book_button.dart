@@ -122,9 +122,6 @@ class BookButton extends ConsumerWidget {
 Image getImage(isDark) {
     if (resumen.thumbnail != null && resumen.thumbnail != "") {
       try {
-/*         // Decodificar la cadena binaria
-        final thumbnailBytes = base64Decode(resumen.thumbnail!);
-        Uint8List bytes = Uint8List.fromList(thumbnailBytes); */
         return Image.network(
           resumen.thumbnail!,
           width: 70,

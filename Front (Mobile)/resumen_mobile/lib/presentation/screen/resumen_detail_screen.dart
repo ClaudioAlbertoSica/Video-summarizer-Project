@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -80,6 +81,12 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
     extendBodyBehindAppBar: true,
     appBar: AppBar(
       backgroundColor: Colors.transparent,
+      leading: GestureDetector(
+        child: Icon( Icons.arrow_back_ios, color: const Color.fromARGB(255, 249, 249, 249),  ),
+        onTap: () {
+          Navigator.pop(context);
+        } ,
+      ) ,
     ),
     body: SingleChildScrollView(
       child: StackLayoutCustomized(
@@ -95,7 +102,14 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 40,),
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      width: 2,
+                      color: Color.fromARGB(255, 244, 130, 42),
+                    ),
+                  ),
                   width: double.infinity,
                   height: 200,
                   child: InkWell(

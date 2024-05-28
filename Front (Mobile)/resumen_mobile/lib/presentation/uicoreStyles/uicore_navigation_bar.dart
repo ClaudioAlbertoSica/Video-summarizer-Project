@@ -4,7 +4,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 class UicoreNavigationBar extends StatefulWidget {
   final Function(int) onTap;
   final int initialIndex;
-  const UicoreNavigationBar({Key? key, required this.onTap, required this.initialIndex}) : super(key: key);
+  final Color color;
+  final bool isDark;
+  const UicoreNavigationBar({Key? key, required this.onTap, required this.initialIndex, required this.color, required this.isDark}) : super(key: key);
 
   @override
   _UicoreNavigationBarState createState() => _UicoreNavigationBarState();
@@ -29,9 +31,9 @@ class _UicoreNavigationBarState extends State<UicoreNavigationBar> {
         Icon(Icons.view_list, size: 30),
         Icon(Icons.text_snippet, size: 30),
       ],
-      color: const Color.fromARGB(255, 194, 194, 194),
-      buttonBackgroundColor: Colors.orange,
-      backgroundColor: Colors.transparent,
+      color: widget.isDark? const Color.fromARGB(255, 194, 194, 194) : Colors.white,
+      buttonBackgroundColor: widget.isDark ? Colors.orange : const Color.fromRGBO(235, 187, 74, 1),
+      backgroundColor: widget.isDark ? Colors.transparent : widget.color,
       animationCurve: Curves.easeInOut,
       animationDuration: const Duration(milliseconds: 100),
       onTap: (index) {

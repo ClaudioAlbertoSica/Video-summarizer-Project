@@ -55,6 +55,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
     final screenHeight = MediaQuery.of(context).size.height;
     
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
       appBar: AppBar(

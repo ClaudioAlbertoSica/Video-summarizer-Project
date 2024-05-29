@@ -39,6 +39,7 @@ class _CoreFormTextState extends ConsumerState<CoreFormText> {
     final idUser = ref.watch(userNotifierProvider).id;
     final isDark = ref.watch(userNotifierProvider).isDark;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
       appBar: AppBar(

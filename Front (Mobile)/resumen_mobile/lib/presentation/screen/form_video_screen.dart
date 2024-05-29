@@ -42,6 +42,7 @@ class _CoreFormVideoState extends ConsumerState<CoreFormVideo> {
     final isDark = ref.watch(userNotifierProvider).isDark;
     final idUser = ref.watch(userNotifierProvider).id;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
       appBar: AppBar(

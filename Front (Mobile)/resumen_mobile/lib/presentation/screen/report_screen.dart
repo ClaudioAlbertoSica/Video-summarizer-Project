@@ -20,6 +20,7 @@ class ReportScreen extends ConsumerWidget {
     final idUser = ref.watch(userNotifierProvider).id;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
       appBar: OurAppBar(),

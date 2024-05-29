@@ -29,6 +29,7 @@ class AcconutScreen extends ConsumerWidget {
     final user = ref.watch(userNotifierProvider).userName;
     
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
       appBar:OurAppBar(),

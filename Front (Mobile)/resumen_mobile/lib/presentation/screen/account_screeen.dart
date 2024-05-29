@@ -26,6 +26,7 @@ class AcconutScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final idUser = ref.watch(userNotifierProvider).id;
+    final user = ref.watch(userNotifierProvider).userName;
     
     return Scaffold(
       drawerEnableOpenDragGesture: false,
@@ -44,6 +45,15 @@ class AcconutScreen extends ConsumerWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Text('Tu cuenta: $user',  
+                        style: const TextStyle(
+                          fontFamily: 'PoetsenOne',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                          color: Color.fromARGB(255, 5, 5, 5)
+                        ),
+                      ),
+                      SizedBox(height: 20,),
                       msg,
                       InputKindle(label:'Ingrese su Pass Actual', obscureText: false, inputController: _inputCurrentPass),
                       //espacio entre inputs

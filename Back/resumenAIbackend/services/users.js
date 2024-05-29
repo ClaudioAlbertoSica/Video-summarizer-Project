@@ -7,6 +7,7 @@ import path from 'path'
 import { fileURLToPath } from 'url';
 import NodeMailer from './notifications/nodemailer.js'
 import NodeMailerSug from './notifications/nodemailerSug.js'
+import NodeMailerPDF from './notifications/nodemailerPDF.js'
 import axios from 'axios';
 
 class Servicio {
@@ -14,6 +15,7 @@ class Servicio {
         this.model = Factory.get(persistencia)
         this.nodeMailer = new NodeMailer()
         this.nodeMailerSug = new NodeMailerSug()
+        this.NodeMailerPDF = new NodeMailerPDF()
     }
 
     //Finalizado
@@ -690,6 +692,23 @@ class Servicio {
             throw new Error(error.message)
         }
     }
+
+    enviarResumen = async (id, idres) => {
+        try {
+            if (id, idres) {
+                const usuario = await this.model.obtenerUsuarios(id)
+                const resumen = await this.model.obtenerResumenes(id, idres)
+                await this.NodeMailerPDF.sendMail(usuario.userName, resumen.pdf.data)
+                return resumen
+            } else {
+                throw new Error('ID INDEFINIDO')
+            }
+        }
+        catch (error) {
+            console.log(error.message)
+        }}
+
+    
 
 
     /* FALTAN LOS SIGUIENTES MÉTODOS:

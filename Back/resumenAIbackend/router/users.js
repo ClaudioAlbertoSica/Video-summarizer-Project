@@ -20,6 +20,7 @@ class Router {
         this.router.delete('/:id/pdf/:pathFile', this.controlador.EliminarPdf)
         this.router.delete('/:id/resumen/:idres', this.controlador.borrarResumen)
         this.router.put('/:id/resumen/:idres', this.controlador.actualizarResumen)
+        this.router.post('/:id/enviar/:idres', this.controlador.enviarResumen)
         this.router.post('/login', this.controlador.loguearse)
         this.router.post('/cambiarpass/:id', this.controlador.cambiarPass)
         this.router.post('/', this.controlador.guardarUsuario)

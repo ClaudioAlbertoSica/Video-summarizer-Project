@@ -133,17 +133,17 @@ class LoginScreen extends ConsumerWidget {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://localhost:8080/api/login');
+      final url = Uri.parse('http://10.0.2.2:8080/api/login');
       final response = await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String> {
-/*           'userName': username,
-          'passwd': password, */
-          "userName": "marianolegon@gmail.com",
-          "passwd": "123", 
+          'userName': username,
+          'passwd': password, 
+          /*"userName": "rocio.bani93@gmail.com",
+          "passwd": "123", */
         }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
@@ -231,7 +231,7 @@ class LoginScreen extends ConsumerWidget {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://localhost:8080/api/recuperar');
+      final url = Uri.parse('http://10.0.2.2:8080/api/recuperar');
       final response = await http.post(
         url,
         headers: <String, String>{

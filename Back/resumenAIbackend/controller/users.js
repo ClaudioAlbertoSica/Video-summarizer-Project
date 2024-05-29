@@ -204,6 +204,18 @@ class Controlador {
             res.status(500).json({ error: error.message })
         }
     }
+
+    enviarResumen = async (req, res) => {
+        try {
+            const { id, idres } = req.params
+            const enviar = () => this.servicio.enviarResumen(id, idres)
+            enviar()
+
+            res.status(200).json(false)
+        } catch (error) {
+            res.status(500).json({ error: error.message })
+        }
+    }
 }
 
 export default Controlador

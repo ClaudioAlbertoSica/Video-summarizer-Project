@@ -116,7 +116,7 @@ Future<bool> changePass(String passActual, String passNueva, String passNuevaBis
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://localhost:8080/api/cambiarpass/$idUser');
+      final url = Uri.parse('http://10.0.2.2:8080/api/cambiarpass/$idUser');
       final response = await http.post(
         url,
         headers: <String, String>{

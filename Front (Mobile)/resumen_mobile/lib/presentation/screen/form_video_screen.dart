@@ -258,7 +258,7 @@ class _FormVideoState extends ConsumerState<FormVideo> {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/video');
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/video');
       final response = await http.post(
         url,
         headers: <String, String>{
@@ -288,7 +288,7 @@ class _FormVideoState extends ConsumerState<FormVideo> {
   Future<bool> isInProgress(String idUser) async {
     bool inProgress = ref.read(userNotifierProvider).inProgress;
     try {
-      final url = Uri.parse('http://localhost:8080/api/inprogress/$idUser');
+      final url = Uri.parse('http://10.0.2.2:8080/api/inprogress/$idUser');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -317,7 +317,7 @@ class _FormVideoState extends ConsumerState<FormVideo> {
   Future<void> actualizarUsuario(String idUser) async {
     
     try {
-      final url = Uri.parse('http://localhost:8080/api/$idUser');
+      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });

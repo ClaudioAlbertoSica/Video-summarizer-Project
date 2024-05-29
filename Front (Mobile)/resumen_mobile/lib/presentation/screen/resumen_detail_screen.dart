@@ -39,7 +39,7 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
   Widget build(BuildContext context) {
     final idUser = ref.watch(userNotifierProvider).id;
     final idRes = widget.resumen.idres;
-    idResImage = (int.parse(idRes) - 1 ) % 11;
+    idResImage = (int.parse(idRes) - 1 ) % 10 + 1;
     final isDark = ref.watch(userNotifierProvider).isDark;
     final screenHeight = MediaQuery.of(context).size.height;
     final resumen = widget.resumen;

@@ -21,7 +21,7 @@ class BookButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final idUser = ref.watch(userNotifierProvider).id;
     final idRes = resumen.idres;
-    idResImage = (int.parse(idRes) - 1 ) % 11;
+    idResImage = (int.parse(idRes) - 1 ) % 10 + 1;
     final isDark = ref.watch(userNotifierProvider).isDark;
     Image imageThumbnail = getImage(isDark);
     

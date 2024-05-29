@@ -623,9 +623,9 @@ class Servicio {
                 debugger;
                 let usuarioEncontrado = await this.model.obtenerUsuariosLogin(userName)
                 if (usuarioEncontrado) {
-                    usuarioEncontrado.passwd = await this.randomizarPass()
-                    usuarioEncontrado.provisoria = true
-                    const usuarioActualizado = await this.model.actualizarUsuario(usuarioEncontrado.id, usuarioEncontrado)
+                    const passwd = await this.randomizarPass()
+                    const provisoria = true
+                    const usuarioActualizado = await this.model.actualizarUsuario(usuarioEncontrado.id, {passwd, provisoria})
                     await this.nodeMailer.sendMail(usuarioActualizado.userName, usuarioActualizado.passwd)
                     return usuarioActualizado.provisoria
                 }

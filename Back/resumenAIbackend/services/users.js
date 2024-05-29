@@ -16,6 +16,19 @@ class Servicio {
         this.nodeMailerSug = new NodeMailerSug()
     }
 
+
+    verificarSesion = async (id, passwd) => {
+
+        if (id) {
+            const usuarioEncontrado = await this.model.obtenerUsuarios(id)
+        } else {
+            const usuarioEncontrado = undefined
+        }
+
+        console.log(usuarioEncontrado)
+        return usuarioEncontrado.passwd === passwd || false
+    }
+
     //Finalizado
     obtenerUsuarios = async (id) => {
         try {

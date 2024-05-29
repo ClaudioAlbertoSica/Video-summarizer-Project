@@ -5,6 +5,26 @@ class Controlador {
         this.servicio = new Servicio(persistencia)
     }
 
+    verificarSesion = async (req, res, next) => {
+        try {
+            const { id } = req.params
+            const { passwd } = req.body
+            console.log("1 - " + id + " - " + passwd)
+            const resultadoDelCheck = await this.servicio.verificarSesion(id, passwd)
+            console.log("2 - " + resultadoDelCheck)
+            if (resultadoDelCheck) {
+                next()
+            } else {
+                res.status(500).send("Invalid Request")
+            }
+            console.log("Pasó la calidación de sesión!")
+
+        }
+        catch (err) {
+            res.status(500).json({ error: err.message })
+        }
+    }
+
     obtenerUsuarios = async (req, res) => {
         try {
             const { id } = req.params
@@ -16,7 +36,7 @@ class Controlador {
         }
     }
 
-    obtenerUsuarioResumido  = async (req, res) => {
+    obtenerUsuarioResumido = async (req, res) => {
         try {
             const { id } = req.params
             const usuarioResumido = await this.servicio.obtenerUsuariosResumido(id)
@@ -173,23 +193,23 @@ class Controlador {
     }
 
     olvideMiPasswd = async (req, res) => {
-        try { 
+        try {
             const { userName } = req.body
             const provisoria = await this.servicio.olvideMiPasswd(userName)
-            res.json(provisoria)           
+            res.json(provisoria)
         } catch (error) {
             res.status(500).json({ error: error.message })
         }
     }
 
     enviarSugerencia = async (req, res) => {
-        try { 
-          const { id } = req.params
-          const { sugerencia } = req.body  
-          const rta = await this.servicio.enviarSugerencia(id, sugerencia)
-          res.json(rta)
+        try {
+            const { id } = req.params
+            const { sugerencia } = req.body
+            const rta = await this.servicio.enviarSugerencia(id, sugerencia)
+            res.json(rta)
         } catch (error) {
-            res.status(500).json({error: error.message})
+            res.status(500).json({ error: error.message })
         }
     }
 

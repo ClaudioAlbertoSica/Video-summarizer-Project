@@ -5,6 +5,8 @@ import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
+import '../uicoreStyles/uicore_our_app_bar.dart';
+
 
 enum Idiomas{ english, spanish}
 
@@ -20,15 +22,11 @@ class ReportScreen extends ConsumerWidget {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        //title: const AppTitleStyle(text:'David Og', color: Colors.black),
-        //centerTitle: true,
-        backgroundColor: Colors.transparent,
-      ),
+      appBar: OurAppBar(),
       //MODULARICÉ REUTILIZANDO EL WIDGET QUE ESTÁ EN FORM_VIDEO_SCREEN
       body: StackLayoutCustomized(
             screenHeight: MediaQuery.of(context).size.height,
-            colorLight: const Color.fromARGB(255, 255, 241, 241), 
+            colorLight: const Color.fromRGBO(225, 225, 222, 1), 
             colorDark: const Color.fromRGBO(30, 30, 30, 1) , 
             imageLigth:'Reports.gif' ,
             imageDark:'ReportsD.gif' ,
@@ -73,7 +71,7 @@ class _FormTextState extends State<FormText> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Tell as about your issue',
+          Text('Háblenos de su problema',
             textAlign: TextAlign.start,
             style: GoogleFonts.ubuntu(
               fontWeight: FontWeight.w700
@@ -85,7 +83,7 @@ class _FormTextState extends State<FormText> {
             keyboardType: TextInputType.multiline,
             controller: _reportTextController,
             decoration: const InputDecoration(
-              hintText: 'Apply your Report',
+              hintText: 'Aplique su informe',
               border: OutlineInputBorder(
                 borderRadius:  BorderRadius.all(Radius.circular(10)),
               )
@@ -107,7 +105,7 @@ class _FormTextState extends State<FormText> {
                   
                 ),
                 child: const TitleStyle(
-                  text: 'Send Report',
+                  text: 'Enviar reporte',
                 ),
               ),
         ],

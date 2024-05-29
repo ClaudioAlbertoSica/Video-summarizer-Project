@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
 import 'package:resumen_mobile/presentation/screen/config_screen.dart';
 import 'package:resumen_mobile/presentation/screen/faqs_screen.dart';
+import 'package:resumen_mobile/presentation/screen/login_screen.dart';
 import 'package:resumen_mobile/presentation/screen/report_screen.dart';
 
 class DrawerMenu extends StatefulWidget {
@@ -31,7 +32,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             ),
           ),
           ListTile(
-            title: const Text('Config'),
+            title: const Text('Configuración'),
             onTap: () {
               context.pushNamed(ConfigScreen.name);
               // Navega a la pantalla de configuración
@@ -39,7 +40,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
             },
           ),
           ListTile(
-            title: const Text('Account'),
+            title: const Text('Mi cuenta'),
             onTap: () {
               context.pushNamed(AcconutScreen.name, extra: const SizedBox(height: 0.0,));
               // Navega a la pantalla de cuenta
@@ -48,7 +49,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           ),
           const Divider(),
           ListTile(
-            title: const Text('FAQs'),
+            title: const Text('Preguntas Frecuentes'),
             onTap: () {
               context.pushNamed(FAQScreen.name);
               // Navega a la pantalla de cuenta
@@ -56,9 +57,17 @@ class _DrawerMenuState extends State<DrawerMenu> {
             },
           ),
           ListTile(
-            title: const Text('Report'),
+            title: const Text('Enviar un reporte'),
             onTap: () {
               context.pushNamed(ReportScreen.name);
+              // Navega a la pantalla de cuenta
+              // Reemplaza con la navegación adecuada
+            },
+          ),
+          ListTile(
+            title: const Text('Deslogearse'),
+            onTap: () {
+              context.goNamed(LoginScreen.name);
               // Navega a la pantalla de cuenta
               // Reemplaza con la navegación adecuada
             },

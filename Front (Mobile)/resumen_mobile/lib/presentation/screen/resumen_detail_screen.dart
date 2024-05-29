@@ -15,6 +15,8 @@ import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+import '../uicoreStyles/uicore_our_app_bar.dart';
+
 class ResumenDetailScreen extends ConsumerStatefulWidget {
   ResumenDetailScreen({
     Key? key,
@@ -44,7 +46,7 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
 
     Future<void> actualizarUsuario(String idUser) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/$idUser');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -79,17 +81,8 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
 
   return Scaffold(
     extendBodyBehindAppBar: true,
-    appBar: AppBar(
-      backgroundColor: Colors.transparent,
-      leading: GestureDetector(
-        child: Icon( Icons.arrow_back_ios, color: const Color.fromARGB(255, 249, 249, 249),  ),
-        onTap: () {
-          Navigator.pop(context);
-        } ,
-      ) ,
-    ),
-    body: SingleChildScrollView(
-      child: StackLayoutCustomized(
+    appBar: OurAppBar(),
+    body: StackLayoutCustomized(
         screenHeight: screenHeight,
         colorLight: const Color.fromRGBO(235, 240, 241, 1), 
         colorDark: const Color.fromRGBO(30, 30, 30, 1) , 
@@ -189,8 +182,7 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
             ),
           ),
         ]
-      ),
-    )
+    ),
   );
 }
 
@@ -231,7 +223,7 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
 
 Future<void> downloadResumen(String idUser, String idRes) async {
 try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/pdf/$idRes');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/pdf/$idRes');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -249,7 +241,7 @@ try {
 
   Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -276,7 +268,7 @@ try {
   Future<void> borrarResumen(String idUser, String idRes) async{
     
   try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.delete(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -294,7 +286,7 @@ try {
   Future<void> putLikeResume(String idUser, String idRes, WidgetRef ref) async {
     ResumenPreview resumen = ref.read(userNotifierProvider).getResumen(idRes);
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.put(
         url,
         headers: <String, String>{
@@ -318,7 +310,7 @@ try {
   
   Future<void> actualizarResumenPoints(String idUser, String idRes, double rating, WidgetRef ref) async {
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/$idRes');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
       final response = await http.put(
         url,
         headers: <String, String>{
@@ -343,7 +335,7 @@ try {
     Future<void> actualizarUsuario(String idUser) async {
     
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/$idUser');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });

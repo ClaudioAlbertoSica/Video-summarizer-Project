@@ -36,7 +36,7 @@ class LoginScreen extends ConsumerWidget {
 
 
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           //MODULARICÉ UN POCO
@@ -53,11 +53,11 @@ class LoginScreen extends ConsumerWidget {
                   height: screenHeight * 0.15,  
                 ),
                 const SizedBox(height: 120,),
-                InputKindle(label:'email', obscureText: false, inputController: _inputUsernameController),
+                InputKindle(label:'Correo electrónico', obscureText: false, inputController: _inputUsernameController),
                 //espacio entre inputs
                 const SizedBox(height: 10),
                 //input para password
-                InputKindle(label:'password', obscureText: true, inputController: _inputPassController),
+                InputKindle(label:'Contraseña', obscureText: true, inputController: _inputPassController),
                 //Agrego espacio al boton
                 const SizedBox(height: 10),
                 //aca va el login button
@@ -92,7 +92,7 @@ class LoginScreen extends ConsumerWidget {
                     
                   ),
                   child: const TitleStyle(
-                    text: 'Login',
+                    text: 'Inicio de sesión',
                   ),
                 ),
                 Row(
@@ -103,14 +103,14 @@ class LoginScreen extends ConsumerWidget {
                         context.pushNamed(CreateAccountScreen.name);
                       }, 
                       //MODULARICÉ UN POCO
-                      child: const _ButtonCreateForgot(text: 'Create account'),
+                      child: const _ButtonCreateForgot(text: 'Crear cuenta'),
                     ),
                     TextButton(
                       onPressed: (){
                         _showDialogForgotPass(context);
                       },
                       //MODULARICÉ UN POCO
-                      child:const _ButtonCreateForgot(text: 'Forgot your pass?'),
+                      child:const _ButtonCreateForgot(text: 'Olvidé mi contraseña?'),
                     ),
                   ]
                 ),
@@ -133,16 +133,16 @@ class LoginScreen extends ConsumerWidget {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/login');
+      final url = Uri.parse('http://localhost:8080/api/login');
       final response = await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String> {
-          /*'userName': username,
-          'passwd': password,*/
-          "userName": "rocio.bani93@gmail.com",
+/*           'userName': username,
+          'passwd': password, */
+          "userName": "marianolegon@gmail.com",
           "passwd": "123", 
         }),
       );
@@ -186,15 +186,15 @@ class LoginScreen extends ConsumerWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Password Recovery'),
+          title: const Text('Recuperación de contraseñas'),
           content: Form(
             autovalidateMode: AutovalidateMode.always,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text('Please enter your email address to recover your password:'),
+                const Text('Introduzca su dirección de correo electrónico para recuperar su contraseña:'),
                 TextFormField(
-                  decoration:const  InputDecoration(hintText: 'Email'),
+                  decoration:const  InputDecoration(hintText: 'Correo electrónico'),
                   controller: _inputForgotController,
                   validator:  (String? value) {
                     return (value == '' || value == null) ? 'Este campo es requerido.' : null;
@@ -231,7 +231,7 @@ class LoginScreen extends ConsumerWidget {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/recuperar');
+      final url = Uri.parse('http://localhost:8080/api/recuperar');
       final response = await http.post(
         url,
         headers: <String, String>{

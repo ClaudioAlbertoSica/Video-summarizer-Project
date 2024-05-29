@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 
+import '../uicoreStyles/uicore_our_app_bar.dart';
+
 
 class FAQScreen extends ConsumerWidget {
   const FAQScreen({super.key});
@@ -15,10 +17,7 @@ class FAQScreen extends ConsumerWidget {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-      ),
+      appBar: OurAppBar(),
       body: StackLayoutCustomized(
               screenHeight: screenHeight,
               colorLight: const Color.fromRGBO(235, 240, 241, 1), 

@@ -6,7 +6,7 @@ import 'package:resumen_mobile/entity/user.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:http/http.dart' as http;
-
+import '../uicoreStyles/uicore_our_app_bar.dart';
 
 class ConfigScreen extends ConsumerWidget {
   ConfigScreen({super.key});
@@ -22,10 +22,7 @@ class ConfigScreen extends ConsumerWidget {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-      ),
+      appBar: OurAppBar(),
       body: StackLayoutCustomized(
               screenHeight: screenHeight,
               colorLight: const Color.fromRGBO(235, 240, 241, 1), 
@@ -39,13 +36,10 @@ class ConfigScreen extends ConsumerWidget {
                     children: [
                       Row(
                         children: [
-                          Text(isDarkUser ? 'Light mode' : 'Dark mode'),
+                          Text(isDarkUser ? 'Modo claro' : 'Modo oscuro'),
                           IconButton(
                             onPressed: () {
                               changeConfig(idUser, ref);
-                              
-
-
                             },
                             icon: isDarkUser ? const Icon(Icons.light_mode) : const Icon(Icons.dark_mode))
                         ],
@@ -65,7 +59,7 @@ void changeConfig(String idUser, WidgetRef ref) async {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/$idUser');
       final response = await http.put(
         url,
         headers: <String, String>{

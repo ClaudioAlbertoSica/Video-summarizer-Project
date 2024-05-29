@@ -64,15 +64,15 @@ class CreateAccountScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 120,),
                 //input para usuario
-                InputKindle(label:'email', obscureText: false, inputController: _inputUsernameController),
+                InputKindle(label:'Correo electrónico', obscureText: false, inputController: _inputUsernameController),
                 //espacio entre inputs
                 const SizedBox(height: 10),
                 //input para password
-                InputKindle(label:'password', obscureText: true, inputController: _inputPassController),
+                InputKindle(label:'Contraseña', obscureText: true, inputController: _inputPassController),
                 //espacio entre inputs
                 const SizedBox(height: 10),
                 //input para repeat your password
-                InputKindle(label:'repeat your password', obscureText: true, inputController: _inputRepeatPassController),
+                InputKindle(label:'Repetir contraseña', obscureText: true, inputController: _inputRepeatPassController),
                 //Agrego espacio al boton
                 const SizedBox(height: 10),
                 //aca va el login button
@@ -104,7 +104,7 @@ class CreateAccountScreen extends StatelessWidget {
                     
                   ),
                   child: const TitleStyle(
-                    text: 'Create account',
+                    text: 'Crear cuenta',
                   ),
                 ),
               ],

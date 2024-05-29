@@ -10,6 +10,8 @@ import 'package:resumen_mobile/presentation/uicoreStyles/uicore_input_style.dart
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 import 'package:http/http.dart' as http;
 
+import '../uicoreStyles/uicore_our_app_bar.dart';
+
 class AcconutScreen extends ConsumerWidget {
   static const String name = 'AcountScreen';
   //Aca creo que iria un atributo para guardar lo del form o input.
@@ -28,13 +30,7 @@ class AcconutScreen extends ConsumerWidget {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
-      appBar:
-      AppBar(
-        title: const AppTitleStyle(text:'', color: Color.fromARGB(255, 29, 29, 29)),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color:Colors.white),
-      ),
+      appBar:OurAppBar(),
       //MODULARICÉ REUTILIZANDO EL WIDGET QUE ESTÁ EN FORM_VIDEO_SCREEN
       body: StackLayoutCustomized(
             screenHeight: MediaQuery.of(context).size.height,
@@ -102,7 +98,7 @@ Future<bool> changePass(String passActual, String passNueva, String passNuevaBis
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/cambiarpass/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/cambiarpass/$idUser');
       final response = await http.post(
         url,
         headers: <String, String>{

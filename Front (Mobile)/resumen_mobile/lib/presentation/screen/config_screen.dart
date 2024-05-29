@@ -6,6 +6,7 @@ import 'package:resumen_mobile/entity/user.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:http/http.dart' as http;
+import '../../entity/validation.dart';
 import '../uicoreStyles/uicore_our_app_bar.dart';
 
 class ConfigScreen extends ConsumerWidget {
@@ -66,6 +67,7 @@ void changeConfig(String idUser, WidgetRef ref) async {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, void>{
+          'passwd': validation.password,
           'config': {
             'isDark': !(ref.read(userNotifierProvider).isDark)
           }}

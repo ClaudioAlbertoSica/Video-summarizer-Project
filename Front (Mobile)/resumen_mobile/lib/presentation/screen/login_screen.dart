@@ -10,6 +10,7 @@ import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
 import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
+import '../../entity/validation.dart';
 import '../uicoreStyles/uicore_input_style.dart';
 import '../uicoreStyles/uicore_montain_backgound.dart';
 import '../uicoreStyles/uicore_title_style.dart';
@@ -140,14 +141,16 @@ class LoginScreen extends ConsumerWidget {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String> {
-/*           'userName': username,
-          'passwd': password, */
-          "userName": "marianolegon@gmail.com",
-          "passwd": "123", 
+          'userName': username,
+          'passwd': password,
+/*           "userName": "marianolegon@gmail.com",
+          "passwd": "123",  */
         }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
       if (response.statusCode == 200) {
+        validation.password = password;
+        print('mi password es :$password');
         // Si la solicitud es exitosa, imprime la respuesta del servidor
         print('Respuesta del servidor: ${response.body}');
         
@@ -167,7 +170,6 @@ class LoginScreen extends ConsumerWidget {
           ref.read(resumenNotifierProvider.notifier).changeList(userLogueado.inventario);
           ref.read(userNotifierProvider.notifier).setUserLogin(userLogueado);
           ref.read(userNotifierProvider.notifier).togleDarkMode(userLogueado.isDark);
-
         loginOk = true;
       } else {
         errorMessage = json.decode(response.body)['error'];

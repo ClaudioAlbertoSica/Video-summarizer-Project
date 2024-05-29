@@ -11,6 +11,7 @@ import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 import 'package:http/http.dart' as http;
+import '../../entity/validation.dart';
 import '../uicoreStyles/uicore_navigation_bar.dart';
 import 'home_screen.dart';
 
@@ -210,6 +211,7 @@ class _FormTextState extends ConsumerState<FormText> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, void>{
+        'passwd': validation.password,
         'texto':_inputTitleController.text,
         'esBreve':shortValue,
         'idioma':idiomaSeleccionado.name,
@@ -233,7 +235,7 @@ class _FormTextState extends ConsumerState<FormText> {
   Future<bool> isInProgress(String idUser) async {
     bool inProgress = ref.read(userNotifierProvider).inProgress;
     try {
-      final url = Uri.parse('http://localhost:8080/api/inprogress/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/inprogress');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });

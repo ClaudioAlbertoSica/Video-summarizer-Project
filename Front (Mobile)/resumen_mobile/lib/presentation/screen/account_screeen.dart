@@ -10,6 +10,7 @@ import 'package:resumen_mobile/presentation/uicoreStyles/uicore_input_style.dart
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 import 'package:http/http.dart' as http;
 
+import '../../entity/validation.dart';
 import '../uicoreStyles/uicore_our_app_bar.dart';
 
 class AcconutScreen extends ConsumerWidget {
@@ -105,17 +106,17 @@ class AcconutScreen extends ConsumerWidget {
 
 Future<bool> changePass(String passActual, String passNueva, String passNuevaBis, String idUser) async {
     bool changeOk = false;
-    
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://localhost:8080/api/cambiarpass/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/cambiarpass');
       final response = await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+        'passwd': validation.password,
         'passActual': passActual,
         'passNueva': passNueva,
         'passNuevaBis': passNuevaBis,
@@ -123,6 +124,7 @@ Future<bool> changePass(String passActual, String passNueva, String passNuevaBis
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
       if (response.statusCode == 200) {
+        validation.password = passNueva;
         // Si la solicitud es exitosa, imprime la respuesta del servidor
         print('Respuesta del servidor: ${response.body}');
 

@@ -288,7 +288,7 @@ class _FormVideoState extends ConsumerState<FormVideo> {
   Future<bool> isInProgress(String idUser) async {
     bool inProgress = ref.read(userNotifierProvider).inProgress;
     try {
-      final url = Uri.parse('http://localhost:8080/api/inprogress/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/inprogress');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });

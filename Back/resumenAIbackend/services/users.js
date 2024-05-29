@@ -18,15 +18,13 @@ class Servicio {
 
 
     verificarSesion = async (id, passwd) => {
-
+        let usuarioEncontrado = null;
         if (id) {
-            const usuarioEncontrado = await this.model.obtenerUsuarios(id)
-        } else {
-            const usuarioEncontrado = undefined
+            usuarioEncontrado = await this.model.obtenerUsuarios(id)
         }
 
         console.log(usuarioEncontrado)
-        return usuarioEncontrado.passwd === passwd || false
+        return usuarioEncontrado ? usuarioEncontrado.passwd === passwd : false
     }
 
     //Finalizado

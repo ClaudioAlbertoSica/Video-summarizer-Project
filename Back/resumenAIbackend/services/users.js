@@ -620,7 +620,6 @@ class Servicio {
     olvideMiPasswd = async (userName) => {
         try {
             if (userName) {
-                debugger;
                 let usuarioEncontrado = await this.model.obtenerUsuariosLogin(userName)
                 if (usuarioEncontrado) {
                     const passwd = await this.randomizarPass()

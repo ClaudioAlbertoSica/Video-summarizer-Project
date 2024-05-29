@@ -63,14 +63,22 @@ class LoadingView extends ConsumerWidget {
 
     return StackLayoutCustomized(
               screenHeight: screenHeight,
-              colorLight: const Color.fromRGBO(235, 240, 241, 1), 
+              colorLight: Color.fromARGB(255, 241, 241, 231), 
               colorDark: const Color.fromRGBO(30, 30, 30, 1) , 
               imageLigth:imageLigth , 
               imageDark:imageDark , 
               content: [
-                const SizedBox(height: 10,),
-                Text(text,
-                style: GoogleFonts.ubuntu(fontSize: 24, fontWeight: FontWeight.w700)),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 10,),
+                      Text(text, style: GoogleFonts.ubuntu(fontSize: 24, fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                ),
               ],
           );
   }

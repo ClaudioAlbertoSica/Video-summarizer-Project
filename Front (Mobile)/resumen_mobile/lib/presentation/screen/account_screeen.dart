@@ -51,7 +51,6 @@ class AcconutScreen extends ConsumerWidget {
                           fontFamily: 'PoetsenOne',
                           fontWeight: FontWeight.w500,
                           fontSize: 15,
-                          color: Color.fromARGB(255, 5, 5, 5)
                         ),
                       ),
                       SizedBox(height: 20,),

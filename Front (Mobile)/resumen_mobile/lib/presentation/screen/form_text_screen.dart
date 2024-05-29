@@ -208,10 +208,10 @@ class _FormTextState extends ConsumerState<FormText> {
       final response = await http.post(
         url,
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+          'content-type': 'application/json; charset=UTF-8',
+          'passwd': '123'
         },
         body: jsonEncode(<String, void>{
-        'passwd': validation.password,
         'texto':_inputTitleController.text,
         'esBreve':shortValue,
         'idioma':idiomaSeleccionado.name,
@@ -237,7 +237,8 @@ class _FormTextState extends ConsumerState<FormText> {
     try {
       final url = Uri.parse('http://localhost:8080/api/$idUser/inprogress');
       final response = await http.get(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+          'content-type': 'application/json; charset=UTF-8',
+          'passwd': '123'
       });
 
       if (response.statusCode == 200) {
@@ -266,7 +267,8 @@ class _FormTextState extends ConsumerState<FormText> {
     try {
       final url = Uri.parse('http://localhost:8080/api/$idUser');
       final response = await http.get(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+          'content-type': 'application/json; charset=UTF-8',
+          'passwd': '123'
       });
 
       if (response.statusCode == 200) {

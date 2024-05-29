@@ -7,8 +7,9 @@ class Controlador {
 
     verificarSesion = async (req, res, next) => {
         try {
-            const { id } = req.params
-            const { passwd } = req.body
+            debugger;
+            const { id } = req.params;
+            const passwd = req.headers.passwd;
             console.log("1 - " + id + " - " + passwd)
             const resultadoDelCheck = await this.servicio.verificarSesion(id, passwd)
             console.log("2 - " + resultadoDelCheck)

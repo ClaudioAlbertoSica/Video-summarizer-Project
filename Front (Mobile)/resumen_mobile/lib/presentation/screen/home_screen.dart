@@ -78,9 +78,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
   Future<bool> isInProgress(String idUser) async {
     bool inProgress = false;
     try {
-      final url = Uri.parse('http://localhost:8080/api/inprogress/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/inprogress');
       final response = await http.get(url, headers: <String, String> {
-        'Content-Type': 'application/json; charset=UTF-8',
+          'content-type': 'application/json; charset=UTF-8',
+          'passwd': '123'
       });
 
       if (response.statusCode == 200) {
@@ -112,7 +113,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
     try {
       final url = Uri.parse('http://localhost:8080/api/$idUser');
       final response = await http.get(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+          'content-type': 'application/json; charset=UTF-8',
+          'passwd': '123'
       });
 
       if (response.statusCode == 200) {

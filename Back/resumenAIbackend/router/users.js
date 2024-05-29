@@ -7,10 +7,23 @@ class Router {
         this.controlador = new Controller(persistencia)
     }
 
+    /*los :id (user id) requeridos por parámetro los moví todos a la primera posicion después de la barra,
+    de modo que:
+        /:id/ejemplo1
+        /ejemplo2/:id
+        /ejemplpA/ejemploB/:id
+
+    pasa a ser:
+        /:id/ejemplo1 <--queda igual porque tiene el :id en la primera posición
+        /:id/ejemplo2
+        /:id/ejemplpA/ejemploB
+
+    por otro lado: el / que es para crear el usuario... lo cambié a /guardar, para evitr conflictos
+    */
     start() {
         this.router.post('/recuperar', this.controlador.olvideMiPasswd)
         this.router.post('/login', this.controlador.loguearse)
-        this.router.post('/', this.controlador.guardarUsuario)
+        this.router.post('/guardar', this.controlador.guardarUsuario)
 
         this.router.all('/:id/*', this.controlador.verificarSesion)
 

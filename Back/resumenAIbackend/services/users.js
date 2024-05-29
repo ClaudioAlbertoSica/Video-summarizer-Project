@@ -594,8 +594,7 @@ class Servicio {
                             usuarioActualizado = await this.actualizarUsuario(id, { passwd: passNueva })
                             console.log("La constraseña se actualizó correctamente.")
                             if (usuarioActualizado.provisoria) {
-                                usuarioActualizado.provisoria = false
-                                usuarioActualizado = await this.actualizarUsuario(id, usuarioActualizado)
+                                usuarioActualizado = await this.actualizarUsuario(id, { provisoria: false })
                             }
                             return usuarioActualizado
                         } else {

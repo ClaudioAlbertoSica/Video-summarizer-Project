@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
-import 'package:resumen_mobile/presentation/uicoreStyles/uicore_app_title_style.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_input_style.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 import 'package:http/http.dart' as http;
@@ -46,14 +45,23 @@ class AcconutScreen extends ConsumerWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text('Tu cuenta: $user',  
-                        style: const TextStyle(
-                          fontFamily: 'PoetsenOne',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                        ),
+                      Column(
+                        children: [
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: SizedBox(height:90, child: Image.asset('assets/images/avatar.png'),),
+                            ),
+                          const SizedBox(height: 10,),
+                          Text(user,  
+                            style: const TextStyle(
+                              fontFamily: 'PoetsenOne',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
                       msg,
                       InputKindle(label:'Ingrese su Pass Actual', obscureText: false, inputController: _inputCurrentPass),
                       //espacio entre inputs

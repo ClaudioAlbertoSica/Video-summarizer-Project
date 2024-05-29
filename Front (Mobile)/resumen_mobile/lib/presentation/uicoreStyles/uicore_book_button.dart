@@ -30,7 +30,7 @@ class BookButton extends ConsumerWidget {
     });
 
     return Card(
-      color: isDark ? null : imText ? Color.fromRGBO(69, 179, 156, 1) : Color.fromRGBO(245, 54, 84, 1),
+      color: isDark ? null : imText ? Color.fromRGBO(245, 54, 84, 1) : Color.fromRGBO(69, 179, 156, 1),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(9.0),

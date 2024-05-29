@@ -142,7 +142,7 @@ class LoginScreen extends ConsumerWidget {
         body: jsonEncode(<String, String> {
 /*           'userName': username,
           'passwd': password, */
-          "userName": "marianolegon@gmail.com",
+          "userName": "claudioalbertosica@gmail.com",
           "passwd": "123", 
         }),
       );

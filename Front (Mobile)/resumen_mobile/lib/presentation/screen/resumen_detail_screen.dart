@@ -27,18 +27,19 @@ class ResumenDetailScreen extends ConsumerStatefulWidget {
   static const String name = 'ResumenDetailScreen';
   final ResumenPreview resumen;
   final Uint8List pdfBytes;
-
   @override
   _ResumenDetailScreenState createState() => _ResumenDetailScreenState();
 }
 
 class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
   String errorMessage = '';
+  int? idResImage;
 
   @override
   Widget build(BuildContext context) {
     final idUser = ref.watch(userNotifierProvider).id;
     final idRes = widget.resumen.idres;
+    idResImage = (int.parse(idRes) - 1 ) % 11;
     final isDark = ref.watch(userNotifierProvider).isDark;
     final screenHeight = MediaQuery.of(context).size.height;
     final resumen = widget.resumen;
@@ -214,7 +215,7 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
       }
     }
     return Image.asset(
-      'assets/images/thumball.jpeg',
+      'assets/images/$idResImage.png',
       width: double.infinity,
       height: double.infinity,
       fit: BoxFit.cover,

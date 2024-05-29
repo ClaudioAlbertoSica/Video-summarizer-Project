@@ -16,11 +16,12 @@ class BookButton extends ConsumerWidget {
   final ResumenPreview resumen;
   String errorMessage = '';
   bool imText = false;
-
+  int? idResImage;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final idUser = ref.watch(userNotifierProvider).id;
     final idRes = resumen.idres;
+    idResImage = (int.parse(idRes) - 1 ) % 11;
     final isDark = ref.watch(userNotifierProvider).isDark;
     Image imageThumbnail = getImage(isDark);
     
@@ -154,7 +155,7 @@ Image getImage(isDark) {
     }
     imText = true;
     return Image.asset(
-      'assets/images/thumball.jpeg',
+      'assets/images/$idResImage.png',
       width: 70,
       height: 70,
       fit: BoxFit.cover,

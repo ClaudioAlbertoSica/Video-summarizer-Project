@@ -14,12 +14,11 @@ class Controlador {
             const resultadoDelCheck = await this.servicio.verificarSesion(id, passwd)
             console.log("2 - " + resultadoDelCheck)
             if (resultadoDelCheck) {
+                console.log("Pasó la validación de sesión!")
                 next()
             } else {
                 res.status(500).send("Invalid Request")
             }
-            console.log("Pasó la calidación de sesión!")
-
         }
         catch (err) {
             res.status(500).json({ error: err.message })

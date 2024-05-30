@@ -16,6 +16,7 @@ interface LoginModalInterface {
 function LoginModal({ selectorCallback, setNewLoggedUser }: LoginModalInterface) {
   const formRef = useRef<HTMLFormElement>();
   const [alertToShow, setAlertToShow] = useState<AlertMessage>({ message: "don't show", type: alertTypes.info });
+  const SendingPetitionToServer: string = "Esperando respuesta del servidor...";
   const confirmationMessage: string = "Ingreso Correcto";
   const defaultAlertMessage: string = "Acceso denegado: por favor revise su usario y contraseña";
 
@@ -24,6 +25,7 @@ function LoginModal({ selectorCallback, setNewLoggedUser }: LoginModalInterface)
     const formData = new FormData(formRef?.current);
     const submittedEmail = formData?.get("yourEmail");
     const submittedPassword = formData?.get("yourPassword");
+    alertMessagesHandler(setAlertToShow, SendingPetitionToServer, alertTypes.info);
     await server
       .post<DBuser>("/login", { userName: submittedEmail, passwd: submittedPassword })
       .then((res) => {
@@ -39,7 +41,7 @@ function LoginModal({ selectorCallback, setNewLoggedUser }: LoginModalInterface)
 
   return (
     <Container className="ExternalLoginContainer">
-      <Box className="FormBox" component="form" ref={formRef} onSubmit={handleSumbit}>
+      <Box className="FormBox" component="form" ref={formRef} onSubmit={(event) => handleSumbit(event)}>
         <Typography variant="h3" textAlign="center" gutterBottom>
           Ingresar
         </Typography>

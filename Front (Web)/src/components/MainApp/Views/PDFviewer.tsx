@@ -44,6 +44,7 @@ function PDFviewer() {
           setDocumentToShow(base64toBlob(res.data.pdf.data));
         })
         .catch((err) => {
+          setIsLoading(false);
           setDocumentToShow(new Blob()); // This is just to show nothing, if nothing arrives (otherwise, last PDF remains visible)
           console.log(err.error);
         });

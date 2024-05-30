@@ -21,7 +21,7 @@ function Favorite({ isLiked }: Props) {
     const selectedResDBindex = loggedUser.userState.inventario.findIndex((sum) => sum.idres === idresSelected);
 
     await server
-      .put(`/${loggedUser.userState.id}/resumen/${summaryContext.State.idres}`, { isFavourite: !liked })
+      .put(`/${loggedUser.userState.id}/resumen/${summaryContext.State.idres}`, { isFavourite: !liked }, {headers: {'passwd': loggedUser.userState.passwd}})
       .then((res) => {
         const newUserContext: LoggedUser = { ...loggedUser.userState };
         newUserContext.inventario[selectedResDBindex].isFavourite = res.data.isFavourite;

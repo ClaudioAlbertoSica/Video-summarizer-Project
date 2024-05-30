@@ -18,7 +18,7 @@ function Trash() {
     const selectedResDBindex = loggedUser.userState.inventario.findIndex((sum) => sum.idres === idresSelected);
 
     await server
-      .delete<Summary>(`/${loggedUser.userState.id}/resumen/${summaryContext.State.idres}`)
+      .delete<Summary>(`/${loggedUser.userState.id}/resumen/${summaryContext.State.idres}`, {headers: {'passwd': loggedUser.userState.passwd}})
       .then(() => {
         const newUserContext: LoggedUser = { ...loggedUser.userState };
         newUserContext.inventario.splice(selectedResDBindex, 1);

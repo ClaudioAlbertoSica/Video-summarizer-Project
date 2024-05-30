@@ -40,7 +40,7 @@ function CreateAccountModal({ selectorCallback, setNewLoggedUser }: LoginModalSe
 
   const handleServerQuerry = async (emailToBeSent: string, passwordToBeSent: string) => {
     await server
-      .post("/", { userName: emailToBeSent, passwd: passwordToBeSent })
+      .post("/guardar", { userName: emailToBeSent, passwd: passwordToBeSent })
       .then((res) => {
         alertMessagesHandler(setAlertToShow, confirmationMessage, alertTypes.success, 500);
         const adjustedUser: LoggedUser = newUserTypesCorrections(res.data);

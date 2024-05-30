@@ -15,7 +15,7 @@ function DarkModeSwitch() {
     themeToSet =
       activeUser.userState.config.isDark !== ("dark" as PaletteMode) ? ("dark" as PaletteMode) : ("light" as PaletteMode);
     activeUser.userSteState({ ...activeUser.userState, config: { isDark: themeToSet } });
-    server.put(`/${activeUser.userState.id}`, payloadForServer(themeToSet));
+    server.put(`/${activeUser.userState.id}`, payloadForServer(themeToSet), {headers: {'passwd': activeUser.userState.passwd}});
   };
 
   const payloadForServer = (themeToSet: PaletteMode) => {

@@ -25,7 +25,7 @@ class Router {
         this.router.post('/login', this.controlador.loguearse)
         this.router.post('/guardar', this.controlador.guardarUsuario)
 
-        this.router.all('/:id/*', this.controlador.verificarSesion)
+        this.router.all('/:id*', this.controlador.verificarSesion)
 
         this.router.post('/:id/sugerencia', this.controlador.enviarSugerencia)
         //this.router.get('/:id?', this.controlador.obtenerUsuarios)

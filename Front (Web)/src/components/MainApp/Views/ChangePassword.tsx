@@ -40,11 +40,11 @@ function ChangePassword({ forcedBehaviourChanger }: Props) {
 
   const handleServerQuerry = async (currentPassword: string, passwordToBeSent1: string, passwordToBeSent2: string) => {
     await server
-      .post<DBuser>(`/cambiarpass/${userContext.userState.id}`, {
+      .post<DBuser>(`/${userContext.userState.id}/cambiarpass`, {
         passActual: currentPassword,
         passNueva: passwordToBeSent1,
         passNuevaBis: passwordToBeSent2,
-      })
+      }, {headers: {'passwd': userContext.userState.passwd}})
       .then((res) => {
         const newUser: LoggedUser = newUserTypesCorrections(res.data);
         newUser.passwd = currentPassword;

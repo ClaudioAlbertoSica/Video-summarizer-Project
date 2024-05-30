@@ -46,7 +46,7 @@ function VideoForm() {
 
   const handleServerQuerry = async (url: string, title: string, esBreve: boolean, idioma: string) => {
     await serverCall
-      .post(`/${activeUSer.userState.id}/resumen/video`, { url, title, esBreve, idioma })
+      .post(`/${activeUSer.userState.id}/resumen/video`, { url, title, esBreve, idioma }, {headers: {'passwd': activeUSer.userState.passwd}})
       .then(() => {
         setAlertToShow({ message: "don't show", type: alertTypes.info });
       })

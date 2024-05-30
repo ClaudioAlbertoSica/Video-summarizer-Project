@@ -19,7 +19,7 @@ function WIPindicator() {
 
   const checkInProgress = async () => {
     await server
-      .get<boolean>(`/inprogress/${activeUSer.userState.id}`)
+      .get<boolean>(`/${activeUSer.userState.id}/inprogress`, {headers: {'passwd': activeUSer.userState.passwd}})
       .then((res) => {
         if (!res.data) {
           const update = async () => {
@@ -51,7 +51,7 @@ function WIPindicator() {
 
   const UpdateLoggedUserFromDB = async () => {
     await server
-      .get<DBuser>(`/${activeUSer.userState.id}`)
+      .get<DBuser>(`/${activeUSer.userState.id}`, {headers: {'passwd': activeUSer.userState.passwd}})
       .then((res) => {
         const adjustedUser: LoggedUser = newUserTypesCorrections(res.data);
         activeUSer.userSteState(adjustedUser);

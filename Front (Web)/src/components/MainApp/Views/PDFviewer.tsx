@@ -37,7 +37,7 @@ function PDFviewer() {
   useEffect(() => {
     const call = async () => {
       await server
-        .get<ServerSummaryResponse>(`/${activeUSer.userState.id}/resumen/${summaryContext.State.idres}`)
+        .get<ServerSummaryResponse>(`/${activeUSer.userState.id}/resumen/${summaryContext.State.idres}`, {headers: {'passwd': activeUSer.userState.passwd}})
         .then((res) => {
           currentDocument.current = res.data;
           setIsLoading(false);

@@ -33,7 +33,7 @@ function Comments() {
 
   const handleServerQuerry = async (texto: string, title: string) => {
     await serverCall
-      .post(`/${activeUSer.userState.id}/COMMENTS`, { texto, title })
+      .post(`/${activeUSer.userState.id}/COMMENTS`, { texto, title }, {headers: {'passwd': activeUSer.userState.passwd}})
       .then(() => {
         setAlertToShow({ message: "don't show", type: alertTypes.info });
       })

@@ -40,7 +40,7 @@ function TextForm() {
 
   const handleServerQuerry = async (texto: string, title: string, esBreve: boolean, idioma: string) => {
     await serverCall
-      .post(`/${activeUSer.userState.id}/resumen/texto`, { texto, esBreve, idioma, title })
+      .post(`/${activeUSer.userState.id}/resumen/texto`, { texto, esBreve, idioma, title }, {headers: {'passwd': activeUSer.userState.passwd}})
       .then(() => {
         setAlertToShow({ message: "don't show", type: alertTypes.info });
       })

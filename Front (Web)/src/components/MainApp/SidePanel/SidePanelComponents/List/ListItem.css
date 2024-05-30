@@ -1,25 +1,29 @@
 .MuiContainer-root.ListItemContainer{
     display: flex;
     flex-direction: row;
+    height: 80px;
     align-items: center;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    background-color: rgb(225 222 222);
-    border-radius: 20px;
+    border-radius: 9px;
     padding: 10px;
     padding-top: 0px;
     padding-bottom: 0px;
 }
 
 .MuiContainer-root.ItemAndTitleContainer{
-width: 90%;
-display: flex;
-flex-direction: row;
-flex-wrap: nowrap;
-justify-content: flex-start;
-align-items: center;
-padding: 0px;
-margin-left: 10px;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0px;
+    margin-left: 10px;
+}
+
+.MuiContainer-root.ItemAndTitleContainer .CounterTitle{
+    display: none;
 }
 
 .MuiTypography-root.ListItemTitle{
@@ -27,6 +31,8 @@ margin-left: 10px;
     -webkit-line-clamp: 2; /*Cantidad de líneas limitada a 2*/
     display: -webkit-inline-box;
     overflow: hidden;
+    font-size: 15px;
+    line-height: 16px;
     -webkit-box-orient: vertical;
 }
 

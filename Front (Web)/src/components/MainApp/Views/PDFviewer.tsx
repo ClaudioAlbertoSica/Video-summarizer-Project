@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import server from "../../../Services/serverCall.ts";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
 import isloadingGif from "../../../assets/isLoading.gif";
@@ -7,6 +7,8 @@ import { Container } from "@mui/material";
 import PDFviwerHeader from "./PDFviwerHeader.tsx";
 import { Summary } from "../../../Services/Types/UserTypes.ts";
 import { SelectedSummaryContext, defaultSummary } from "../SelectedSummaryContext.ts";
+import LoadingScreen from "./LoadingScreen.tsx";
+import LoadingScreenPDF from "./LoadingScreenPDF.tsx";
 
 type pdfInResponse = {
   pdf: pdf;
@@ -51,13 +53,13 @@ function PDFviewer() {
     setIsLoading(true);
     call();
   }, [summaryContext.State.idres]);
-
+  let elementtoReturn: ReactElement = <LoadingScreenPDF />
   return (
     <Container className="ContainerForPDFViewr">
       <Container className="ContainerForPDFViewrHeader">{!isLoading && <PDFviwerHeader {...summaryContext.State} />}</Container>
       <Container className="containerForPDFViewrEmbededs">
         {isLoading ? (
-          <img className="embededPDFViewrLoader" src={isloadingGif} title="Titulo" />
+         elementtoReturn
         ) : (
           <embed className="embededPDFViewr" src={URL.createObjectURL(documentToShow)} type="application/pdf" />
         )}

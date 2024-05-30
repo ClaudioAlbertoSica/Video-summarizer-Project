@@ -13,14 +13,14 @@ function SearchBox({ filter }: Props) {
       <TextField
         className="SearchBox"
         id="filled-search"
-        label="Search field"
+        placeholder="Search field"
         type="search"
         variant="filled"
         onChange={(event) => filter(event.target.value)}
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
-              <ManageSearchIcon fontSize="large" />
+            <InputAdornment position="start" className="InputSearchbox">
+              <ManageSearchIcon fontSize="medium" />
             </InputAdornment>
           ),
         }}

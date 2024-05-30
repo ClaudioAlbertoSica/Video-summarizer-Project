@@ -1,4 +1,4 @@
-import { Avatar, Container, IconButton, Tooltip, Typography } from "@mui/material";
+import { Avatar, Container, IconButton, Tooltip, Typography, useTheme } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import StarCounter from "../../../StarCounter/StarCounter.tsx";
 import "./ListItem.css";
@@ -18,7 +18,7 @@ import { Summary } from "../../../../../Services/Types/UserTypes.ts";
 function SummaryListItem({ idres, title, points, thumbnail, isFavourite }: Summary) {
   const setSelectedCentralPanelView = useContext(ButtonViewContext);
   const summaryContext = useContext(SelectedSummaryContext);
-
+  const myTheme = useTheme();
   const handleClick = () => {
     summaryContext.SetState({
       ...summaryContext.State,
@@ -29,7 +29,7 @@ function SummaryListItem({ idres, title, points, thumbnail, isFavourite }: Summa
   };
 
   return (
-    <Container className="ListItemContainer">
+    <Container className="ListItemContainer" sx={{backgroundColor: myTheme.palette.my.sidePanelBg}}>
       <Container className="ItemAndTitleContainer">
         <Avatar className="avatarForListItem" src={thumbnail}></Avatar>
         <Container className="TitleAndCounterContainer">

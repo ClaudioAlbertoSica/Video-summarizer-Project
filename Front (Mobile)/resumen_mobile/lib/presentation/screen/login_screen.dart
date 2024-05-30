@@ -133,7 +133,7 @@ class LoginScreen extends ConsumerWidget {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/login');
+      final url = Uri.parse('http://localhost:8080/api/login');
       final response = await http.post(
         url,
         headers: <String, String>{
@@ -142,7 +142,7 @@ class LoginScreen extends ConsumerWidget {
         body: jsonEncode(<String, String> {
           'userName': username,
           'passwd': password, 
-          /*"userName": "rocio.bani93@gmail.com",
+/*           "userName": "rocio.bani93@gmail.com",
           "passwd": "123", */
         }),
       );
@@ -215,7 +215,24 @@ class LoginScreen extends ConsumerWidget {
                 bool sendOk = await recuperarContrasenia(_inputForgotController.text);
                 if(sendOk){
                   Navigator.of(context).pop();
-                }else{
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Recuperación de contraseñas'),
+                        content: const Text('Ya enviamos tu petición a tu correo electronico.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Iniciar sesión')
+                          ),
+                        ]
+                      );
+                    }
+                  );
+                } else {
                   _showErrorMessage(context);
                 }
               },
@@ -231,7 +248,7 @@ class LoginScreen extends ConsumerWidget {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/recuperar');
+      final url = Uri.parse('http://localhost:8080/api/recuperar');
       final response = await http.post(
         url,
         headers: <String, String>{
@@ -257,7 +274,6 @@ class LoginScreen extends ConsumerWidget {
 
     return sendOk;
   }
-
 
   void _showErrorMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(

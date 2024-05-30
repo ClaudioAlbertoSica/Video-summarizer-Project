@@ -62,12 +62,12 @@ ThemeData getTheme() {
   }
 
   ResumenPreview getResumen(String idres){
-    ResumenPreview? resumen;
+    ResumenPreview resumen = ResumenPreview(idres: '', title: 'title', points: 0, isFavourite: false);
     for (var r in inventario) {
       if(r.idres == idres){
         resumen = r;
       }
     }
-    return resumen!;
+    return resumen;
   }
 }

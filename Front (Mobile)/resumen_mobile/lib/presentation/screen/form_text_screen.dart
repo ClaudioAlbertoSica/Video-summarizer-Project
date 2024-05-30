@@ -177,12 +177,17 @@ class _FormTextState extends ConsumerState<FormText> {
           const SizedBox(height: 25),
           ElevatedButton(
             onPressed: () async {
-              if(!inProgress){
-                        final bool creando = await crearResumenTexto(widget.id, ref);
-                        if(creando){
-                          context.goNamed(LoadingScreen.name, extra: 'Estamos generando tu resumen! Esto puede demorar unos minutos...');
-                        }
-                      }
+              if (_inputTextController.text.isEmpty) {
+                errorMessage = 'Debe ingresar un texto.';
+                _showErrorMessage(context);
+              } else if(!inProgress) {
+                final bool creando = await crearResumenTexto(widget.id, ref);
+                if(creando){
+                  context.goNamed(LoadingScreen.name, extra: 'Estamos generando tu resumen! Esto puede demorar unos minutos...');
+                } else {
+                  _showErrorMessage(context);
+                }
+              }
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
@@ -203,17 +208,17 @@ class _FormTextState extends ConsumerState<FormText> {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/texto');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/texto');
       final response = await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, void>{
-        'texto':_inputTitleController.text,
-        'esBreve':shortValue,
-        'idioma':idiomaSeleccionado.name,
-        'title': _inputTitleController.text
+          'texto':_inputTextController.text,
+          'esBreve':shortValue,
+          'idioma':idiomaSeleccionado.name,
+          'title': _inputTitleController.text
         }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
@@ -233,7 +238,7 @@ class _FormTextState extends ConsumerState<FormText> {
   Future<bool> isInProgress(String idUser) async {
     bool inProgress = ref.read(userNotifierProvider).inProgress;
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/inprogress/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/inprogress/$idUser');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -246,23 +251,18 @@ class _FormTextState extends ConsumerState<FormText> {
           await actualizarUsuario(idUser);
         }
       } else {
-        
           errorMessage = json.decode(response.body)['error'];
-        
       }
     } catch (error) {
-      
         errorMessage = 'Error: Connection ERROR - Server not found';
-    
     }
     return inProgress;
   }
 
-
   Future<void> actualizarUsuario(String idUser) async {
     
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/$idUser');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -284,14 +284,19 @@ class _FormTextState extends ConsumerState<FormText> {
           ref.read(resumenNotifierProvider.notifier).changeList(userActualizado.inventario);
           ref.read(userNotifierProvider.notifier).setUserLogin(userActualizado);
       } else {
-        
           errorMessage = json.decode(response.body)['error'];
-        
       }
     } catch (error) {
-      
         errorMessage = 'Error: Connection ERROR - Server not found';
-    
     }
+  }
+
+  void _showErrorMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.orange[700],
+      ),
+    );
   }
 }

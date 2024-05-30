@@ -78,7 +78,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
   Future<bool> isInProgress(String idUser) async {
     bool inProgress = false;
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/inprogress/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/inprogress/$idUser');
       final response = await http.get(url, headers: <String, String> {
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -110,7 +110,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
   Future<void> actualizarUsuario(String idUser) async {
     
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/$idUser');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });

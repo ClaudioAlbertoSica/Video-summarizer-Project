@@ -229,25 +229,30 @@ class _FormVideoState extends ConsumerState<FormVideo> {
             ],
           ),
           ElevatedButton(
-                    onPressed: () async {
-                      if(!inProgress){
-                        final bool creando = await crearResumenVideo(widget.id, ref);
-                        if(creando){
-                          context.goNamed(LoadingScreen.name, extra: 'Estamos generando tu resumen! Esto puede demorar unos minutos...');
-                        }
-                      }
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
-                      elevation: MaterialStateProperty.all<double>(20), // Ajusta la elevación para la sombra exterior
-                      overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(0, 3, 3, 3)), // Elimina el color de superposición para un efecto más suave
-                      shadowColor: MaterialStateProperty.all<Color>(const Color.fromARGB(177, 3, 3, 3).withOpacity(0.4)), // Color de la sombra
-                      
-                    ),
-                    child: const TitleStyle(
-                      text: 'Crear Resumen',
-                    ),
-                  )
+              onPressed: () async {
+              if (_inputURLController.text.isEmpty) {
+                errorMessage = 'Debe ingresar una url de youtube.';
+                _showErrorMessage(context);
+              } else if(!inProgress) {
+                final bool creando = await crearResumenVideo(widget.id, ref);
+                if(creando){
+                  context.goNamed(LoadingScreen.name, extra: 'Estamos generando tu resumen! Esto puede demorar unos minutos...');
+                } else {
+                  _showErrorMessage(context);
+                }
+              }
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
+              elevation: MaterialStateProperty.all<double>(20), // Ajusta la elevación para la sombra exterior
+              overlayColor: MaterialStateProperty.all<Color>(const Color.fromARGB(0, 3, 3, 3)), // Elimina el color de superposición para un efecto más suave
+              shadowColor: MaterialStateProperty.all<Color>(const Color.fromARGB(177, 3, 3, 3).withOpacity(0.4)), // Color de la sombra
+              
+            ),
+            child: const TitleStyle(
+              text: 'Crear Resumen',
+            ),
+          )
         ],
       ),
     );
@@ -258,7 +263,7 @@ class _FormVideoState extends ConsumerState<FormVideo> {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser/resumen/video');
+      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/video');
       final response = await http.post(
         url,
         headers: <String, String>{
@@ -288,7 +293,7 @@ class _FormVideoState extends ConsumerState<FormVideo> {
   Future<bool> isInProgress(String idUser) async {
     bool inProgress = ref.read(userNotifierProvider).inProgress;
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/inprogress/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/inprogress/$idUser');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -317,7 +322,7 @@ class _FormVideoState extends ConsumerState<FormVideo> {
   Future<void> actualizarUsuario(String idUser) async {
     
     try {
-      final url = Uri.parse('http://10.0.2.2:8080/api/$idUser');
+      final url = Uri.parse('http://localhost:8080/api/$idUser');
       final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -348,5 +353,14 @@ class _FormVideoState extends ConsumerState<FormVideo> {
         errorMessage = 'Error: Connection ERROR - Server not found';
     
     }
+  }
+
+  void _showErrorMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.orange[700],
+      ),
+    );
   }
 }

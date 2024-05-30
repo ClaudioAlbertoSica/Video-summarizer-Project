@@ -40,7 +40,6 @@
 }
 
 .MuiContainer-root.RightContent{
-    background-image: url(/src/assets/formTextResumenBackgroundD.gif);
     background-position: center;
     background-size: cover;
     min-width: 570px;
@@ -50,36 +49,8 @@
     border-left: 1px dotted grey;
 }
 
-.MuiContainer-root.FormVideoImagen{
-    background-image: url(/src/assets/formVideoResumenBackgroundD.gif);
-}
-
-.MuiContainer-root.FormTextImagen{
-    background-image: url(/src/assets/formTextResumenBackgroundD.gif);
-}
-
-.MuiContainer-root.FormChangePassImagen{
-    background-image: url(/src/assets/accountScreenD.gif);
-}
-
-.MuiContainer-root.FAQImagen{
-    background-image: url(/src/assets/FAQD.gif);
-}
-
-.MuiContainer-root.WorkingResume{
-    background-image: url(/src/assets/isLoadingD.gif);
-}
-
 .MuiContainer-root.HelpImage{
     background-image: url(/src/assets/Help.gif);
-}
-
-.MuiContainer-root.CommentsImage{
-    background-image: url(/src/assets/Comments.gif);
-}
-
-.MuiContainer-root.AccountDataImage{
-    background-image: url(/src/assets/Me.gif);
 }
 
 .MuiBox-root.FormBoxView{

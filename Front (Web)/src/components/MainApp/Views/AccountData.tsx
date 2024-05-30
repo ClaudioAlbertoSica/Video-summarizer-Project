@@ -1,10 +1,11 @@
-import { Box, Container, Paper, Stack, Typography } from "@mui/material";
+import { Box, Container, Paper, Stack, Typography, useTheme } from "@mui/material";
 import "./View.css";
 import { useContext } from "react";
 import { LoggedUserContext } from "../../../ActiveUserContext";
 
 function AccountData() {
   const currentlyLoggedUsuer = useContext(LoggedUserContext).userState;
+  const myTheme = useTheme();
   return (
     <>
       <Paper className="ViewWrapper" elevation={5}>
@@ -22,7 +23,7 @@ function AccountData() {
               </Typography>
             </Stack>
           </Box>
-          <Container className="RightContent AccountDataImage"></Container>
+          <Container className="RightContent AccountDataImage" sx={{backgroundImage: `url(${myTheme.palette.image.me})`}}></Container>
         </Container>
       </Paper>
     </>

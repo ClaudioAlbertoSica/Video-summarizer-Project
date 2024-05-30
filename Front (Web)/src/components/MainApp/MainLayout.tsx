@@ -74,14 +74,14 @@ function GridLayout({ isProvisoryPassword }: InitialInfo) {
           </Container>
 
           <Grid className="ContainerGrid" container spacing={0}>
-            <Grid className="HeaderGridLeft" item xs={8} sx={{backgroundColor: myTheme.palette.my.sidePanelBg}}>
+            <Grid className="HeaderGridLeft" item xs={8} sx={{backgroundColor: myTheme.palette.my.colorRightContent}}>
 {/*               {forcePasswordChangeScreen ? (
                 <h1>{ValidViewNames.ChangePasswordMandatory}</h1>
               ) : (
                 <h1>{selectedCentralPanelView}</h1>
               )} */}
             </Grid>
-            <Grid className="HeaderGridRight" item xs={4} sx={{backgroundColor: myTheme.palette.my.sidePanelBg}}>
+            <Grid className="HeaderGridRight" item xs={4} sx={{backgroundColor: myTheme.palette.my.colorRightContent}}>
               <WIPindicator />
             </Grid>
             {/*
@@ -93,10 +93,10 @@ function GridLayout({ isProvisoryPassword }: InitialInfo) {
           The code makes use of the ImTheActiveView() function, that will only be true for the desired View.
           Close Button below shoots "noneSelected", so no view (and no button) is displayed at all.
           */}
-            <Grid className="CentralPanel" item xs={12} sx={{ backgroundColor: myTheme.palette.my.sidePanelBg }}>
+            <Grid className="CentralPanel" item xs={12} sx={{ backgroundColor: myTheme.palette.my.colorRightContent }}>
               {checkForForcedView()}
             </Grid>
-            <Grid className="FooterGrid" item xs={12}sx={{backgroundColor: myTheme.palette.my.sidePanelBg}}>
+            <Grid className="FooterGrid" item xs={12}sx={{backgroundColor: myTheme.palette.my.colorRightContent}}>
             </Grid>
           </Grid>
         </Container>

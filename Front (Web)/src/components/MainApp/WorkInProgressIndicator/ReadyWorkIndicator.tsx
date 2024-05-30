@@ -4,7 +4,7 @@ import { Container, Typography, useTheme } from "@mui/material";
 function ReadyWorkIndicator() {
   const myTheme = useTheme();
   return (
-    <Container className="WIPindicatorsContainer" sx={{ backgroundColor: myTheme.palette.my.sidePanelBg}}>
+    <Container className="WIPindicatorsContainer" sx={{ backgroundColor: myTheme.palette.my.colorRightContent}}>
       <CheckCircleOutlineSharpIcon color="primary" fontSize="large" />
       <Container className="WIPtextContainer">
         <Typography variant="subtitle2">RESÚMENES LISTOS</Typography>

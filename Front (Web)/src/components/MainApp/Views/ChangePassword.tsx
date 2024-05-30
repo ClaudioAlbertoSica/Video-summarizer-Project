@@ -108,7 +108,7 @@ function ChangePassword({ forcedBehaviourChanger }: Props) {
             </Button>
           </Container>
         </Box>
-        <Container className="RightContent FormChangePassImagen"></Container>
+        <Container className="RightContent FormChangePassImagen" sx={{backgroundImage: `url(${myTheme.palette.image.myAccount})`}}></Container>
       </Container>
     </Paper>
   );

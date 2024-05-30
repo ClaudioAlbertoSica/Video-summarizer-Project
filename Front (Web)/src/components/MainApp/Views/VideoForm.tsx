@@ -147,7 +147,7 @@ function VideoForm() {
                 </Container>
               </Container>
             </Box>
-            <Container className="RightContent FormVideoImagen"></Container>
+            <Container className="RightContent FormVideoImagen" sx={{backgroundImage: `url(${myTheme.palette.image.formVideo})`}}></Container>
           </Container>
         </Paper>
       );

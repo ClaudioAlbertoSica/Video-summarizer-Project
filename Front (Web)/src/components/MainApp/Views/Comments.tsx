@@ -84,7 +84,7 @@ function Comments() {
             </Container>
           </Container>
         </Box>
-        <Container className="RightContent CommentsImage"></Container>
+        <Container className="RightContent CommentsImage" sx={{backgroundImage: `url(${myTheme.palette.image.report})`}}></Container>
       </Container>
     </Paper>
   );

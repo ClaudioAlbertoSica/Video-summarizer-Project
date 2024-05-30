@@ -7,7 +7,19 @@ import { Dispatch, SetStateAction, createContext } from "react";
 declare module "@mui/material/styles" {
     interface Theme {
       palette: {
+        image: {
+          home: string,
+          formText: string,
+          formVideo: string,
+          faq: string,
+          logo: string,
+          myAccount: string,
+          loading: string,
+          report: string,
+          me: string
+        },
         my: {
+          colorRightContent: string,
           greyModalBg: string,
           sidePanelBg: string,
           header: string;
@@ -19,7 +31,19 @@ declare module "@mui/material/styles" {
     }
     interface ThemeOptions {
       paletteOptions?: {
+        image: {
+          home?: string,
+          formText?: string,
+          formVideo?: string,
+          faq?: string,
+          config?: string,
+          myAccount?: string,
+          loading?: string,
+          report?: string,
+          me?: string
+        }
         my?: {
+          colorRightContent?: string,
           greyModalBg?: string,
           sidePanelBg?: string,
           header?: string;
@@ -49,10 +73,22 @@ declare module "@mui/material/styles" {
               primary: grey[900],
               secondary: grey[800],
             },
+            image: {
+              home: "/src/assets/home.gif",
+              formText: "/src/assets/formText.gif",
+              formVideo: "/src/assets/formVideo.gif",
+              faq: "/src/assets/FAQS.gif",
+              logo: "/src/assets/Logo.gif",
+              myAccount: "/src/assets/accountScreen.gif",
+              loading: "/src/assets/isLoading.gif",
+              report: "/src/assets/Reports.gif",
+              me: "/src/assets/me.gif",
+            },
             my: {
-              greyModalBg: hexToRgb('#3b3940'),
-              sidePanelBg: hexToRgb('#448DA3'),
-              header: hexToRgb("#9BE8EA"),
+              colorRightContent: hexToRgb('#96C0B7'),
+              greyModalBg: hexToRgb('#d3d3d3'),
+              sidePanelBg: hexToRgb('#85cba7'),
+              header: hexToRgb("#E5F9E0"),
               list: hexToRgb("#448DA3"),
               listHeader: hexToRgb("#65CAD2"),
               listItem: hexToRgb("#9BE8EA"),
@@ -70,7 +106,19 @@ declare module "@mui/material/styles" {
               primary: "#fff",
               secondary: grey[300],
             },
+            image: {
+              home: "/src/assets/dome.gif",
+              formText: "/src/assets/formTextD.gif",
+              formVideo: "/src/assets/formVideoD.gif",
+              faq: "/src/assets/FAQD.gif",
+              logo: "/src/assets/Logo.png",
+              myAccount: "/src/assets/accountScreenD.gif",
+              loading: "/src/assets/isLoadingD.gif",
+              report: "/src/assets/Comments.gif",
+              me: "/src/assets/meD.gif",
+            },
             my: {
+              colorRightContent: hexToRgb('#1e1e1e'),
               greyModalBg: hexToRgb('#3b3940'),
               sidePanelBg: hexToRgb('#1e1e1e'),
               header: hexToRgb("#121212"),

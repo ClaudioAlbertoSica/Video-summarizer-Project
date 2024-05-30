@@ -127,7 +127,7 @@ function TextForm() {
                 </Container>
               </Container>
             </Box>
-            <Container className="RightContent FormTextImagen"></Container>
+            <Container className="RightContent FormTextImagen" sx={{backgroundImage: `url(${myTheme.palette.image.formText})`}}></Container>
           </Container>
         </Paper>
       );

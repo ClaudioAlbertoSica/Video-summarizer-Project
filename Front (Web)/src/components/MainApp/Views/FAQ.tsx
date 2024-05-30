@@ -1,6 +1,7 @@
-import { Container, Paper, Stack, Typography } from "@mui/material";
+import { Container, Paper, Stack, Typography, useTheme } from "@mui/material";
 
 function Faq() {
+  const myTheme = useTheme();
   return (
     <Paper className="ViewWrapper" elevation={5}>
       <Container className="FormFlexPostal">
@@ -31,7 +32,7 @@ function Faq() {
             scelerisque eu ultrices vitae auctor.
           </Typography>
         </Stack>
-        <Container className="RightContent FAQImagen"></Container>
+        <Container className="RightContent FAQImagen" sx={{backgroundImage: `url(${myTheme.palette.image.faq})`}}></Container>
       </Container>
     </Paper>
   );

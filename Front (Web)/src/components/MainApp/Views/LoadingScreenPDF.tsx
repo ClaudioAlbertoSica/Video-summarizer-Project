@@ -20,7 +20,7 @@ function LoadingScreenPDF() {
             (Un resumen de texto es relativamente rápido, pero un video puede demorar dependiendo de complejidad.)
           </Typography>
         </Box>
-        <Container className="RightContent WorkingResume"></Container>
+        <Container className="RightContent WorkingResume" sx={{backgroundImage: `url(${myTheme.palette.image.loading})`}}></Container>
       </Container>
     </Paper>
   );

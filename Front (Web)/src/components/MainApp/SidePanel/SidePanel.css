@@ -10,7 +10,8 @@
     display: block;
     left: 0;
     top: 184px;
-    width: 367px;
+    padding: 0;
+    width: 370px;
     height: 90px;
     clip-path: path('M 0 30 Q 55.5 7.5, 138.5 45 Q 189.6 66.4, 260 43 Q 313 18.5, 370 42.5 L 370 100 L 0 100 Z');
 }

@@ -68,7 +68,7 @@ function CreateAccountModal({ selectorCallback, setNewLoggedUser }: LoginModalSe
         <Typography variant="h3" textAlign="center" gutterBottom>
           Crear Cuenta
         </Typography>
-        <Typography variant="subtitle1" textAlign="center" gutterBottom>
+        <Typography className="Subtitle" variant="subtitle1" textAlign="center" gutterBottom>
           Ingrese su email, su contraseña, vuelva a ingresar esta última para verificarla, y luego haga click en "Crear".
         </Typography>
         <Container className="AlertsContainer">
@@ -108,6 +108,7 @@ function CreateAccountModal({ selectorCallback, setNewLoggedUser }: LoginModalSe
         </Container>
       </Box>
       <Container className="bottomOptionsContainer">
+      <Container className="Logo"></Container>
         <Typography variant="caption" display="block" gutterBottom>
           ¿Ya posee una cuenta? &nbsp;
           <Link onClick={() => selectorCallback(ModalNames.Login)} underline="hover" style={{ cursor: "pointer" }}>

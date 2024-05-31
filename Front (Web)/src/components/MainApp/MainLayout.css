@@ -10,12 +10,24 @@
 
 .MuiContainer-root.SidePanelContainer{
     display: flex;
-    width: 370px;
+    max-width: 370px;
+    min-width: 370px;
     height: 100vh;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     padding: 0 0 10px 0;
+}
+
+.MuiContainer-root.Logo{
+    background-image: url(../../assets/WriterRabbitLogo.png);
+    background-size: contain;
+    width: 320px;
+    height: 160px;
+    background-repeat: no-repeat;
+    padding-bottom: 200px;
+    top: -30px;
+    position: relative;
 }
 
 .ContainerGrid{

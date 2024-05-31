@@ -74,6 +74,7 @@ function LoginModal({ selectorCallback, setNewLoggedUser }: LoginModalInterface)
         </Container>
       </Box>
       <Container className="bottomOptionsContainer">
+        <Container className="Logo"></Container>
         <Typography variant="caption" display="block" gutterBottom>
           ¿No tiene cuenta? &nbsp;
           <Link onClick={() => selectorCallback(ModalNames.Create)} underline="hover" style={{ cursor: "pointer" }}>

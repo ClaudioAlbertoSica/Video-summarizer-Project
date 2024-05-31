@@ -2,6 +2,7 @@ import { Button, Stack } from "@mui/material";
 import { ButtonViewContext } from "../../../ButtonViewContext";
 import { ValidViewNames } from "../../../Views/ImTheActiveView";
 import { useContext } from "react";
+import "./ButtonStacks.css";
 
 function NewSummaryButtons() {
   const setSelectedCentralPanelView = useContext(ButtonViewContext);

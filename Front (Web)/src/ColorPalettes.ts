@@ -24,8 +24,10 @@ declare module "@mui/material/styles" {
           sidePanelBg: string,
           header: string;
           list: string;
-          listHeader: string;
-          listItem: string;
+          listHeader: string,
+          listItem: string,
+          listColor: string,
+          listBackground: string,
         };
       };
     }
@@ -50,6 +52,8 @@ declare module "@mui/material/styles" {
           list?: string;
           listHeader?: string;
           listItems?: string;
+          listColor?: string,
+          listBackground?: string,
         };
       };
     }
@@ -92,6 +96,8 @@ declare module "@mui/material/styles" {
               list: hexToRgb("#448DA3"),
               listHeader: hexToRgb("#65CAD2"),
               listItem: hexToRgb("#9BE8EA"),
+              listColor: hexToRgb("#fff8e4"),
+              listBackground: hexToRgb("#f53754"),
             },
           }
         : {
@@ -125,6 +131,8 @@ declare module "@mui/material/styles" {
               list: hexToRgb("#E56C26"),
               listHeader: hexToRgb("#883C10"),
               listItem: hexToRgb("#F3A06E"),
+              listColor: hexToRgb("#e56c26"),
+              listBackground: hexToRgb("#1d1d1d"),
             },
           }),
     },

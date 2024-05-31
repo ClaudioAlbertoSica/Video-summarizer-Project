@@ -14,19 +14,24 @@
     clip-path: path('M 0 110 Q 144 -46, 360 45 Q 490 112, 672 45 Q 816 -12, 960 85 L 960 600 L 0 600 Z');
 }
 
+.MuiTypography-root.Subtitle {
+    font-size: 12px;
+    width: 320px;
+}
+
 .MuiBox-root.FormBox{
     display: flex;
     flex-direction: column;
     align-items: center;
     width: -webkit-fill-available;
     margin-top: 30px;
-    margin-bottom: 60px;
+    margin-bottom: 20px;
     justify-content: flex-end;
 }
 
 .MuiFormControl-root.FormInputs{
     width: 70%;
-    margin-top: 30px;
+    margin-top: 14px;
     background-color: lightgray;
 }
 
@@ -46,7 +51,7 @@
 }
 
 .MuiContainer-root.AlertsContainer{
-    height: 60px;
+    height: 40px;
     padding: 0px;
     min-width: none;
     margin: 10px;

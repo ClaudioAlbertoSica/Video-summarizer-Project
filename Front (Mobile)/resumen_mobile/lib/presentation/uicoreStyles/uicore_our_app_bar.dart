@@ -7,7 +7,7 @@ class OurAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor = Colors.transparent,
     this.leadingIconColor = const Color.fromARGB(255, 249, 249, 249),
   }) : preferredSize = const Size.fromHeight(kToolbarHeight),
-       super(key: key);
+      super(key: key);
 
   final Widget? title;
   final Color backgroundColor;

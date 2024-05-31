@@ -57,6 +57,7 @@ User(
 
 ThemeData getTheme() {
     return ThemeData(
+      colorSchemeSeed: Colors.orange,
       brightness: isDark ? Brightness.dark : Brightness.light,
     );
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
-
 import '../uicoreStyles/uicore_our_app_bar.dart';
 
 

@@ -11,7 +11,7 @@
     border-radius: 30px;
     overflow: hidden;
     position: absolute;
-    clip-path: path('M 0 110 Q 144 -46, 360 45 Q 490 112, 672 45 Q 816 -12, 960 85 L 960 600 L 0 600 Z');
+    /*clip-path: path('M 0 110 Q 144 -46, 360 45 Q 490 112, 672 45 Q 816 -12, 960 85 L 960 600 L 0 600 Z');*/
 }
 
 .MuiTypography-root.Subtitle {

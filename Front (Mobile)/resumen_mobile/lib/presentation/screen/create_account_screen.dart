@@ -1,23 +1,18 @@
-// ignore_for_file: avoid_print
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:resumen_mobile/presentation/screen/home_screen.dart';
+import 'package:resumen_mobile/core/service/server.dart';
 import 'package:resumen_mobile/presentation/screen/login_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_montain_backgound.dart';
 import '../uicoreStyles/uicore_app_title_style.dart';
 import '../uicoreStyles/uicore_input_style.dart';
 import '../uicoreStyles/uicore_title_style.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 
 class CreateAccountScreen extends StatelessWidget {
   static const String name = 'CreateAccountScreen';
-  //Aca creo que iria un atributo para guardar lo del form o input.
   final TextEditingController _inputUsernameController = TextEditingController();
   final TextEditingController _inputPassController = TextEditingController();
   final TextEditingController _inputRepeatPassController = TextEditingController();
-  String errorMessage = '';
 
   CreateAccountScreen({super.key});
 
@@ -81,19 +76,17 @@ class CreateAccountScreen extends StatelessWidget {
                     bool completeInputs = _validateInputs(_inputUsernameController.text, _inputPassController.text, _inputRepeatPassController.text);
                     if (completeInputs) {
                       if (_inputRepeatPassController.text == _inputPassController.text) {
-                          bool created = await sendCreateUser(_inputUsernameController.text,_inputPassController.text);
+                          bool created = await Server.sendCreateUser(_inputUsernameController.text,_inputPassController.text);
                           if (created) {
                             context.goNamed(LoginScreen.name);
                         } else {
-                          _showErrorMessage(context);
+                          Server.showErrorMessage(context);
                         }
                       } else{
-                        errorMessage = 'Las contraseñas deben ser iguales.';
-                        _showErrorMessage(context);
+                        Server.showMsg(context, 'Las contraseñas deben ser iguales.');
                       }
                     } else {
-                        errorMessage = 'Los campos no deben estar vacios.';
-                        _showErrorMessage(context);
+                        Server.showMsg(context, 'Los campos no deben estar vacios.');
                     }
                   },
                   style: ButtonStyle(
@@ -115,46 +108,7 @@ class CreateAccountScreen extends StatelessWidget {
     );
   }
 
-  Future<bool> sendCreateUser(String username, String password) async {
-    bool createOk = false;
-    try {
-      //Android emulator, then your server endpoint should be 10.0.2.2:8080 instead of localhost:8080
-      final url = Uri.parse('http://localhost:8080/api/');
-      final response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String> {
-          'userName': username,
-          'passwd': password,
-        }),
-      );
-      //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
-      if (response.statusCode == 200) {
-        // Si la solicitud es exitosa, imprime la respuesta del servidor
-        print('Respuesta del servidor: ${response.body}');
-        createOk = true;
-      } else {
-        errorMessage = json.decode(response.body)['error'];
-      }
-    } catch (error) {
-      errorMessage = 'Error: Connection ERROR - Server not found';
-    }
-
-    return createOk;
-  }
-
-  void _showErrorMessage(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(errorMessage),
-        backgroundColor: Colors.orange[700],
-      ),
-    );
-  }
-  
-  bool _validateInputs(String value1, String value2, String value3) {
+  bool _validateInputs(String? value1, String? value2, String? value3) {
     return !((value1 == '' || value1 == null) && (value2 == '' || value2 == null) && (value3 == '' || value3 == null));
   }
 }

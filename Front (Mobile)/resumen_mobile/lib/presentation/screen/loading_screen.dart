@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:resumen_mobile/presentation/providers/theme_provider.dart';
-import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 

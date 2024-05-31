@@ -1,16 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:resumen_mobile/entity/preview_resumen.dart';
-import 'package:resumen_mobile/entity/user.dart';
-import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
+import 'package:resumen_mobile/core/service/server.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
-import 'package:http/http.dart' as http;
 import '../uicoreStyles/uicore_navigation_bar.dart';
 import 'home_screen.dart';
 
@@ -88,7 +83,6 @@ class FormText extends ConsumerStatefulWidget {
 
 class _FormTextState extends ConsumerState<FormText> {
   bool shortValue = false;
-  String errorMessage = '';
   final TextEditingController _inputTextController = TextEditingController();
   final TextEditingController _inputTitleController = TextEditingController();
 
@@ -178,14 +172,13 @@ class _FormTextState extends ConsumerState<FormText> {
           ElevatedButton(
             onPressed: () async {
               if (_inputTextController.text.isEmpty) {
-                errorMessage = 'Debe ingresar un texto.';
-                _showErrorMessage(context);
+                Server.showMsg(context, 'Debe ingresar un texto.');
               } else if(!inProgress) {
-                final bool creando = await crearResumenTexto(widget.id, ref);
+                final bool creando = await Server.crearResumenTexto(widget.id, _inputTextController.text, shortValue, idiomaSeleccionado.name, _inputTitleController.text, ref);
                 if(creando){
                   context.goNamed(LoadingScreen.name, extra: 'Estamos generando tu resumen! Esto puede demorar unos minutos...');
                 } else {
-                  _showErrorMessage(context);
+                  Server.showErrorMessage(context);
                 }
               }
             },
@@ -203,100 +196,5 @@ class _FormTextState extends ConsumerState<FormText> {
       ),
     );
   }
-    Future<bool> crearResumenTexto(String idUser, WidgetRef ref) async {
-    bool creando = false;
-    // servidor Node.js
-    try {
-      //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/texto');
-      final response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, void>{
-          'texto':_inputTextController.text,
-          'esBreve':shortValue,
-          'idioma':idiomaSeleccionado.name,
-          'title': _inputTitleController.text
-        }),
-      );
-      //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
-      if (response.statusCode == 200) {
-        // Si la solicitud es exitosa, imprime la respuesta del servidor
-        print('Respuesta del servidor: ${response.body}');
-        creando = true;
-      } else {
-        errorMessage = json.decode(response.body)['error'];
-      }
-    } catch (error) {
-      errorMessage = 'Error: Connection ERROR - Server not found';
-    }
-    return creando;
-  }
 
-  Future<bool> isInProgress(String idUser) async {
-    bool inProgress = ref.read(userNotifierProvider).inProgress;
-    try {
-      final url = Uri.parse('http://localhost:8080/api/inprogress/$idUser');
-      final response = await http.get(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
-
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-        inProgress = jsonData;
-        ref.read(userNotifierProvider.notifier).setInProgress(inProgress);
-        if(!inProgress){
-          await actualizarUsuario(idUser);
-        }
-      } else {
-          errorMessage = json.decode(response.body)['error'];
-      }
-    } catch (error) {
-        errorMessage = 'Error: Connection ERROR - Server not found';
-    }
-    return inProgress;
-  }
-
-  Future<void> actualizarUsuario(String idUser) async {
-    
-    try {
-      final url = Uri.parse('http://localhost:8080/api/$idUser');
-      final response = await http.get(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
-
-      if (response.statusCode == 200) {
-        final rsp = json.decode(response.body);
-
-        User userActualizado = User(
-            userName: rsp['userName'],
-            id: rsp['id'],
-            inventario: (rsp['inventario'] as List)
-              .map((item) => ResumenPreview.fromJson(item))
-              .toList(), 
-            inProgress: rsp['inProgress'],
-            isDark: rsp['config']['isDark'],
-            provisoria: rsp['provisoria'],
-          );
-
-          ref.read(resumenNotifierProvider.notifier).changeList(userActualizado.inventario);
-          ref.read(userNotifierProvider.notifier).setUserLogin(userActualizado);
-      } else {
-          errorMessage = json.decode(response.body)['error'];
-      }
-    } catch (error) {
-        errorMessage = 'Error: Connection ERROR - Server not found';
-    }
-  }
-
-  void _showErrorMessage(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(errorMessage),
-        backgroundColor: Colors.orange[700],
-      ),
-    );
-  }
 }

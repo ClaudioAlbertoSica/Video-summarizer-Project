@@ -1,11 +1,7 @@
-// ignore_for_file: avoid_print
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:resumen_mobile/entity/preview_resumen.dart';
-import 'package:resumen_mobile/entity/user.dart';
-import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
+import 'package:resumen_mobile/core/service/server.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/account_screeen.dart';
 import 'package:resumen_mobile/presentation/screen/create_account_screen.dart';
@@ -13,8 +9,7 @@ import 'package:resumen_mobile/presentation/screen/home_screen.dart';
 import '../uicoreStyles/uicore_input_style.dart';
 import '../uicoreStyles/uicore_montain_backgound.dart';
 import '../uicoreStyles/uicore_title_style.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 
 
 class LoginScreen extends ConsumerWidget {
@@ -22,7 +17,8 @@ class LoginScreen extends ConsumerWidget {
   //Aca creo que iria un atributo para guardar lo del form o input.
   final TextEditingController _inputUsernameController = TextEditingController();
   final TextEditingController _inputPassController = TextEditingController();
-  String errorMessage = '';
+
+
 
   LoginScreen({super.key});
 
@@ -63,7 +59,7 @@ class LoginScreen extends ConsumerWidget {
                 //aca va el login button
                 ElevatedButton(
                   onPressed: () async {
-                    bool user = await sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
+                    bool user = await Server.sendLoginData(_inputUsernameController.text,_inputPassController.text, ref);
                     if (user) {
                       final bool provisoria =  ref.read(userNotifierProvider).provisoria;
                       if(provisoria){
@@ -81,7 +77,7 @@ class LoginScreen extends ConsumerWidget {
                           context.goNamed(HomeScreen.name);
                         }
                     } else {
-                      _showErrorMessage(context);
+                      Server.showErrorMessage(context);
                     }
                   },
                   style: ButtonStyle(
@@ -128,57 +124,6 @@ class LoginScreen extends ConsumerWidget {
     imageCache.clearLiveImages();
   }
 
-  Future<bool> sendLoginData(String username, String password, WidgetRef ref) async {
-    bool loginOk = false;
-    // servidor Node.js
-    try {
-      //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://localhost:8080/api/login');
-      final response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String> {
-          'userName': username,
-          'passwd': password, 
-/*           "userName": "rocio.bani93@gmail.com",
-          "passwd": "123", */
-        }),
-      );
-      //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
-      if (response.statusCode == 200) {
-        // Si la solicitud es exitosa, imprime la respuesta del servidor
-        print('Respuesta del servidor: ${response.body}');
-        
-        final rsp = json.decode(response.body);
-
-        User userLogueado = User(
-            userName: rsp['userName'],
-            id: rsp['id'],
-            inventario: (rsp['inventario'] as List)
-              .map((item) => ResumenPreview.fromJson(item))
-              .toList(), 
-            inProgress: rsp['inProgress'],
-            isDark: rsp['config']['isDark'],
-            provisoria: rsp['provisoria'],
-          );
-
-          ref.read(resumenNotifierProvider.notifier).changeList(userLogueado.inventario);
-          ref.read(userNotifierProvider.notifier).setUserLogin(userLogueado);
-          ref.read(userNotifierProvider.notifier).togleDarkMode(userLogueado.isDark);
-
-        loginOk = true;
-      } else {
-        errorMessage = json.decode(response.body)['error'];
-      }
-    } catch (error) {
-      print(error);
-      errorMessage = 'Error: Connection ERROR - Server not found';
-    }
-
-    return loginOk;
-  }
 
   void _showDialogForgotPass(BuildContext context) {
   TextEditingController _inputForgotController = TextEditingController();
@@ -212,7 +157,7 @@ class LoginScreen extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                bool sendOk = await recuperarContrasenia(_inputForgotController.text);
+                bool sendOk = await Server.recuperarContrasenia(_inputForgotController.text);
                 if(sendOk){
                   Navigator.of(context).pop();
                   showDialog(
@@ -233,7 +178,7 @@ class LoginScreen extends ConsumerWidget {
                     }
                   );
                 } else {
-                  _showErrorMessage(context);
+                  Server.showErrorMessage(context);
                 }
               },
               child: const Text('OK'),
@@ -243,46 +188,8 @@ class LoginScreen extends ConsumerWidget {
       },
     );
   }
-  Future<bool> recuperarContrasenia(String userName) async{
-    bool sendOk = false;
-    // servidor Node.js
-    try {
-      //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
-      final url = Uri.parse('http://localhost:8080/api/recuperar');
-      final response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String> {
-          'userName': userName,
-        }),
-      );
-      //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
-      if (response.statusCode == 200) {
-        // Si la solicitud es exitosa, imprime la respuesta del servidor
-        print('Respuesta del servidor: ${response.body}');
-                
-        sendOk = true;
-      } else {
-        errorMessage = json.decode(response.body)['error'];
-      }
-    } catch (error) {
-      print(error);
-      errorMessage = 'Error: Connection ERROR - Server not found';
-    }
 
-    return sendOk;
-  }
 
-  void _showErrorMessage(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(errorMessage),
-        backgroundColor: Colors.orange[700],
-      ),
-    );
-  }
 }
 //MODULARICÉ UN POCO
 class _ButtonCreateForgot extends StatelessWidget {

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resumen_mobile/core/service/server.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
+import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart';
 
 import '../uicoreStyles/uicore_our_app_bar.dart';
@@ -95,8 +98,11 @@ class _FormTextState extends State<FormText> {
           ),
           const SizedBox(height: 25,),
           ElevatedButton(
-                onPressed: () {
-                  
+                onPressed: () async {
+                  bool sendOK = await Server.enviarSugerencia(widget.id, _reportTextController.text);
+                  if(sendOK){
+                    context.goNamed(LoadingScreen.name, extra: 'Sugerencia enviada. ¡Gracias por tu aporte!');
+                  }
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF243035)),
@@ -106,7 +112,7 @@ class _FormTextState extends State<FormText> {
                   
                 ),
                 child: const TitleStyle(
-                  text: 'Enviar reporte',
+                  text: 'Enviar sugerencia',
                 ),
               ),
         ],

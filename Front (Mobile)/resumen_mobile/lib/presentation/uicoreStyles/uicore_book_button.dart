@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:resumen_mobile/presentation/screen/resumen_detail_screen.dart';
+import 'package:resumen_mobile/core/service/server.dart';
 import '../../entity/preview_resumen.dart';
 import '../providers/user_provider.dart';
-import 'package:http/http.dart' as http;
 
 class BookButton extends ConsumerWidget {
   BookButton({
@@ -14,7 +11,6 @@ class BookButton extends ConsumerWidget {
   });
 
   final ResumenPreview resumen;
-  String errorMessage = '';
   bool imText = false;
   int? idResImage;
   @override
@@ -30,14 +26,14 @@ class BookButton extends ConsumerWidget {
     });
 
     return Card(
-      color: isDark ? null : imText ? Color.fromRGBO(245, 54, 84, 1) : Color.fromRGBO(69, 179, 156, 1),
+      color: isDark ? null : imText ? const Color.fromRGBO(245, 54, 84, 1) : const Color.fromRGBO(69, 179, 156, 1),
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(9.0),
       ),
       child: InkWell(
         onTap: () async {
-          await completeResumen(idUser, idRes, context);
+          await Server.completeResumen(idUser, idRes, context, ref);
         },
         child: Container(
           height: 100,
@@ -143,8 +139,6 @@ Image getImage(isDark) {
           },
         );
       } catch (e) {
-        print('Error al decodificar la imagen: $e');
-        // Si la decodificación falla, retorna un contenedor vacío
         return Image.asset(
           'assets/images/errorThumbnail.gif',
           width: 70,
@@ -162,28 +156,5 @@ Image getImage(isDark) {
     );
   }
 
-  Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
-    try {
-      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
-      final response = await http.get(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
 
-      if (response.statusCode == 200) {
-        // Desestructura el JSON para obtener el campo "data"
-        final jsonData = json.decode(response.body);
-        final pdfData = jsonData['pdf']['data'];
-
-        // Decodifica los datos base64 del PDF
-        final pdfBytes = base64Decode(pdfData);
-
-        // Muestra el documento PDF en un Scaffold
-        context.pushNamed(ResumenDetailScreen.name, extra: {'resumen': resumen, 'pdfBytes': pdfBytes});
-      } else {
-        errorMessage = json.decode(response.body)['error'];
-      }
-    } catch (error) {
-      errorMessage = 'Error: Connection ERROR - Server not found';
-    }
-  }
 }

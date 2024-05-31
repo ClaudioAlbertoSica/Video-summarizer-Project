@@ -1,20 +1,14 @@
-import 'dart:convert';
 import 'dart:typed_data';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:resumen_mobile/core/service/server.dart';
 import 'package:resumen_mobile/entity/preview_resumen.dart';
-import 'package:resumen_mobile/entity/user.dart';
-import 'package:resumen_mobile/presentation/providers/list_resumen_provider.dart';
 import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-
 import '../uicoreStyles/uicore_our_app_bar.dart';
 
 class ResumenDetailScreen extends ConsumerStatefulWidget {
@@ -45,40 +39,6 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
     final resumen = widget.resumen;
     final isFavourite = ref.watch(userNotifierProvider).getResumen(idRes).isFavourite;
 
-    Future<void> actualizarUsuario(String idUser) async {
-    try {
-      final url = Uri.parse('http://localhost:8080/api/$idUser');
-      final response = await http.get(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
-
-      if (response.statusCode == 200) {
-        final rsp = json.decode(response.body);
-
-        User userActualizado = User(
-            userName: rsp['userName'],
-            id: rsp['id'],
-            inventario: (rsp['inventario'] as List)
-              .map((item) => ResumenPreview.fromJson(item))
-              .toList(), 
-            inProgress: rsp['inProgress'],
-            isDark: rsp['config']['isDark'],
-            provisoria: rsp['provisoria'],
-          );
-
-          ref.read(resumenNotifierProvider.notifier).changeList(userActualizado.inventario);
-          ref.read(userNotifierProvider.notifier).setUserLogin(userActualizado);
-      } else {
-        
-          errorMessage = json.decode(response.body)['error'];
-        
-      }
-    } catch (error) {
-      
-        errorMessage = 'Error: Connection ERROR - Server not found';
-    
-    }
-  }
 
   return Scaffold(
     extendBodyBehindAppBar: true,
@@ -101,14 +61,14 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       width: 2,
-                      color: Color.fromARGB(255, 244, 130, 42),
+                      color: const Color.fromARGB(255, 244, 130, 42),
                     ),
                   ),
                   width: double.infinity,
                   height: 200,
                   child: InkWell(
                     onTap: () async {
-                      await completeResumen(idUser, idRes, context);
+                      await Server.mostrarPDF(idUser, idRes, context);
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
@@ -134,7 +94,8 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
                         color: Colors.amber,
                       ),
                       onRatingUpdate: (rating) async {
-                        await actualizarResumenPoints(idUser, idRes, rating, ref);
+                        await Server.actualizarResumenPoints(idUser, idRes, rating, ref);
+                        setState(() {});
                       },
                     ),
                     Row(
@@ -142,18 +103,19 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
                         IconButton(
                           icon: Icon(Icons.favorite, color: isFavourite ? Colors.red : Colors.grey),
                           onPressed: () async {
-                            await putLikeResume(idUser, idRes, ref);
+                            await Server.putLikeResume(idUser, idRes, ref);
+                            await Server.actualizarUsuario(idUser, ref);
                             setState(() {});
                           },
                         ),
                         IconButton(
                           icon: const Icon(Icons.mail, color: Colors.blue),
                           onPressed: () async {
-                            bool sendOk = await enviarResumen(idUser, idRes);
+                            bool sendOk = await Server.enviarResumen(idUser, idRes);
                             if (sendOk) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Resumen enviado.'),
+                                  content: const Text('Resumen enviado.'),
                                   backgroundColor: Colors.green[700],
                                 ),
                               );
@@ -177,8 +139,8 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
                               }
                             );
                             if (confirmarBorrado) {
-                              await borrarResumen(idUser, idRes);
-                              await actualizarUsuario(idUser);
+                              await Server.borrarResumen(idUser, idRes);
+                              await Server.actualizarUsuario(idUser, ref);
                               context.goNamed(LoadingScreen.name, extra: 'Resumen Eliminado! Redirigiendo al Home...');
                             }
                           },
@@ -230,154 +192,5 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
     );
   }
 
-Future<bool> enviarResumen(String idUser, String idRes) async {
-  bool sendOk = false;
-  try {
-    final url = Uri.parse('http://localhost:8080/api/$idUser/enviar/$idRes');
-    final response = await http.post(url, headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
 
-    if (response.statusCode == 200) {
-      sendOk = true;
-      print(response.body);
-
-    } else {
-      errorMessage = json.decode(response.body)['error'];
-    }
-  } catch (error) {
-    errorMessage = 'Error: Connection ERROR - Server not found';
-  }
-  return sendOk;
-}
-
-  Future<void> completeResumen(String idUser, String idRes, BuildContext context) async {
-    try {
-      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
-      final response = await http.get(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
-
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-        final pdfData = jsonData['pdf']['data'];
-        final pdfBytes = base64Decode(pdfData);
-
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Scaffold(
-            appBar: AppBar(title: Text('PDF Viewer')),
-            body: SfPdfViewer.memory(Uint8List.fromList(pdfBytes)),
-          ),
-        ));
-      } else {
-        errorMessage = json.decode(response.body)['error'];
-      }
-    } catch (error) {
-      errorMessage = 'Error: Connection ERROR - Server not found';
-    }
-  }
-
-  Future<void> borrarResumen(String idUser, String idRes) async{
-    
-  try {
-      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
-      final response = await http.delete(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
-
-      if (response.statusCode == 200) {
-        print('Respuesta del servidor: ${response.body}');
-      } else {
-        errorMessage = json.decode(response.body)['error'];
-      }
-    } catch (error) {
-      errorMessage = 'Error: Connection ERROR - Server not found';
-    }
-  }
-  
-  Future<void> putLikeResume(String idUser, String idRes, WidgetRef ref) async {
-    ResumenPreview resumen = ref.read(userNotifierProvider).getResumen(idRes);
-    if (resumen.idres == idRes) {
-      try {
-        final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
-        final response = await http.put(
-          url,
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, bool>{
-            'isFavourite': !resumen.isFavourite,
-          }),
-        );
-
-        if (response.statusCode == 200) {
-          await actualizarUsuario(idUser);
-          print('hice Toggle en favorito: ${response.body}');
-        } else {
-          errorMessage = json.decode(response.body)['error'];
-        }
-      } catch (error) {
-        errorMessage = 'Error: Connection ERROR - Server not found';
-      }
-    } else {
-        errorMessage = 'No se encontro un resumen con ese id.';
-    }
-  }
-  
-  Future<void> actualizarResumenPoints(String idUser, String idRes, double rating, WidgetRef ref) async {
-    try {
-      final url = Uri.parse('http://localhost:8080/api/$idUser/resumen/$idRes');
-      final response = await http.put(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, int>{
-          'points': rating.round(),
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        ref.read(resumenNotifierProvider.notifier).changeRating(idRes, rating.round());
-        print('Respuesta del servidor: ${response.body}');
-      } else {
-        errorMessage = json.decode(response.body)['error'];
-      }
-    } catch (error) {
-      errorMessage = 'Error: Connection ERROR - Server not found';
-    }
-  }
-
-    Future<void> actualizarUsuario(String idUser) async {
-    
-    try {
-      final url = Uri.parse('http://localhost:8080/api/$idUser');
-      final response = await http.get(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
-
-      if (response.statusCode == 200) {
-        final rsp = json.decode(response.body);
-
-        User userActualizado = User(
-          userName: rsp['userName'],
-          id: rsp['id'],
-          inventario: (rsp['inventario'] as List)
-            .map((item) => ResumenPreview.fromJson(item))
-            .toList(), 
-          inProgress: rsp['inProgress'],
-          isDark: rsp['config']['isDark'],
-          provisoria: rsp['provisoria'],
-        );
-
-          ref.read(resumenNotifierProvider.notifier).changeList(userActualizado.inventario);
-          ref.read(userNotifierProvider.notifier).setUserLogin(userActualizado);
-          ref.read(userNotifierProvider.notifier).togleDarkMode(userActualizado.isDark);
-      } else {
-        errorMessage = json.decode(response.body)['error'];
-      }
-    } catch (error) {
-      errorMessage = 'Error: Connection ERROR - Server not found';
-    }
-  }
 }

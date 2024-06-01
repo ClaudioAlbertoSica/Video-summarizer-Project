@@ -10,13 +10,13 @@ function ConfigurationButtons() {
   return (
     <Stack direction={"column"}>
       <DarkModeSwitch />
-      <Button className= "ButtonList" size="small" onClick={() => setSelectedCentralPanelView(ValidViewNames.FAQ)} sx={{ margin: '2px' ,backgroundColor: myTheme.palette.my.listBackground, color: myTheme.palette.my.listColor}}>
+      <Button className= "ButtonList" size="small" onClick={() => setSelectedCentralPanelView(ValidViewNames.FAQ)}>
         F.A.Q.
       </Button>
-      <Button className= "ButtonList" size="small" onClick={() => setSelectedCentralPanelView(ValidViewNames.Help)} sx={{ margin: '2px', backgroundColor: myTheme.palette.my.listBackground, color: myTheme.palette.my.listColor}}>
+      <Button className= "ButtonList" size="small" onClick={() => setSelectedCentralPanelView(ValidViewNames.Help)}>
         Ayuda!
       </Button>
-      <Button className= "ButtonList" size="small" onClick={() => setSelectedCentralPanelView(ValidViewNames.Comments)} sx={{ margin: '2px', backgroundColor: myTheme.palette.my.listBackground, color: myTheme.palette.my.listColor}}>
+      <Button className= "ButtonList" size="small" onClick={() => setSelectedCentralPanelView(ValidViewNames.Comments)}>
         Enviar Comentarios o Sugerencias
       </Button>
     </Stack>

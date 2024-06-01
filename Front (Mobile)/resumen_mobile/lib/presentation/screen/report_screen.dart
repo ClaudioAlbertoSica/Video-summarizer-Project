@@ -99,9 +99,15 @@ class _FormTextState extends State<FormText> {
           const SizedBox(height: 25,),
           ElevatedButton(
                 onPressed: () async {
-                  bool sendOK = await Server.enviarSugerencia(widget.id, _reportTextController.text);
-                  if(sendOK){
-                    context.goNamed(LoadingScreen.name, extra: 'Sugerencia enviada. ¡Gracias por tu aporte!');
+                  if(_reportTextController.text != ""){
+                    bool sendOK = await Server.enviarSugerencia(widget.id, _reportTextController.text);
+                    if(sendOK){
+                      context.goNamed(LoadingScreen.name, extra: 'Sugerencia enviada. ¡Gracias por tu aporte!');
+                    }else{
+                      Server.showMsg(context, 'Ha ocurrido un error. Por favor intenta nuevamente.');
+                    }
+                  }else{
+                    Server.showMsg(context, 'Por favor ingrese un texto.');
                   }
                 },
                 style: ButtonStyle(

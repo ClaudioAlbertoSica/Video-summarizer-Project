@@ -22,8 +22,6 @@ class Servicio {
         if (id) {
             usuarioEncontrado = await this.model.obtenerUsuarios(id)
         }
-
-        console.log(usuarioEncontrado)
         return usuarioEncontrado ? usuarioEncontrado.passwd === passwd : false
     }
 

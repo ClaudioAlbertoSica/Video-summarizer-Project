@@ -13,7 +13,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class Server {
 
-static const String urlBase = "http://10.0.2.2:8080/api/"; //"http://localhost:8080/api/"
+static const String urlBase = "http://localhost:8080/api/"; //"http://localhost:8080/api/"
 static  String errorMessage = "";
 
 
@@ -273,7 +273,7 @@ static Future<bool> sendCreateUser(String username, String password) async {
     return createOk;
   }
 
-static  Future<bool> crearResumenTexto(String idUser, String texto, bool esBreve, String idioma, String? title, WidgetRef ref) async {
+static  Future<bool> crearResumenTexto(String idUser, String texto, bool esBreve, String idioma, String? title) async {
     bool creando = false;
     // servidor Node.js
     try {
@@ -305,7 +305,7 @@ static  Future<bool> crearResumenTexto(String idUser, String texto, bool esBreve
     return creando;
   }
 
-static  Future<bool> crearResumenVideo(String idUser, String urlYoutube, bool esBreve, String idioma, String title, WidgetRef ref) async {
+static  Future<bool> crearResumenVideo(String idUser, String urlYoutube, bool esBreve, String idioma, String title) async {
     bool creando = false;
     // servidor Node.js
     try {
@@ -532,5 +532,3 @@ static void showMsg(BuildContext context, String msg) {
   }
 
 }
-
-

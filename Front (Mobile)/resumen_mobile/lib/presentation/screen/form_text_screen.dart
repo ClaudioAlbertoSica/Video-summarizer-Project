@@ -174,7 +174,7 @@ class _FormTextState extends ConsumerState<FormText> {
               if (_inputTextController.text.isEmpty) {
                 Server.showMsg(context, 'Debe ingresar un texto.');
               } else if(!inProgress) {
-                final bool creando = await Server.crearResumenTexto(widget.id, _inputTextController.text, shortValue, idiomaSeleccionado.name, _inputTitleController.text, ref);
+                final bool creando = await Server.crearResumenTexto(widget.id, _inputTextController.text, shortValue, idiomaSeleccionado.name, _inputTitleController.text);
                 if(creando){
                   context.goNamed(LoadingScreen.name, extra: 'Estamos generando tu resumen! Esto puede demorar unos minutos...');
                 } else {

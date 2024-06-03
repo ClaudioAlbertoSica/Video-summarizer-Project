@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +25,33 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen>{
+  Timer? _timer;
+  @override
+  void initState() {
+    super.initState();
+    if(ref.read(userNotifierProvider).inProgress){
+      _startCheckingProgress();
+    }
+  }
+
+  void _startCheckingProgress() {
+    final idUser = ref.read(userNotifierProvider).id;
+
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) async {
+      await Server.isInProgress(idUser, ref);
+      if (!ref.read(userNotifierProvider).inProgress) {
+        _timer?.cancel();
+    }
+  });
+  }
+
+@override
+  void dispose() {
+    _timer?.cancel(); // Asegúrate de cancelar el timer al salir de la pantalla
+    super.dispose();
+  }
+
+
   String errorMessage = '';
   int _selectedIndex = 1; // Index for 'view_list' icon
 

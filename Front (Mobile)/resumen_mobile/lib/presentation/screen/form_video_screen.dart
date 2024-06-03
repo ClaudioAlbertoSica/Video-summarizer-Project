@@ -228,7 +228,7 @@ class _FormVideoState extends ConsumerState<FormVideo> {
               if (_inputURLController.text.isEmpty) {
                 Server.showMsg(context, 'Debe ingresar una url de youtube.');
               } else if(!inProgress) {
-                final bool creando = await Server.crearResumenVideo(widget.id, _inputURLController.text, shortValue, idiomaSeleccionado.name, _inputTitleController.text);
+                final bool creando = await Server.crearResumenVideo(widget.id, _inputURLController.text, shortValue, idiomaSeleccionado.name, _inputTitleController.text, ref);
                 if(creando){
                   context.goNamed(LoadingScreen.name, extra: 'Estamos generando tu resumen! Esto puede demorar unos minutos...');
                 } else {

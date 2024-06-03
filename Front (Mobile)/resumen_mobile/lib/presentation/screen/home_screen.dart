@@ -180,21 +180,22 @@ class _BarraSearch extends ConsumerWidget {
         ),
         prefixIcon: const Icon(Icons.manage_search),
         suffixIcon:Row(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             IconButton(
-                  onPressed: (){
-                  final resumenProvider = ref.read(resumenNotifierProvider.notifier);
-                  final resumenList = ref.read(userNotifierProvider).inventario;
-                  List<ResumenPreview> searchFound = [];
-                  for (var i = 0; i < resumenList.length; i++) {
-                    if (resumenList[i].isFavourite) {
-                      searchFound.add(resumenList[i]);
-                    }
+              onPressed: (){
+                final resumenProvider = ref.read(resumenNotifierProvider.notifier);
+                final resumenList = ref.read(userNotifierProvider).inventario;
+                List<ResumenPreview> searchFound = [];
+                for (var i = 0; i < resumenList.length; i++) {
+                  if (resumenList[i].isFavourite) {
+                    searchFound.add(resumenList[i]);
                   }
-                  resumenProvider.changeList(searchFound);
-                }, icon: const Icon(Icons.favorite)
-                ),
+                }
+                resumenProvider.changeList(searchFound);
+              }, icon: const Icon(Icons.favorite)
+            ),
             IconButton(
                   // ver de sacar si es que no hay nada escrito
                   icon: const Icon(Icons.cancel),

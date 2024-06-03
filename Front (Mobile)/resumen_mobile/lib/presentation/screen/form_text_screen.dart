@@ -87,6 +87,7 @@ class _FormTextState extends ConsumerState<FormText> {
   final TextEditingController _inputTitleController = TextEditingController();
 
   Idiomas idiomaSeleccionado = Idiomas.ES;
+  List<String> idiomas = ['Inglés', 'Español', 'Francés', 'Portugués'];
 
   @override
   Widget build(BuildContext context) {
@@ -120,10 +121,10 @@ class _FormTextState extends ConsumerState<FormText> {
           ),
           ExpansionTile(
                 title: const Text('Idioma'),
-                subtitle: const Text('Selecciona el idioma.'),
+                subtitle: Text('Idioma seleccionado: ${idiomas[idiomaSeleccionado.index]}'),
                 children:[
                   RadioListTile(
-                    title: const Text('Inglés'),
+                    title: Text(idiomas[0]),
                     value: Idiomas.EN, 
                     groupValue: idiomaSeleccionado, 
                     onChanged: (value){
@@ -132,7 +133,7 @@ class _FormTextState extends ConsumerState<FormText> {
                     }
                     ),
                   RadioListTile(
-                    title: const Text('Español'),
+                    title: Text(idiomas[1]),
                     value: Idiomas.ES, 
                     groupValue: idiomaSeleccionado, 
                     onChanged: (value){
@@ -141,7 +142,7 @@ class _FormTextState extends ConsumerState<FormText> {
                     }
                     ),
                   RadioListTile(
-                    title: const Text('Francés'),
+                    title: Text(idiomas[2]),
                     value: Idiomas.FR, 
                     groupValue: idiomaSeleccionado, 
                     onChanged: (value){
@@ -150,7 +151,7 @@ class _FormTextState extends ConsumerState<FormText> {
                     }
                     ),
                   RadioListTile(
-                    title: const Text('Portugues'),
+                    title: Text(idiomas[3]),
                     value: Idiomas.PT, 
                     groupValue: idiomaSeleccionado, 
                     onChanged: (value){

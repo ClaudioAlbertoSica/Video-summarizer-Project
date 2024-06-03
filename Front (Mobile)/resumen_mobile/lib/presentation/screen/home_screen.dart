@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -33,11 +32,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
       _startCheckingProgress();
     }
   }
-
+//Consultamos constantemente al servidor si hay un resumen en progreso
   void _startCheckingProgress() {
     final idUser = ref.read(userNotifierProvider).id;
 
-    _timer = Timer.periodic(const Duration(seconds: 2), (timer) async {
+    _timer = Timer.periodic(const Duration(seconds: 7), (timer) async {
       await Server.isInProgress(idUser, ref);
       if (!ref.read(userNotifierProvider).inProgress) {
         _timer?.cancel();
@@ -45,9 +44,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
   });
   }
 
+
 @override
   void dispose() {
-    _timer?.cancel(); // Asegúrate de cancelar el timer al salir de la pantalla
+    _timer?.cancel(); 
     super.dispose();
   }
 
@@ -126,13 +126,13 @@ class _StackLayoutHome extends ConsumerWidget {
       imageDark:'dome1.gif' , 
       content: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _BarraSearch(),
               const Divider(),
-              inProgress ? const SkeletonResume() : const SizedBox(height: 0.0,),
+              inProgress ? const SkeletonResume() : const SizedBox(height: 0,),
             ],
           ),
         ),
@@ -154,7 +154,6 @@ class _BarraSearch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    // esta es la lista del datasource
     final resumenList = ref.read(userNotifierProvider).inventario;
     // este es el provider
     final resumenProvider = ref.read(resumenNotifierProvider.notifier);
@@ -180,13 +179,31 @@ class _BarraSearch extends ConsumerWidget {
             fontWeight: FontWeight.w100
         ),
         prefixIcon: const Icon(Icons.manage_search),
-        suffixIcon: IconButton(
-          // ver de sacar si es que no hay nada escrito
-          icon: const Icon(Icons.cancel),
-          onPressed: () {
-            searchValue.text = '';
-            resumenProvider.changeList(resumenList);
-          },
+        suffixIcon:Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            IconButton(
+                  onPressed: (){
+                  final resumenProvider = ref.read(resumenNotifierProvider.notifier);
+                  final resumenList = ref.read(userNotifierProvider).inventario;
+                  List<ResumenPreview> searchFound = [];
+                  for (var i = 0; i < resumenList.length; i++) {
+                    if (resumenList[i].isFavourite) {
+                      searchFound.add(resumenList[i]);
+                    }
+                  }
+                  resumenProvider.changeList(searchFound);
+                }, icon: const Icon(Icons.favorite)
+                ),
+            IconButton(
+                  // ver de sacar si es que no hay nada escrito
+                  icon: const Icon(Icons.cancel),
+                  onPressed: () {
+                    searchValue.text = '';
+                    resumenProvider.changeList(resumenList);
+                  },
+                ),
+          ],
         ),
         border: InputBorder.none,
       ),

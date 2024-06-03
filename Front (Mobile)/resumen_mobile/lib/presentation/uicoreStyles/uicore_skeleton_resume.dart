@@ -15,10 +15,10 @@ class SkeletonResume extends ConsumerWidget {
     });
 
     return Card(
-      color: const Color.fromARGB(255, 255, 160, 35),
+      color: const Color.fromARGB(53, 35, 255, 226),
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(9.0),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0)),
       ),
       child: InkWell(
         onTap: () {
@@ -27,37 +27,14 @@ class SkeletonResume extends ConsumerWidget {
         child: Container(
           height: 40,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Row(
+          child: const  Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(9),
-                child: Image.asset(
-                  'assets/images/fondoConejo.gif',
-                  width: 30,
-                  height: 30,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 10),
-              const Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+              SizedBox(height:10, width: 10, child:CircularProgressIndicator(color: Colors.white,)),
+              SizedBox(width: 10),
+              Text(
                       'Resumiendo...',
                       style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 10),
-              const Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(height:10, child:CircularProgressIndicator(color: Colors.white,))
-                ],
-              ),
             ],
           ),
         ),

@@ -116,7 +116,6 @@ class FAQScreen extends ConsumerWidget {
           ),
         ],
       ),
-      // Agrega aquí más FAQItem como el ejemplo anterior para completar tus FAQs
     ];
   }
 }

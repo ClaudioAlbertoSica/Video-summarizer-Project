@@ -119,6 +119,7 @@ class _StackLayoutHome extends ConsumerWidget {
     final resumenes = ref.watch(resumenNotifierProvider);
     final inProgress = ref.watch(userNotifierProvider).inProgress;
     return StackLayoutCustomized(
+      keyboardHeight: MediaQuery.of(context).viewInsets.bottom,
       screenHeight: screenHeight,
       colorLight: const Color.fromRGBO(252, 242, 218, 1), 
       colorDark: const Color.fromRGBO(30, 30, 30, 1) , 

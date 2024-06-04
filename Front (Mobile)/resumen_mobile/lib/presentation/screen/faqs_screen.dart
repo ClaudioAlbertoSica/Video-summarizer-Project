@@ -22,6 +22,7 @@ class FAQScreen extends ConsumerWidget {
       extendBodyBehindAppBar: true,
       appBar: OurAppBar(),
       body: StackLayoutCustomized(
+              keyboardHeight: MediaQuery.of(context).viewInsets.bottom,
               screenHeight: screenHeight,
               colorLight: const Color.fromRGBO(235, 240, 241, 1), 
               colorDark: const Color.fromRGBO(30, 30, 30, 1) , 
@@ -145,4 +146,3 @@ class FAQScreen extends ConsumerWidget {
     );
   }
 }
-

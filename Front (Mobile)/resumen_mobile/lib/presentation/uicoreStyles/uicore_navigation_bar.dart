@@ -25,11 +25,11 @@ class _UicoreNavigationBarState extends State<UicoreNavigationBar> {
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
       index: _selectedIndex,
-      height: 60.0,
+      height: 50.0,
       items: const <Widget>[
-        Icon(Icons.video_library, size: 30),
-        Icon(Icons.view_list, size: 30),
-        Icon(Icons.text_snippet, size: 30),
+        Icon(Icons.video_library, size: 25),
+        Icon(Icons.view_list, size: 25),
+        Icon(Icons.text_snippet, size: 25),
       ],
       color: widget.isDark? const Color.fromARGB(255, 194, 194, 194) : Colors.white,
       buttonBackgroundColor: widget.isDark ? Colors.orange : const Color.fromRGBO(235, 187, 74, 1),

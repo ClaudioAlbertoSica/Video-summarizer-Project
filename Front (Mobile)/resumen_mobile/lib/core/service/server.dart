@@ -13,7 +13,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class Server {
 
-static const String urlBase = "http://10.0.2.2:8080/api/"; //"http://localhost:8080/api/"
+static const String urlBase = "http://192.168.0.31:8080/api/"; //"http://localhost:8080/api/"
 static  String errorMessage = "";
 
 

@@ -25,7 +25,8 @@ class LoginScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenHeight = MediaQuery.of(context).size.height;
-  
+    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       clearImageCache();
     });
@@ -38,9 +39,9 @@ class LoginScreen extends ConsumerWidget {
           //MODULARICÉ UN POCO
           _ImagenContainer(screenHeight: screenHeight),
           //MODULARICÉ UN POCO
-          _PositionedFill(),
+          _PositionedFill(keyboardSize: keyboardHeight),
           Padding(
-            padding: const EdgeInsets.all(50.0),
+            padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -48,7 +49,7 @@ class LoginScreen extends ConsumerWidget {
                   'assets/images/WriterRabbitLogo.png',
                   height: screenHeight * 0.15,  
                 ),
-                const SizedBox(height: 120,),
+                const SizedBox(height: 70,),
                 InputKindle(label:'Correo electrónico', obscureText: false, inputController: _inputUsernameController),
                 //espacio entre inputs
                 const SizedBox(height: 10),
@@ -106,7 +107,7 @@ class LoginScreen extends ConsumerWidget {
                         _showDialogForgotPass(context);
                       },
                       //MODULARICÉ UN POCO
-                      child:const _ButtonCreateForgot(text: 'Olvidé mi contraseña?'),
+                      child:const _ButtonCreateForgot(text: 'Olvide mi clave'),
                     ),
                   ]
                 ),
@@ -212,15 +213,18 @@ class _ButtonCreateForgot extends StatelessWidget {
 }
 
 class _PositionedFill extends StatelessWidget {
-  /*const _PositionedFill({
+
+  final double keyboardSize;
+  const _PositionedFill({
     super.key,
-  });*/
+    required this.keyboardSize
+  });
 
   @override
   Widget build(BuildContext context) {
     return Positioned.fill(
       child: ClipPath(
-        clipper: MountainClipper(),
+        clipper: MountainClipper(keyboardSize: keyboardSize),
         child: Container(
          color: const Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
         ),

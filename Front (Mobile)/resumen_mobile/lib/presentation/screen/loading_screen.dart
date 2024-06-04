@@ -60,6 +60,7 @@ class LoadingView extends ConsumerWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return StackLayoutCustomized(
+              keyboardHeight: MediaQuery.of(context).viewInsets.bottom,
               screenHeight: screenHeight,
               colorLight: Color.fromARGB(255, 241, 241, 231), 
               colorDark: const Color.fromRGBO(30, 30, 30, 1) , 

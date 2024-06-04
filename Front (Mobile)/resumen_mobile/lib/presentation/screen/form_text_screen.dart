@@ -44,6 +44,7 @@ class _CoreFormTextState extends ConsumerState<CoreFormText> {
       ),
       //MODULARICÉ REUTILIZANDO EL WIDGET QUE ESTÁ EN FORM_VIDEO_SCREEN
       body: StackLayoutCustomized(
+        keyboardHeight: MediaQuery.of(context).viewInsets.bottom,
         screenHeight: MediaQuery.of(context).size.height,
         colorLight: const Color.fromARGB(255, 255, 241, 241),
         colorDark: const Color.fromRGBO(30, 30, 30, 1),
@@ -51,7 +52,7 @@ class _CoreFormTextState extends ConsumerState<CoreFormText> {
         imageDark: 'formTextResumenBackgroundD.gif',
         content: [
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               children: [
                 FormText(id: idUser),

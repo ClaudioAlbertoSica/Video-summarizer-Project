@@ -47,6 +47,7 @@ class _CoreFormVideoState extends ConsumerState<CoreFormVideo> {
       ),
       //MODULARICÉ
       body: StackLayoutCustomized(
+        keyboardHeight: MediaQuery.of(context).viewInsets.bottom,
         screenHeight: MediaQuery.of(context).size.height,
         colorLight:const Color.fromRGBO(235, 240, 241, 1) ,
         colorDark:const Color.fromRGBO(30, 30, 30, 1),
@@ -78,7 +79,6 @@ class _CoreFormVideoState extends ConsumerState<CoreFormVideo> {
 //WIDGET QUE PERSONALIZA EL STACKLAYOUT
 
 class StackLayoutCustomized extends ConsumerWidget {
-
   //Recibo los colores los gifs para el background tanto en su versión light como dark
   //Recibo una lista de Widgets que será mi content
   final Color colorLight;
@@ -87,6 +87,7 @@ class StackLayoutCustomized extends ConsumerWidget {
   final String imageDark;
   final  List<Widget> content;
   final double screenHeight;
+  final double keyboardHeight;
   
   const StackLayoutCustomized({
     super.key,
@@ -95,27 +96,35 @@ class StackLayoutCustomized extends ConsumerWidget {
     required this.colorDark,
     required this.imageLigth,
     required this.imageDark,
-    required this.content
-    
+    required this.content,
+    required this.keyboardHeight,
   });
 
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = ref.watch(userNotifierProvider).isDark;
     final background = ref.watch(userNotifierProvider)
       .isDark 
         ? imageDark
         : imageLigth;
     
-    
-    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      clearImageCache();
+    });
+
     return StackLayout(
+      keyboardHeight: keyboardHeight,
       screenHeight: screenHeight,
       backgroundImage: background,
       backgroundColor: isDark ? colorDark  : colorLight,
       content: content,
     );
+  }
+
+  void clearImageCache() {
+    imageCache.clear();
+    imageCache.clearLiveImages();
   }
 }
 

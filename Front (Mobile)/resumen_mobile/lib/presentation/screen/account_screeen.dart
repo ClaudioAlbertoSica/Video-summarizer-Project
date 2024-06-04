@@ -31,6 +31,7 @@ class AcconutScreen extends ConsumerWidget {
       appBar:OurAppBar(),
       //MODULARICÉ REUTILIZANDO EL WIDGET QUE ESTÁ EN FORM_VIDEO_SCREEN
       body: StackLayoutCustomized(
+            keyboardHeight: MediaQuery.of(context).viewInsets.bottom,
             screenHeight: MediaQuery.of(context).size.height,
             colorLight: const Color.fromARGB(255, 241, 253, 255), 
             colorDark: const Color.fromRGBO(30, 30, 30, 1) , 
@@ -38,7 +39,7 @@ class AcconutScreen extends ConsumerWidget {
             imageDark:'accountScreenD.gif' , 
             content: [
                 Padding(
-                  padding: const EdgeInsets.all(50.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 30),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [

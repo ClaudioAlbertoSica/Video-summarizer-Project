@@ -19,6 +19,7 @@ class CreateAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       extendBodyBehindAppBar: true,
@@ -42,14 +43,14 @@ class CreateAccountScreen extends StatelessWidget {
           ),
           Positioned.fill(
             child: ClipPath(
-              clipper: MountainClipper(),
+              clipper: MountainClipper(keyboardSize: keyboardHeight),
               child: Container(
                color: const Color.fromRGBO(235, 240, 241, 1), // Cambia este color al color que desees para el fondo dentado
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(50.0),
+            padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -57,7 +58,7 @@ class CreateAccountScreen extends StatelessWidget {
                   'assets/images/WriterRabbitLogo.png',
                   height: screenHeight * 0.15,  
                 ),
-                const SizedBox(height: 120,),
+                const SizedBox(height: 60,),
                 //input para usuario
                 InputKindle(label:'Correo electrónico', obscureText: false, inputController: _inputUsernameController),
                 //espacio entre inputs
@@ -100,6 +101,7 @@ class CreateAccountScreen extends StatelessWidget {
                     text: 'Crear cuenta',
                   ),
                 ),
+                SizedBox(height: 30,)
               ],
             ),
           ),

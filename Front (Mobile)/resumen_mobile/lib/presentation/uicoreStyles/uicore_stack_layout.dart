@@ -8,8 +8,10 @@ class StackLayout extends StatefulWidget {
     required this.backgroundImage,
     required this.content,
     required this.backgroundColor,
+    required this.keyboardHeight,
   });
 
+  final double keyboardHeight;
   final double screenHeight;
   final String backgroundImage;
   final List<Widget> content;
@@ -22,6 +24,8 @@ class StackLayout extends StatefulWidget {
 class _StackLayoutState extends State<StackLayout> {
   @override
   Widget build(BuildContext context) {
+/*     final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom; */
+    
     return Stack(
       children: [
         Container(
@@ -35,18 +39,18 @@ class _StackLayoutState extends State<StackLayout> {
         ),
         Positioned.fill(
           child: ClipPath(
-            clipper: MountainClipperMediumFlat(),
+            clipper: MountainClipperMediumFlat(keyboardSize: widget.keyboardHeight),
             child: Container(
              color: widget.backgroundColor, // Cambia este color al color que desees para el fondo dentado
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
               SizedBox(
-                height: widget.screenHeight * 0.32
+                height: widget.keyboardHeight < 60 ? widget.screenHeight * 0.32 : 30
               ),
               ...widget.content
             ],

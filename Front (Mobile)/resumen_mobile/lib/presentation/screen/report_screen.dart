@@ -29,6 +29,7 @@ class ReportScreen extends ConsumerWidget {
       appBar: OurAppBar(),
       //MODULARICÉ REUTILIZANDO EL WIDGET QUE ESTÁ EN FORM_VIDEO_SCREEN
       body: StackLayoutCustomized(
+            keyboardHeight: MediaQuery.of(context).viewInsets.bottom,
             screenHeight: MediaQuery.of(context).size.height,
             colorLight: const Color.fromRGBO(225, 225, 222, 1), 
             colorDark: const Color.fromRGBO(30, 30, 30, 1) , 

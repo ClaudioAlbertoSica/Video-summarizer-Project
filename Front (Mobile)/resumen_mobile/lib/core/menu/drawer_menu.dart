@@ -35,16 +35,12 @@ class _DrawerMenuState extends State<DrawerMenu> {
             title: const Text('Configuración'),
             onTap: () {
               context.pushNamed(ConfigScreen.name);
-              // Navega a la pantalla de configuración
-              // Reemplaza con la navegación adecuada
             },
           ),
           ListTile(
             title: const Text('Mi cuenta'),
             onTap: () {
               context.pushNamed(AcconutScreen.name, extra: const SizedBox(height: 0.0,));
-              // Navega a la pantalla de cuenta
-              // Reemplaza con la navegación adecuada
             },
           ),
           const Divider(),
@@ -52,24 +48,18 @@ class _DrawerMenuState extends State<DrawerMenu> {
             title: const Text('Preguntas Frecuentes'),
             onTap: () {
               context.pushNamed(FAQScreen.name);
-              // Navega a la pantalla de cuenta
-              // Reemplaza con la navegación adecuada
             },
           ),
           ListTile(
             title: const Text('Enviar un reporte'),
             onTap: () {
               context.pushNamed(ReportScreen.name);
-              // Navega a la pantalla de cuenta
-              // Reemplaza con la navegación adecuada
             },
           ),
           ListTile(
-            title: const Text('Deslogearse'),
+            title: const Text('Desloguearse'),
             onTap: () {
               context.goNamed(LoginScreen.name);
-              // Navega a la pantalla de cuenta
-              // Reemplaza con la navegación adecuada
             },
           ),
         ],

@@ -68,7 +68,7 @@ class _ResumenDetailScreenState extends ConsumerState<ResumenDetailScreen> {
                   height: 200,
                   child: InkWell(
                     onTap: () async {
-                      await Server.mostrarPDF(idUser, idRes, context);
+                      await Server.mostrarPDF(context, widget.pdfBytes);
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),

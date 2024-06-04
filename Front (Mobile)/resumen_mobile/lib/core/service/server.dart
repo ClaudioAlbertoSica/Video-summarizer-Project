@@ -295,6 +295,7 @@ static  Future<bool> crearResumenTexto(String idUser, String texto, bool esBreve
       if (response.statusCode == 200) {
         // Si la solicitud es exitosa, imprime la respuesta del servidor
         //print('Respuesta del servidor: ${response.body}');
+        await isInProgress(idUser, ref);
         creando = true;
       } else {
         errorMessage = json.decode(response.body)['error'];
@@ -327,6 +328,7 @@ static  Future<bool> crearResumenVideo(String idUser, String urlYoutube, bool es
       if (response.statusCode == 200) {
         // Si la solicitud es exitosa, imprime la respuesta del servidor
         //print('Respuesta del servidor: ${response.body}');
+        await isInProgress(idUser, ref);
         creando = true;
       } else {
         errorMessage = json.decode(response.body)['error'];
@@ -385,27 +387,14 @@ static Future<bool> enviarResumen(String idUser, String idRes) async {
   return sendOk;
 }
 
-static Future<void> mostrarPDF(String idUser, String idRes, BuildContext context) async {
+static Future<void> mostrarPDF(BuildContext context,Uint8List pdfBytes) async {
     try {
-      final url = Uri.parse('$urlBase$idUser/resumen/$idRes');
-      final response = await http.get(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
-
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-        final pdfData = jsonData['pdf']['data'];
-        final pdfBytes = base64Decode(pdfData);
-
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Scaffold(
             appBar: AppBar(title: const Text('PDF Viewer')),
             body: SfPdfViewer.memory(Uint8List.fromList(pdfBytes)),
           ),
         ));
-      } else {
-        errorMessage = json.decode(response.body)['error'];
-      }
     } catch (error) {
       errorMessage = 'Error: Connection ERROR - Server not found';
     }
@@ -532,5 +521,3 @@ static void showMsg(BuildContext context, String msg) {
   }
 
 }
-
-

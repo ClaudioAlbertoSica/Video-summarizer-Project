@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +10,7 @@ import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_text_screen.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/loading_screen.dart';
+import 'package:resumen_mobile/presentation/uicoreStyles/uicore_skeleton_resume.dart';
 import '../../core/menu/drawer_menu.dart';
 import 'package:resumen_mobile/presentation/uicoreStyles/uicore_navigation_bar.dart';
 
@@ -22,30 +24,36 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen>{
-  String errorMessage = '';
-  int _selectedIndex = 1; // Index for 'view_list' icon
-  
-  Future<void> _onItemTapped(int index) async {
-    final idUser = ref.watch(userNotifierProvider).id;
-    final bool inProgress= await Server.isInProgress(idUser, ref);
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 0) {
-      if(!inProgress){
-        context.goNamed(CoreFormVideo.name);
-      }else{
-        context.goNamed(LoadingScreen.name, extra: 'Seguimos trabajando en tu resumen! Por favor espera unos minutos...');
-      }
-      // Already on home screen, no action needed
-    } else if (index == 2) {
-      if(!inProgress){
-        context.goNamed(CoreFormText.name);
-      }else{
-        context.goNamed(LoadingScreen.name, extra: 'Seguimos trabajando en tu resumen! Por favor espera unos minutos...');
-      }
+  Timer? _timer;
+  @override
+  void initState() {
+    super.initState();
+    if(ref.read(userNotifierProvider).inProgress){
+      _startCheckingProgress();
     }
   }
+//Consultamos constantemente al servidor si hay un resumen en progreso
+  void _startCheckingProgress() {
+    final idUser = ref.read(userNotifierProvider).id;
+
+    _timer = Timer.periodic(const Duration(seconds: 7), (timer) async {
+      await Server.isInProgress(idUser, ref);
+      if (!ref.read(userNotifierProvider).inProgress) {
+        _timer?.cancel();
+    }
+  });
+  }
+
+
+@override
+  void dispose() {
+    _timer?.cancel(); 
+    super.dispose();
+  }
+
+
+  String errorMessage = '';
+  int _selectedIndex = 1; // Index for 'view_list' icon
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +79,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
       ),
     );
   }
-  
+
+  Future<void> _onItemTapped(int index) async {
+    final idUser = ref.watch(userNotifierProvider).id;
+    final bool inProgress= await Server.isInProgress(idUser, ref);
+    setState(() {
+      _selectedIndex = index;
+    });
+    if (index == 0) {
+      if(!inProgress){
+        context.goNamed(CoreFormVideo.name);
+      }else{
+        context.goNamed(LoadingScreen.name, extra: 'Seguimos trabajando en tu resumen! Por favor espera unos minutos...');
+      }
+      // Already on home screen, no action needed
+    } else if (index == 2) {
+      if(!inProgress){
+        context.goNamed(CoreFormText.name);
+      }else{
+        context.goNamed(LoadingScreen.name, extra: 'Seguimos trabajando en tu resumen! Por favor espera unos minutos...');
+      }
+    }
+  }
 }
 
 // WIDGET STACKLAYOUT
@@ -88,6 +117,7 @@ class _StackLayoutHome extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     // PROVIDER PARA MANEJAR EL DARKMODE
     final resumenes = ref.watch(resumenNotifierProvider);
+    final inProgress = ref.watch(userNotifierProvider).inProgress;
     return StackLayoutCustomized(
       screenHeight: screenHeight,
       colorLight: const Color.fromRGBO(252, 242, 218, 1), 
@@ -96,12 +126,13 @@ class _StackLayoutHome extends ConsumerWidget {
       imageDark:'dome1.gif' , 
       content: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _BarraSearch(),
               const Divider(),
+              inProgress ? const SkeletonResume() : const SizedBox(height: 0,),
             ],
           ),
         ),
@@ -123,10 +154,9 @@ class _BarraSearch extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    // esta es la lista del datasource
-    final resumenList = ref.watch(userNotifierProvider).inventario;
+    final resumenList = ref.read(userNotifierProvider).inventario;
     // este es el provider
-    final resumenProvider = ref.watch(resumenNotifierProvider.notifier);
+    final resumenProvider = ref.read(resumenNotifierProvider.notifier);
     final TextEditingController searchValue = TextEditingController();
 
     return TextField(
@@ -149,13 +179,32 @@ class _BarraSearch extends ConsumerWidget {
             fontWeight: FontWeight.w100
         ),
         prefixIcon: const Icon(Icons.manage_search),
-        suffixIcon: IconButton(
-          // ver de sacar si es que no hay nada escrito
-          icon: const Icon(Icons.cancel),
-          onPressed: () {
-            searchValue.text = '';
-            resumenProvider.changeList(resumenList);
-          },
+        suffixIcon:Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            IconButton(
+              onPressed: (){
+                final resumenProvider = ref.read(resumenNotifierProvider.notifier);
+                final resumenList = ref.read(userNotifierProvider).inventario;
+                List<ResumenPreview> searchFound = [];
+                for (var i = 0; i < resumenList.length; i++) {
+                  if (resumenList[i].isFavourite) {
+                    searchFound.add(resumenList[i]);
+                  }
+                }
+                resumenProvider.changeList(searchFound);
+              }, icon: const Icon(Icons.favorite)
+            ),
+            IconButton(
+                  // ver de sacar si es que no hay nada escrito
+                  icon: const Icon(Icons.cancel),
+                  onPressed: () {
+                    searchValue.text = '';
+                    resumenProvider.changeList(resumenList);
+                  },
+                ),
+          ],
         ),
         border: InputBorder.none,
       ),

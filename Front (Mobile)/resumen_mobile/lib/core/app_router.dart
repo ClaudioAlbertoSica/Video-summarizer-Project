@@ -30,7 +30,7 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/home-screen',
-      builder: (context, state) => HomeScreen(),
+      builder: (context, state) => const HomeScreen(),
       name: HomeScreen.name
     ),
     GoRoute(

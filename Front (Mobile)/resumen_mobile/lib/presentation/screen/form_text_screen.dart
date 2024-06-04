@@ -51,6 +51,7 @@ class _CoreFormTextState extends ConsumerState<CoreFormText> {
         imageLigth: 'formTextResumenBackground.gif',
         imageDark: 'formTextResumenBackgroundD.gif',
         content: [
+          const SizedBox(height: 10,),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(

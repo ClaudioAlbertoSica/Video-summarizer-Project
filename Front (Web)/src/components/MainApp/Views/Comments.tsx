@@ -31,9 +31,9 @@ function Comments() {
     handleServerQuerry(text, title);
   };
 
-  const handleServerQuerry = async (texto: string, title: string) => {
+  const handleServerQuerry = async (sugerencia: string, title: string) => {
     await serverCall
-      .post(`/${activeUSer.userState.id}/COMMENTS`, { texto, title })
+      .post(`/${activeUSer.userState.id}/sugerencia`, { sugerencia, title })
       .then(() => {
         setAlertToShow({ message: "don't show", type: alertTypes.info });
       })
@@ -45,10 +45,15 @@ function Comments() {
       });
   };
 
+  const handleFormClear = () => {
+    formRef.current?.reset();
+    setAlertToShow({ message: "don't show", type: alertTypes.info });
+  };
+
   return (
     <Paper className="ViewWrapper" elevation={5}>
       <Container className="FormFlexPostal">
-        <Box className="FormBoxView" component="form" ref={formRef} onSubmit={handleSumbit}>
+        <Box className="FormBoxView" component="form" ref={formRef} onSubmit={(event) => handleSumbit(event)}>
           <Typography className="ViewTitle" variant="h4" sx={{ margin: "0px", marginBottom: "0px" }}>
             Tus comentarios
           </Typography>
@@ -75,16 +80,24 @@ function Comments() {
               required
             />
             <Container className="FormButtonsContainer">
-              <Button className="GenerateSummaryButton" variant="contained" type="reset" sx={{ backgroundColor: myTheme.palette.my.list}}>
+              <Button
+                className="GenerateSummaryButton"
+                variant="contained"
+                type="submit"
+                sx={{ backgroundColor: myTheme.palette.my.list }}
+              >
                 Generar
               </Button>
-              <Button className="ClearSummaryButton" variant="text" color="error" type="reset">
+              <Button className="ClearSummaryButton" variant="text" color="error" type="reset" onClick={handleFormClear}>
                 Borrar
               </Button>
             </Container>
           </Container>
         </Box>
-        <Container className="RightContent CommentsImage" sx={{backgroundImage: `url(${myTheme.palette.image.report})`}}></Container>
+        <Container
+          className="RightContent CommentsImage"
+          sx={{ backgroundImage: `url(${myTheme.palette.image.report})` }}
+        ></Container>
       </Container>
     </Paper>
   );

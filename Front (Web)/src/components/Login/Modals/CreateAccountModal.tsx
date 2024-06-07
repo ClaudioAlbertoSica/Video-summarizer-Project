@@ -48,7 +48,7 @@ function CreateAccountModal({ selectorCallback, setNewLoggedUser }: LoginModalSe
       })
       .catch((error) => {
         console.log;
-        alertMessagesHandler(setAlertToShow, error.error || defaultAlertMessage, alertTypes.success);
+        alertMessagesHandler(setAlertToShow, error?.error || defaultAlertMessage, alertTypes.success);
       });
   };
 
@@ -108,7 +108,7 @@ function CreateAccountModal({ selectorCallback, setNewLoggedUser }: LoginModalSe
         </Container>
       </Box>
       <Container className="bottomOptionsContainer">
-      <Container className="Logo"></Container>
+        <Container className="Logo"></Container>
         <Typography variant="caption" display="block" gutterBottom>
           ¿Ya posee una cuenta? &nbsp;
           <Link onClick={() => selectorCallback(ModalNames.Login)} underline="hover" style={{ cursor: "pointer" }}>

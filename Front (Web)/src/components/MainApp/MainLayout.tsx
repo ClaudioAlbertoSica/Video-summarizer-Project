@@ -9,7 +9,6 @@ import { ValidViewNames } from "./Views/ImTheActiveView.ts";
 import ImTheActiveView from "./Views/ImTheActiveView.ts";
 import FAQ from "./Views/FAQ.tsx";
 import CloseButton from "./Views/Buttons/ButtonsForViews.tsx";
-import Help from "./Views/Help.tsx";
 import VideoForm from "./Views/VideoForm.tsx";
 import TextForm from "./Views/TextForm.tsx";
 import { ButtonViewContext } from "./ButtonViewContext.ts";

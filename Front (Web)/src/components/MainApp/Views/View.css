@@ -190,6 +190,8 @@
 
 .MuiContainer-root.containerForPDFViewrEmbeded{
     height: 90%;
+    max-width: none;
+    padding-right: 50px;
 }
 
 .embededPDFViewr{

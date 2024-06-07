@@ -53,13 +53,13 @@ function PDFviewer() {
     setIsLoading(true);
     call();
   }, [summaryContext.State.idres]);
-  let elementtoReturn: ReactElement = <LoadingScreenPDF />
+
   return (
     <Container className="ContainerForPDFViewr">
       <Container className="ContainerForPDFViewrHeader">{!isLoading && <PDFviwerHeader {...summaryContext.State} />}</Container>
-      <Container className="containerForPDFViewrEmbededs">
+      <Container className="containerForPDFViewrEmbeded">
         {isLoading ? (
-         elementtoReturn
+          <LoadingScreenPDF />
         ) : (
           <embed className="embededPDFViewr" src={URL.createObjectURL(documentToShow)} type="application/pdf" />
         )}

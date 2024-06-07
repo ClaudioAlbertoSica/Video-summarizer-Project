@@ -35,8 +35,8 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    padding-right: 0;
-    margin-left: 0;
+    min-height: 400px;
+    padding: 0px;
 }
 
 .MuiContainer-root.RightContent{
@@ -170,21 +170,26 @@
 }
 
 .ContainerForPDFViewrHeader{
-    max-height: 10%;
+    max-height: 90%;
 }
 
-.MuiContainer-root.containerForPDFViewrEmbededs{
-    max-height: 90%;
-    height: 100%;
-    min-width: 100%;
+
+
+.MuiContainer-root.MuiContainer-maxWidthLg.ContainerForPDFViewrHeader.MuiContainer-root{
+    max-height: 10%;
     margin: 0px;
     padding: 0px;
     display: flex;
     justify-content: center;
+    max-width: none;
 }
 
-.embededPDFViewrLoader{
-    
+.MuiContainer-root.embededPDFViewrLoader{
+    height: 90%;
+}
+
+.MuiContainer-root.containerForPDFViewrEmbeded{
+    height: 90%;
 }
 
 .embededPDFViewr{
@@ -193,9 +198,9 @@
 }
 
 .MuiContainer-root.HeaderItemsConatiner{
-    width: 100%;
+    width: max-content;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
@@ -205,7 +210,18 @@
 
 .MuiTypography-root.SummaryTitle{
     font-weight: bolder;
+    max-width: max-content;
+    -webkit-line-clamp: 1;
+    display: -webkit-inline-box;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    padding-left: 50px;
+    padding-right: 50px;
 }
+
+
 
 .MuiAvatar-root.PDFviewrHeadAvatar{
     width: 60px;

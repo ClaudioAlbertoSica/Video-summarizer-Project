@@ -57,7 +57,7 @@
 .CentralPanel{
     background-color: lightblue;
     max-width:inherit;
-    height: 88%; 
+    height: 94%; 
     padding: 0px;
     display: flex;
     flex-direction: column;
@@ -72,8 +72,4 @@
     margin-top: 30px;
 }
 
-.FooterGrid{
-    background-color: lightseagreen;
-    height: 6%;
-    align-content: center;
-}
+

@@ -81,6 +81,11 @@
     margin: 80px;
     border-radius: 20px;
     display: flex;
+    max-height: 70%;
+}
+
+.MuiContainer-root.FaqMapContainer{
+overflow: scroll;
 }
 
 

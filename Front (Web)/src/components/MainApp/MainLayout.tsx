@@ -42,7 +42,7 @@ function GridLayout({ isProvisoryPassword }: InitialInfo) {
           <ChangePassword forcedBehaviourChanger={setForcePasswordChangeScreen} />
         )}
         {ImTheActiveView(selectedCentralPanelView, ValidViewNames.FAQ) && <FAQ />}
-        {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Help) && <Help />}
+        {/*   {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Help) && <Help />} Deprecated section. Merged with F.A.Q.*/}
         {ImTheActiveView(selectedCentralPanelView, ValidViewNames.VideoForm) && <VideoForm />}
         {ImTheActiveView(selectedCentralPanelView, ValidViewNames.TextForm) && <TextForm />}
         {ImTheActiveView(selectedCentralPanelView, ValidViewNames.Summary) && <PDFviewer />}

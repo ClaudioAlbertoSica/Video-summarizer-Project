@@ -117,6 +117,14 @@
     align-items: center;
 }
 
+
+
+.ButtonContainerWarnings{
+    position: relative;
+    top: -60px;
+    left: 50%;
+}
+
 .MuiContainer-root.SwitchsContainer{
     display: flex;
     flex-direction: column;

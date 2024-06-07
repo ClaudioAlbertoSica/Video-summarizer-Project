@@ -1,13 +1,11 @@
-import { ReactElement, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import server from "../../../Services/serverCall.ts";
 import { LoggedUserContext } from "../../../ActiveUserContext.ts";
-import isloadingGif from "../../../assets/isLoading.gif";
 import "./View.css";
 import { Container } from "@mui/material";
 import PDFviwerHeader from "./PDFviwerHeader.tsx";
 import { Summary } from "../../../Services/Types/UserTypes.ts";
 import { SelectedSummaryContext, defaultSummary } from "../SelectedSummaryContext.ts";
-import LoadingScreen from "./LoadingScreen.tsx";
 import LoadingScreenPDF from "./LoadingScreenPDF.tsx";
 
 type pdfInResponse = {

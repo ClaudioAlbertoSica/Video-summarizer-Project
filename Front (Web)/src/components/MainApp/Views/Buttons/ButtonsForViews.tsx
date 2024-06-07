@@ -18,6 +18,7 @@ function CloseButton({ closeFunction, additionalButtonsInformation }: CloseInter
       >
         Cerrar
       </Button>
+
       {additionalButtonsInformation === ValidViewNames.Summary && (
         <>
           <ButtonsForPDFViewer />

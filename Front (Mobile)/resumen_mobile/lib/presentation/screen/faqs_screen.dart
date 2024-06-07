@@ -5,6 +5,7 @@ import 'package:resumen_mobile/presentation/providers/user_provider.dart';
 import 'package:resumen_mobile/presentation/screen/form_video_screen.dart';
 import 'package:resumen_mobile/presentation/screen/report_screen.dart';
 import '../uicoreStyles/uicore_our_app_bar.dart';
+import 'package:go_router/go_router.dart';
 
 class FAQScreen extends ConsumerWidget {
   const FAQScreen({super.key});
@@ -51,36 +52,36 @@ class FAQScreen extends ConsumerWidget {
     );
   }
 
-  List<FAQItem> _getFaqItems(context, isDark) {
+  List<FAQItem> _getFaqItems(BuildContext context, isDark) {
     return [
       FAQItem(
         question: '¿Qué hace "Writer Rabbit"?',
         answersContent: [
-         const Text('Nuestra aplicación permite resumir contenido de manera rápida y eficiente. Podrás solicitar resúmenes escritos tanto de videos de Youtube como de textos.',)
+          const Text('Nuestra aplicación permite resumir contenido de manera rápida y eficiente. Podrás solicitar resúmenes escritos tanto de videos de Youtube como de textos.',)
         ],
       ),
       FAQItem(
         question: '¿Cómo puedo solicitar resúmenes de contenido?',
         answersContent: [
-         const Text('Ingresa con tu usuario y contraseña.\nSelecciona el tipo de contenido que desees resumir.\nPuedes pedir resúmenes de texto simplemente copiando y pegando el contenido en el área designada de nuestra aplicación.\nPara resúmenes de videos de YouTube, solo necesitas ingresar el enlace del video.\nLuego, elige entre obtener un resumen extenso o breve, según tus preferencias.',)
+          const Text('Ingresa con tu usuario y contraseña.\nSelecciona el tipo de contenido que desees resumir.\nPuedes pedir resúmenes de texto simplemente copiando y pegando el contenido en el área designada de nuestra aplicación.\nPara resúmenes de videos de YouTube, solo necesitas ingresar el enlace del video.\nLuego, elige entre obtener un resumen extenso o breve, según tus preferencias.',)
         ],
       ),
       FAQItem(
         question: '¿Puedo personalizar mis preferencias para los resúmenes?',
         answersContent: [
-         const Text('¡Por supuesto! En nuestra aplicación, puedes personalizar tus preferencias para los resúmenes de varias formas. Puedes elegir entre obtener un resumen extenso o breve, seleccionar el idioma (inglés, español, francés o portugués) y colocarle un título.',)
+          const Text('¡Por supuesto! En nuestra aplicación, puedes personalizar tus preferencias para los resúmenes de varias formas. Puedes elegir entre obtener un resumen extenso o breve, seleccionar el idioma (inglés, español, francés o portugués) y colocarle un título.',)
         ],
       ),
       FAQItem(
         question: '¿Qué tan preciso es el resumen generado por la aplicación?',
         answersContent: [
-         const Text('Nos esforzamos por brindar resúmenes precisos y relevantes. Nuestra tecnología utiliza inteligencia artificial para identificar y condensar la información esencial del contenido original. Así, obtenemos resúmenes de calidad sin perder lo importante. De todos modos, puedes proporcionar feedback sobre la calidad del resumen mediante un puntaje del 1 al 5, lo que nos ayuda a mejorar continuamente.',)
+          const Text('Nos esforzamos por brindar resúmenes precisos y relevantes. Nuestra tecnología utiliza inteligencia artificial para identificar y condensar la información esencial del contenido original. Así, obtenemos resúmenes de calidad sin perder lo importante. De todos modos, puedes proporcionar feedback sobre la calidad del resumen mediante un puntaje del 1 al 5, lo que nos ayuda a mejorar continuamente.',)
         ],
       ),
       FAQItem(
         question: '¿Hay algún límite en la duración del video que puedo resumir?',
         answersContent: [
-         const Text('Actualmente tenemos un límite de duración del video a resumir, que es de un máximo de 5 minutos por el momento.',)
+          const Text('Actualmente tenemos un límite de duración del video a resumir, que es de un máximo de 5 minutos por el momento.',)
         ],
       ),
       FAQItem(

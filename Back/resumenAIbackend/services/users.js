@@ -84,22 +84,18 @@ class Servicio {
             if (userName) {
                 usuario = await this.model.obtenerUsuariosLogin(userName)
                 if (Object.keys(usuario).length === 0) {
-                    console.log('usuario no encontrado')
-                    throw new Error('Usuario incorrecto');
+                    throw new Error('El usuario ingresado no tiene cuenta.');
                 }
                 if (passwd !== undefined && usuario.passwd == passwd) {
                     delete usuario._id
                     delete usuario.passwd
-
-                    console.log('LOGIN EXITOSO')
                     //await this.nodeMailer.sendMail(usuario.userName)
                     //comparamos con el encontrado
                 } else {
-                    console.log('REVISAR PASSWORD')
-                    throw new Error('password incorrecto');
+                    throw new Error('La contraseña es incorrecta.');
                 }
             } else {
-                throw new Error('formato de usuario INCORRECTO');
+                throw new Error('Faltan datos en la solicitud.');
             }
             return usuario
         } catch (error) {
@@ -482,7 +478,7 @@ class Servicio {
                 await this.generarPDFTexto(textoResumido)
                 resumen.pdf = await this.pasarPDFABinario()
             } else {
-                console.log('error de ingreso de datos')
+                throw new Error('Error de ingreso de datos.')
             }
 
             const resumenNuevo = await this.model.crearResumenTexto(id, resumen)
@@ -493,7 +489,7 @@ class Servicio {
             return resumenNuevo
         } catch (error) {
             await this.actualizarUsuario(id, { inProgress: false })
-            console.log(error.message)
+            throw error;
         }
     }
 
@@ -585,7 +581,7 @@ class Servicio {
 
     //TEMA TRY CATCH: TENEMOS QUE VOLVER A PROBAR PERO SI LO DEJAMOS LA EJECUCIÓN SIGUE
     cambiarPass = async (id, passActual, passNueva, passNuevaBis) => {
-        //try {
+        try {
         let usuarioActualizado = {}
         if (id, passActual, passNueva, passNuevaBis) {
             const usuario = await this.model.obtenerUsuarios(id)
@@ -594,7 +590,6 @@ class Servicio {
                     if (passNueva === passNuevaBis) {
                         if (usuario.passwd !== passNueva) {
                             usuarioActualizado = await this.actualizarUsuario(id, { passwd: passNueva })
-                            console.log("La constraseña se actualizó correctamente.")
                             if (usuarioActualizado.provisoria) {
                                 usuarioActualizado = await this.actualizarUsuario(id, { provisoria: false })
                             }
@@ -614,9 +609,9 @@ class Servicio {
         } else {
             throw new Error('Faltan datos en la solicitud.');
         }
-        //}catch (error) {
-        //  console.log(error.message) 
-        //}
+        }catch (error) {
+            throw error;
+        }
     }
 
     olvideMiPasswd = async (userName) => {
@@ -630,9 +625,11 @@ class Servicio {
                     await this.nodeMailer.sendMail(usuarioActualizado.userName, usuarioActualizado.passwd)
                     return usuarioActualizado.provisoria
                 }
+            }else{
+                throw new Error('Faltan datos en la solicitud.');
             }
         } catch (error) {
-            throw new Error(error.message)
+            throw error;
         }
     }
 

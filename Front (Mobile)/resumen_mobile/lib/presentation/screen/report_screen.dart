@@ -11,7 +11,6 @@ import 'package:resumen_mobile/presentation/uicoreStyles/uicore_title_style.dart
 import '../uicoreStyles/uicore_our_app_bar.dart';
 
 
-enum Idiomas{ english, spanish}
 
 class ReportScreen extends ConsumerWidget {
   const ReportScreen({super.key});
@@ -63,12 +62,8 @@ class FormText extends StatefulWidget {
 
 class _FormTextState extends State<FormText> {
 
-  bool shortValue = false;
-
   final TextEditingController _reportTextController = TextEditingController();
   
-  Idiomas idiomaSeleccionado = Idiomas.spanish;
-
   @override
   Widget build(BuildContext context) {
     return Form(

@@ -1,14 +1,10 @@
-// import { Button } from "@mui/material";
-
-// import SendIcon from "@mui/icons-material/Send";
 import DeletePDF from "./DeletePDF";
+import { SendPDF } from "./SendPDF";
 
 function ButtonsForPDFViewer() {
   return (
     <>
-      {/*<Button className="CloseButton" variant="contained" color="info" endIcon={<SendIcon />}>
-        Enviar
-      </Button> */}
+      <SendPDF />
       <DeletePDF />
     </>
   );

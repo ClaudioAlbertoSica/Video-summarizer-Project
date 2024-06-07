@@ -34,7 +34,7 @@ function DeletePDFbtn() {
 
   return (
     <Button
-      className="CloseButton"
+      className="DeleteButton"
       variant="outlined"
       color="error"
       startIcon={<DeleteIcon />}

@@ -83,9 +83,22 @@
     display: flex;
 }
 
-/* This is just a wrapper that comes with the MaterialUI Button.
-Touch it with caution. I just used it to kill it's built-in margin */
+
 .MuiButton-root.CloseButton{
+    margin: 0px;
+    height: 20px;
+    width: 200px;
+    border-radius: 20px;
+}
+
+.MuiButton-root.SendButton{
+    margin: 0px;
+    height: 20px;
+    width: 200px;
+    border-radius: 20px;
+}
+
+.MuiButton-root.DeleteButton{
     margin: 0px;
     height: 20px;
     width: 200px;

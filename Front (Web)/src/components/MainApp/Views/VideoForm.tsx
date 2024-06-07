@@ -55,7 +55,7 @@ function VideoForm() {
         setTimeout(() => activeUSer.userSteState({ ...activeUSer.userState, inProgress: true }), 500);
       })
       .catch((err) => {
-        alertMessagesHandler(setAlertToShow, err.error || ServerErrorMessage, alertTypes.error, 2000);
+        alertMessagesHandler(setAlertToShow, err?.error || ServerErrorMessage, alertTypes.error, 2000);
       });
   };
 
@@ -147,7 +147,10 @@ function VideoForm() {
                 </Container>
               </Container>
             </Box>
-            <Container className="RightContent FormVideoImagen" sx={{backgroundImage: `url(${myTheme.palette.image.formVideo})`}}></Container>
+            <Container
+              className="RightContent FormVideoImagen"
+              sx={{ backgroundImage: `url(${myTheme.palette.image.formVideo})` }}
+            ></Container>
           </Container>
         </Paper>
       );

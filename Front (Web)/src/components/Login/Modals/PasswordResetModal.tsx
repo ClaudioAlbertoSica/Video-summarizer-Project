@@ -33,7 +33,7 @@ function PasswordResetModal({ selectorCallback }: LoginModalSelector) {
         setTimeout(() => selectorCallback(ModalNames.Login), 3000);
       })
       .catch((err) => {
-        alertMessagesHandler(setAlertToShow, err.error || defaultAlertMessage, alertTypes.error);
+        alertMessagesHandler(setAlertToShow, err?.error || defaultAlertMessage, alertTypes.error);
       });
   };
 
@@ -65,7 +65,7 @@ function PasswordResetModal({ selectorCallback }: LoginModalSelector) {
         </Container>
       </Box>
       <Container className="bottomOptionsContainer">
-      <Container className="Logo"></Container>
+        <Container className="Logo"></Container>
         <Typography variant="caption" display="block" gutterBottom>
           ¿Ya posee una cuenta? &nbsp;
           <Link onClick={() => selectorCallback(ModalNames.Login)} underline="hover" style={{ cursor: "pointer" }}>

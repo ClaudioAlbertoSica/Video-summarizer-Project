@@ -53,7 +53,7 @@ function ChangePassword({ forcedBehaviourChanger }: Props) {
         setTimeout(() => forcedBehaviourChanger(false), 800);
       })
       .catch((err) => {
-        alertMessagesHandler(setAlertToShow, err.error || defaultAlertMessage, alertTypes.error);
+        alertMessagesHandler(setAlertToShow, err?.error || defaultAlertMessage, alertTypes.error);
       });
   };
 
@@ -103,12 +103,15 @@ function ChangePassword({ forcedBehaviourChanger }: Props) {
               variant="outlined"
               required
             />
-            <Button variant="contained" type="submit" sx={{ backgroundColor: myTheme.palette.my.list}}>
+            <Button variant="contained" type="submit" sx={{ backgroundColor: myTheme.palette.my.list }}>
               Modificar
             </Button>
           </Container>
         </Box>
-        <Container className="RightContent FormChangePassImagen" sx={{backgroundImage: `url(${myTheme.palette.image.myAccount})`}}></Container>
+        <Container
+          className="RightContent FormChangePassImagen"
+          sx={{ backgroundImage: `url(${myTheme.palette.image.myAccount})` }}
+        ></Container>
       </Container>
     </Paper>
   );

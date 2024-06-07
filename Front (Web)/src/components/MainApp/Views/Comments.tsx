@@ -41,7 +41,7 @@ function Comments() {
         alertMessagesHandler(setAlertToShow, ConfirmationMessage, alertTypes.success, 500);
       })
       .catch((err) => {
-        alertMessagesHandler(setAlertToShow, err.error || ServerErrorMessage, alertTypes.error, 2000);
+        alertMessagesHandler(setAlertToShow, err?.error || ServerErrorMessage, alertTypes.error, 2000);
       });
   };
 

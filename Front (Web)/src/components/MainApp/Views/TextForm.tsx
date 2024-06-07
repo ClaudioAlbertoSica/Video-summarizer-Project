@@ -49,7 +49,7 @@ function TextForm() {
         setTimeout(() => activeUSer.userSteState({ ...activeUSer.userState, inProgress: true }), 500);
       })
       .catch((err) => {
-        alertMessagesHandler(setAlertToShow, err.error || ServerErrorMessage, alertTypes.error, 2000);
+        alertMessagesHandler(setAlertToShow, err?.error || ServerErrorMessage, alertTypes.error, 2000);
       });
   };
 
@@ -127,7 +127,10 @@ function TextForm() {
                 </Container>
               </Container>
             </Box>
-            <Container className="RightContent FormTextImagen" sx={{backgroundImage: `url(${myTheme.palette.image.formText})`}}></Container>
+            <Container
+              className="RightContent FormTextImagen"
+              sx={{ backgroundImage: `url(${myTheme.palette.image.formText})` }}
+            ></Container>
           </Container>
         </Paper>
       );

@@ -33,7 +33,7 @@ function LoginModal({ selectorCallback, setNewLoggedUser }: LoginModalInterface)
         setTimeout(() => setNewLoggedUser(newUser), 500);
       })
       .catch((err) => {
-        alertMessagesHandler(setAlertToShow, err.error || defaultAlertMessage, alertTypes.error);
+        alertMessagesHandler(setAlertToShow, err?.error || defaultAlertMessage, alertTypes.error);
       });
   };
 

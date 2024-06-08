@@ -1,11 +1,11 @@
-import DeletePDF from "./DeletePDF";
+import DeletePDF from "../../DeletePDF/DeletePDF";
 import { SendPDF } from "./SendPDF";
 
 function ButtonsForPDFViewer() {
   return (
     <>
       <SendPDF />
-      <DeletePDF />
+      <DeletePDF buttonType="button" />
     </>
   );
 }

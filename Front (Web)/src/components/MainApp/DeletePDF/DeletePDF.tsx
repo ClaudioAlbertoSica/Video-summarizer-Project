@@ -3,19 +3,23 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Alert, Button, Container } from "@mui/material";
+import { Alert, Button, Container, IconButton } from "@mui/material";
 import { useContext } from "react";
-import { LoggedUserContext } from "../../../../ActiveUserContext.ts";
-import { SelectedSummaryContext, defaultSummary } from "../../SelectedSummaryContext.ts";
-import server from "../../../../Services/serverCall.ts";
-import { LoggedUser, Summary } from "../../../../Services/Types/UserTypes.ts";
-import { ButtonViewContext } from "../../ButtonViewContext.ts";
-import { ValidViewNames } from "../ImTheActiveView.ts";
-import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../../Services/alertMessagesHandler.ts";
+import { LoggedUserContext } from "../../../ActiveUserContext.ts";
+import { SelectedSummaryContext, defaultSummary } from "../SelectedSummaryContext.ts";
+import server from "../../../Services/serverCall.ts";
+import { LoggedUser, Summary } from "../../../Services/Types/UserTypes.ts";
+import { ButtonViewContext } from "../ButtonViewContext.ts";
+import { ValidViewNames } from "../Views/ImTheActiveView.ts";
+import { AlertMessage, alertMessagesHandler, alertTypes } from "../../../Services/alertMessagesHandler.ts";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+interface DeleteButtonType {
+  buttonType: "icon" | "button";
+}
 
-export default function DeletePDF() {
+export default function DeletePDF({ buttonType }: DeleteButtonType) {
   const [open, setOpen] = useState(false);
   const loggedUser = useContext(LoggedUserContext);
   const summaryContext = useContext(SelectedSummaryContext);
@@ -61,19 +65,44 @@ export default function DeletePDF() {
       });
   };
 
+  const resolveButtonType = () => {
+    let buttonToReturn: ReactElement;
+
+    switch (buttonType) {
+      case "icon": {
+        buttonToReturn = (
+          <IconButton
+            onClick={() => {
+              handleClickOpen();
+            }}
+          >
+            <DeleteForeverIcon color="error" />
+          </IconButton>
+        );
+        break;
+      }
+      case "button": {
+        buttonToReturn = (
+          <Button
+            className="DeleteButton"
+            variant="outlined"
+            color="error"
+            startIcon={<DeleteIcon />}
+            onClick={() => {
+              handleClickOpen();
+            }}
+          >
+            Borrar
+          </Button>
+        );
+      }
+    }
+    return buttonToReturn;
+  };
+
   return (
     <>
-      <Button
-        className="DeleteButton"
-        variant="outlined"
-        color="error"
-        startIcon={<DeleteIcon />}
-        onClick={() => {
-          handleClickOpen();
-        }}
-      >
-        Borrar
-      </Button>
+      {resolveButtonType()}
       <Dialog className="DeleteDialogBox" open={open} onClose={handleReject}>
         <DialogTitle className="DeleteDialogueTitle">¿Está seguro de borrar este resumen?</DialogTitle>
         <DialogContent>

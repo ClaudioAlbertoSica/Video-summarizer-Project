@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
 import Favorite from "./Favorite";
-import Trash from "./Trash";
 import { ReactElement } from "react";
+import DeletePDF from "../../DeletePDF/DeletePDF";
 
 interface Props {
   isLiked: boolean;
@@ -16,7 +16,7 @@ function TrashAndFav({ isLiked, whatToShow = "none" }: Props) {
         elementtoReturn = (
           <>
             {" "}
-            <Favorite isLiked={isLiked} /> <Trash />{" "}
+            <Favorite isLiked={isLiked} /> <DeletePDF buttonType="icon" />{" "}
           </>
         );
         break;
@@ -24,7 +24,7 @@ function TrashAndFav({ isLiked, whatToShow = "none" }: Props) {
         elementtoReturn = <Favorite isLiked={isLiked} />;
         break;
       case "trash":
-        elementtoReturn = <Trash />;
+        elementtoReturn = <DeletePDF buttonType="icon" />;
         break;
       default:
         <></>;

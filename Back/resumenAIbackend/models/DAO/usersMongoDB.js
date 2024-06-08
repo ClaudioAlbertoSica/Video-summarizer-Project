@@ -13,14 +13,14 @@ class ModelMongoDB {
                     usuarioEncontrado.inventario.forEach(item => delete item.pdf);
                 }
                 return usuarioEncontrado || {};
-            } else {
+            } /*else {
                 const usuariosEncontrados = await CnxMongoDB.db.collection('usuarios').find({}).toArray();
 
                 usuariosEncontrados.forEach(usuario => {
                     usuario.inventario.forEach(item => delete item.pdf);
                 });
                 return usuariosEncontrados;
-            }
+            }*/
         } catch {
             throw new Error('conexion con la BD no establecida');
         }

@@ -46,6 +46,8 @@ class Servicio {
     guardarUsuario = async (usuario) => {
         try {
             const usuarioGuardado = await this.model.guardarUsuario(usuario)
+            delete usuarioGuardado._id;
+            delete usuarioGuardado.passwd;
             return usuarioGuardado
         }
         catch (error) {
@@ -69,6 +71,8 @@ class Servicio {
     borrarUsuario = async (id) => {
         try {
             const usuarioBorrado = await this.model.borrarUsuario(id)
+            delete usuarioBorrado._id;
+            delete usuarioBorrado.passwd;
             return usuarioBorrado
         }
         catch (error) {
@@ -683,10 +687,12 @@ class Servicio {
                 const usuario = await this.model.obtenerUsuarios(id)
                 const nombre = usuario.userName
                 await this.nodeMailerSug.sendMail(nombre, sugerencia)
+            }else{
+                throw new Error('Ha ocurrido un error con el envío de la sugerencia.')
             }
             return rta
         } catch (error) {
-            throw new Error(error.message)
+            throw error
         }
     }
 

@@ -12,12 +12,12 @@ import 'package:resumen_mobile/presentation/screen/resumen_detail_screen.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class Server {
+  static const String urlBase =
+      "http://10.0.2.2:8080/api/"; //"http://localhost:8080/api/"; //"http://192.168.0.31:8080/api/"; //
+  static String errorMessage = "";
 
-static const String urlBase = "http://192.168.0.31:8080/api/"; //"http://localhost:8080/api/"
-static  String errorMessage = "";
-
-
-static Future<bool> sendLoginData(String username, String password, WidgetRef ref) async {
+  static Future<bool> sendLoginData(
+      String username, String password, WidgetRef ref) async {
     bool loginOk = false;
     // servidor Node.js
     try {
@@ -28,32 +28,36 @@ static Future<bool> sendLoginData(String username, String password, WidgetRef re
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String> {
+        body: jsonEncode(<String, String>{
           'userName': username,
-          'passwd': password, 
+          'passwd': password,
         }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
       if (response.statusCode == 200) {
         // Si la solicitud es exitosa, imprime la respuesta del servidor
         //print('Respuesta del servidor: ${response.body}');
-        
+
         final rsp = json.decode(response.body);
 
         User userLogueado = User(
-            userName: rsp['userName'],
-            id: rsp['id'],
-            inventario: (rsp['inventario'] as List)
+          userName: rsp['userName'],
+          id: rsp['id'],
+          inventario: (rsp['inventario'] as List)
               .map((item) => ResumenPreview.fromJson(item))
-              .toList(), 
-            inProgress: rsp['inProgress'],
-            isDark: rsp['config']['isDark'],
-            provisoria: rsp['provisoria'],
-          );
+              .toList(),
+          inProgress: rsp['inProgress'],
+          isDark: rsp['config']['isDark'],
+          provisoria: rsp['provisoria'],
+        );
 
-          ref.read(resumenNotifierProvider.notifier).changeList(userLogueado.inventario);
-          ref.read(userNotifierProvider.notifier).setUserLogin(userLogueado);
-          ref.read(userNotifierProvider.notifier).togleDarkMode(userLogueado.isDark);
+        ref
+            .read(resumenNotifierProvider.notifier)
+            .changeList(userLogueado.inventario);
+        ref.read(userNotifierProvider.notifier).setUserLogin(userLogueado);
+        ref
+            .read(userNotifierProvider.notifier)
+            .togleDarkMode(userLogueado.isDark);
 
         loginOk = true;
       } else {
@@ -67,7 +71,7 @@ static Future<bool> sendLoginData(String username, String password, WidgetRef re
     return loginOk;
   }
 
-static Future<bool> recuperarContrasenia(String userName) async{
+  static Future<bool> recuperarContrasenia(String userName) async {
     bool sendOk = false;
     // servidor Node.js
     try {
@@ -78,7 +82,7 @@ static Future<bool> recuperarContrasenia(String userName) async{
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String> {
+        body: jsonEncode(<String, String>{
           'userName': userName,
         }),
       );
@@ -86,7 +90,7 @@ static Future<bool> recuperarContrasenia(String userName) async{
       if (response.statusCode == 200) {
         // Si la solicitud es exitosa, imprime la respuesta del servidor
         //print('Respuesta del servidor: ${response.body}');
-                
+
         sendOk = true;
       } else {
         errorMessage = json.decode(response.body)['error'];
@@ -99,11 +103,11 @@ static Future<bool> recuperarContrasenia(String userName) async{
     return sendOk;
   }
 
-static Future<bool> isInProgress(String idUser, WidgetRef ref) async {
+  static Future<bool> isInProgress(String idUser, WidgetRef ref) async {
     bool inProgress = false;
     try {
       final url = Uri.parse('${urlBase}inprogress/$idUser');
-      final response = await http.get(url, headers: <String, String> {
+      final response = await http.get(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       });
 
@@ -114,24 +118,19 @@ static Future<bool> isInProgress(String idUser, WidgetRef ref) async {
         //final userInProgress = jsonData['inProgress'];
         //inProgress = userInProgress as bool;
         ref.read(userNotifierProvider.notifier).setInProgress(inProgress);
-        if(!inProgress){
+        if (!inProgress) {
           await actualizarUsuario(idUser, ref);
         }
       } else {
-        
-          errorMessage = json.decode(response.body)['error'];
-        
+        errorMessage = json.decode(response.body)['error'];
       }
     } catch (error) {
-      
-        errorMessage = 'Error: Connection ERROR - Server not found';
-    
+      errorMessage = 'Error: Connection ERROR - Server not found';
     }
     return inProgress;
   }
 
-static Future<void> actualizarUsuario(String idUser, WidgetRef ref) async {
-    
+  static Future<void> actualizarUsuario(String idUser, WidgetRef ref) async {
     try {
       final url = Uri.parse('$urlBase$idUser');
       final response = await http.get(url, headers: <String, String>{
@@ -142,34 +141,35 @@ static Future<void> actualizarUsuario(String idUser, WidgetRef ref) async {
         final rsp = json.decode(response.body);
 
         User userActualizado = User(
-            userName: rsp['userName'],
-            id: rsp['id'],
-            inventario: (rsp['inventario'] as List)
+          userName: rsp['userName'],
+          id: rsp['id'],
+          inventario: (rsp['inventario'] as List)
               .map((item) => ResumenPreview.fromJson(item))
-              .toList(), 
-            inProgress: rsp['inProgress'],
-            isDark: rsp['config']['isDark'],
-            provisoria: rsp['provisoria'],
-          );
+              .toList(),
+          inProgress: rsp['inProgress'],
+          isDark: rsp['config']['isDark'],
+          provisoria: rsp['provisoria'],
+        );
 
-          ref.read(resumenNotifierProvider.notifier).changeList(userActualizado.inventario);
-          ref.read(userNotifierProvider.notifier).setUserLogin(userActualizado);
-          ref.read(userNotifierProvider.notifier).togleDarkMode(userActualizado.isDark);
+        ref
+            .read(resumenNotifierProvider.notifier)
+            .changeList(userActualizado.inventario);
+        ref.read(userNotifierProvider.notifier).setUserLogin(userActualizado);
+        ref
+            .read(userNotifierProvider.notifier)
+            .togleDarkMode(userActualizado.isDark);
       } else {
-        
-          errorMessage = json.decode(response.body)['error'];
-        
+        errorMessage = json.decode(response.body)['error'];
       }
     } catch (error) {
-      
-        errorMessage = 'Error: Connection ERROR - Server not found';
-    
+      errorMessage = 'Error: Connection ERROR - Server not found';
     }
   }
 
-static Future<bool> changePass(String passActual, String passNueva, String passNuevaBis, String idUser) async {
+  static Future<bool> changePass(String passActual, String passNueva,
+      String passNuevaBis, String idUser) async {
     bool changeOk = false;
-    
+
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
@@ -180,10 +180,10 @@ static Future<bool> changePass(String passActual, String passNueva, String passN
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-        'passActual': passActual,
-        'passNueva': passNueva,
-        'passNuevaBis': passNuevaBis,
-      }),
+          'passActual': passActual,
+          'passNueva': passNueva,
+          'passNuevaBis': passNuevaBis,
+        }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
       if (response.statusCode == 200) {
@@ -201,7 +201,7 @@ static Future<bool> changePass(String passActual, String passNueva, String passN
     return changeOk;
   }
 
-static Future<void> changeConfig(String idUser, WidgetRef ref) async {
+  static Future<void> changeConfig(String idUser, WidgetRef ref) async {
     // servidor Node.js
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8000 instead of localhost:8000
@@ -212,10 +212,8 @@ static Future<void> changeConfig(String idUser, WidgetRef ref) async {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, void>{
-          'config': {
-            'isDark': !(ref.read(userNotifierProvider).isDark)
-          }}
-        ),
+          'config': {'isDark': !(ref.read(userNotifierProvider).isDark)}
+        }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
       if (response.statusCode == 200) {
@@ -227,14 +225,16 @@ static Future<void> changeConfig(String idUser, WidgetRef ref) async {
           id: rsp['id'],
           inventario: (rsp['inventario'] as List)
               .map((item) => ResumenPreview.fromJson(item))
-              .toList(), 
+              .toList(),
           inProgress: rsp['inProgress'],
           isDark: rsp['config']['isDark'],
           provisoria: rsp['provisoria'],
-          );
-          
-          ref.read(userNotifierProvider.notifier).setUserLogin(userModificado);
-          ref.read(userNotifierProvider.notifier).togleDarkMode(userModificado.isDark);
+        );
+
+        ref.read(userNotifierProvider.notifier).setUserLogin(userModificado);
+        ref
+            .read(userNotifierProvider.notifier)
+            .togleDarkMode(userModificado.isDark);
       } else {
         errorMessage = json.decode(response.body)['error'];
       }
@@ -243,7 +243,7 @@ static Future<void> changeConfig(String idUser, WidgetRef ref) async {
     }
   }
 
-static Future<bool> sendCreateUser(String username, String password) async {
+  static Future<bool> sendCreateUser(String username, String password) async {
     bool createOk = false;
     try {
       //Android emulator, then your server endpoint should be 10.0.2.2:8080 instead of localhost:8080
@@ -253,7 +253,7 @@ static Future<bool> sendCreateUser(String username, String password) async {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String> {
+        body: jsonEncode(<String, String>{
           'userName': username,
           'passwd': password,
         }),
@@ -273,7 +273,8 @@ static Future<bool> sendCreateUser(String username, String password) async {
     return createOk;
   }
 
-static  Future<bool> crearResumenTexto(String idUser, String texto, bool esBreve, String idioma, String? title, WidgetRef ref) async {
+  static Future<bool> crearResumenTexto(String idUser, String texto,
+      bool esBreve, String idioma, String? title, WidgetRef ref) async {
     bool creando = false;
     // servidor Node.js
     try {
@@ -285,9 +286,9 @@ static  Future<bool> crearResumenTexto(String idUser, String texto, bool esBreve
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, void>{
-          'texto':texto,
-          'esBreve':esBreve,
-          'idioma':idioma,
+          'texto': texto,
+          'esBreve': esBreve,
+          'idioma': idioma,
           'title': title ?? ""
         }),
       );
@@ -306,7 +307,8 @@ static  Future<bool> crearResumenTexto(String idUser, String texto, bool esBreve
     return creando;
   }
 
-static  Future<bool> crearResumenVideo(String idUser, String urlYoutube, bool esBreve, String idioma, String title, WidgetRef ref) async {
+  static Future<bool> crearResumenVideo(String idUser, String urlYoutube,
+      bool esBreve, String idioma, String title, WidgetRef ref) async {
     bool creando = false;
     // servidor Node.js
     try {
@@ -318,10 +320,10 @@ static  Future<bool> crearResumenVideo(String idUser, String urlYoutube, bool es
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, void>{
-        'url':urlYoutube,
-        'esBreve':esBreve,
-        'idioma':idioma,
-        'title': title
+          'url': urlYoutube,
+          'esBreve': esBreve,
+          'idioma': idioma,
+          'title': title
         }),
       );
       //CREEMOS QUE EL STATUSCODE SIEMPRE ES 200 OK
@@ -339,70 +341,67 @@ static  Future<bool> crearResumenVideo(String idUser, String urlYoutube, bool es
     return creando;
   }
 
-static Future<bool> enviarSugerencia(String idUser, String text) async {
+  static Future<bool> enviarSugerencia(String idUser, String text) async {
     bool sendOk = false;
     try {
       final url = Uri.parse('$urlBase$idUser/sugerencia');
-      final response = await http.post(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-        body: jsonEncode(<String, String> {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
           'sugerencia': text,
         }),
       );
 
       if (response.statusCode == 200) {
-        sendOk= true;
+        sendOk = true;
       } else {
-        
-          errorMessage = json.decode(response.body)['error'];
-        
+        errorMessage = json.decode(response.body)['error'];
       }
     } catch (error) {
-      
-        errorMessage = 'Error: Connection ERROR - Server not found';
-    
+      errorMessage = 'Error: Connection ERROR - Server not found';
     }
     return sendOk;
   }
 
-static Future<bool> enviarResumen(String idUser, String idRes) async {
-  bool sendOk = false;
-  try {
-    final url = Uri.parse('$urlBase$idUser/enviar/$idRes');
-    final response = await http.post(url, headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-
-    if (response.statusCode == 200) {
-      sendOk = true;
-      //print(response.body);
-
-    } else {
-      errorMessage = json.decode(response.body)['error'];
-    }
-  } catch (error) {
-    errorMessage = 'Error: Connection ERROR - Server not found';
-  }
-  return sendOk;
-}
-
-static Future<void> mostrarPDF(BuildContext context,Uint8List pdfBytes) async {
+  static Future<bool> enviarResumen(String idUser, String idRes) async {
+    bool sendOk = false;
     try {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Scaffold(
-            appBar: AppBar(title: const Text('PDF Viewer')),
-            body: SfPdfViewer.memory(Uint8List.fromList(pdfBytes)),
-          ),
-        ));
+      final url = Uri.parse('$urlBase$idUser/enviar/$idRes');
+      final response = await http.post(url, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+
+      if (response.statusCode == 200) {
+        sendOk = true;
+        //print(response.body);
+      } else {
+        errorMessage = json.decode(response.body)['error'];
+      }
+    } catch (error) {
+      errorMessage = 'Error: Connection ERROR - Server not found';
+    }
+    return sendOk;
+  }
+
+  static Future<void> mostrarPDF(
+      BuildContext context, Uint8List pdfBytes) async {
+    try {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(title: const Text('PDF Viewer')),
+          body: SfPdfViewer.memory(Uint8List.fromList(pdfBytes)),
+        ),
+      ));
     } catch (error) {
       errorMessage = 'Error: Connection ERROR - Server not found';
     }
   }
 
-static Future<void> borrarResumen(String idUser, String idRes) async{
-    
-  try {
+  static Future<void> borrarResumen(String idUser, String idRes) async {
+    try {
       final url = Uri.parse('$urlBase$idUser/resumen/$idRes');
       final response = await http.delete(url, headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -417,8 +416,9 @@ static Future<void> borrarResumen(String idUser, String idRes) async{
       errorMessage = 'Error: Connection ERROR - Server not found';
     }
   }
-  
-static Future<void> putLikeResume(String idUser, String idRes, WidgetRef ref) async {
+
+  static Future<void> putLikeResume(
+      String idUser, String idRes, WidgetRef ref) async {
     ResumenPreview resumen = ref.read(userNotifierProvider).getResumen(idRes);
     if (resumen.idres == idRes) {
       try {
@@ -443,11 +443,12 @@ static Future<void> putLikeResume(String idUser, String idRes, WidgetRef ref) as
         errorMessage = 'Error: Connection ERROR - Server not found';
       }
     } else {
-        errorMessage = 'No se encontro un resumen con ese id.';
+      errorMessage = 'No se encontro un resumen con ese id.';
     }
   }
-  
-static Future<void> actualizarResumenPoints(String idUser, String idRes, double rating, WidgetRef ref) async {
+
+  static Future<void> actualizarResumenPoints(
+      String idUser, String idRes, double rating, WidgetRef ref) async {
     try {
       final url = Uri.parse('$urlBase$idUser/resumen/$idRes');
       final response = await http.put(
@@ -472,37 +473,39 @@ static Future<void> actualizarResumenPoints(String idUser, String idRes, double 
     }
   }
 
-static Future<void> completeResumen(String idUser, String idRes, BuildContext context, WidgetRef ref) async {
-  ResumenPreview resumen = ref.read(userNotifierProvider).getResumen(idRes);
+  static Future<void> completeResumen(
+      String idUser, String idRes, BuildContext context, WidgetRef ref) async {
+    ResumenPreview resumen = ref.read(userNotifierProvider).getResumen(idRes);
     if (resumen.idres == idRes) {
-    try {
-      final url = Uri.parse('$urlBase$idUser/resumen/$idRes');
-      final response = await http.get(url, headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      });
+      try {
+        final url = Uri.parse('$urlBase$idUser/resumen/$idRes');
+        final response = await http.get(url, headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        });
 
-      if (response.statusCode == 200) {
-        // Desestructura el JSON para obtener el campo "data"
-        final jsonData = json.decode(response.body);
-        final pdfData = jsonData['pdf']['data'];
+        if (response.statusCode == 200) {
+          // Desestructura el JSON para obtener el campo "data"
+          final jsonData = json.decode(response.body);
+          final pdfData = jsonData['pdf']['data'];
 
-        // Decodifica los datos base64 del PDF
-        final pdfBytes = base64Decode(pdfData);
+          // Decodifica los datos base64 del PDF
+          final pdfBytes = base64Decode(pdfData);
 
-        // Muestra el documento PDF en un Scaffold
-        context.pushNamed(ResumenDetailScreen.name, extra: {'resumen': resumen, 'pdfBytes': pdfBytes});
-      } else {
-        errorMessage = json.decode(response.body)['error'];
+          // Muestra el documento PDF en un Scaffold
+          context.pushNamed(ResumenDetailScreen.name,
+              extra: {'resumen': resumen, 'pdfBytes': pdfBytes});
+        } else {
+          errorMessage = json.decode(response.body)['error'];
+        }
+      } catch (error) {
+        errorMessage = 'Error: Connection ERROR - Server not found';
       }
-    } catch (error) {
-      errorMessage = 'Error: Connection ERROR - Server not found';
-    }
-    }else {
+    } else {
       errorMessage = 'No se encontro un resumen con ese id.';
     }
   }
 
-static void showErrorMessage(BuildContext context) {
+  static void showErrorMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(errorMessage),
@@ -511,7 +514,7 @@ static void showErrorMessage(BuildContext context) {
     );
   }
 
-static void showMsg(BuildContext context, String msg) {
+  static void showMsg(BuildContext context, String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(msg),
@@ -519,5 +522,4 @@ static void showMsg(BuildContext context, String msg) {
       ),
     );
   }
-
 }

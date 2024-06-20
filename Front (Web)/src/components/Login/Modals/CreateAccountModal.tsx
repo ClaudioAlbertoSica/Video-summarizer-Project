@@ -46,9 +46,8 @@ function CreateAccountModal({ selectorCallback, setNewLoggedUser }: LoginModalSe
         const adjustedUser: LoggedUser = newUserTypesCorrections(res.data);
         setTimeout(() => setNewLoggedUser(adjustedUser), 500);
       })
-      .catch((error) => {
-        console.log;
-        alertMessagesHandler(setAlertToShow, error?.error || defaultAlertMessage, alertTypes.success);
+      .catch((err) => {
+        alertMessagesHandler(setAlertToShow, err.response.data.error || defaultAlertMessage, alertTypes.error);
       });
   };
 
